@@ -1,18 +1,17 @@
 import Fastify from 'fastify'
-const app = Fastify({
-    logger: true
-})
+
+import gameRoutes from './routes/games.route.js'
+
+const fastify = Fastify({ logger: true })
+
+fastify.register(gameRoutes)
+
 const PORT = 7000
-
-app.get('/', (req, res) => {
-    res.send({ test: 'Hello ' })
-})
-
 const start = async () => {
     try {
-        await app.listen(PORT)
+        await fastify.listen(PORT)
     } catch (error) {
-        app.log.error(error)
+        fastify.log.error(error)
         process.exit(1)
     }
 }
