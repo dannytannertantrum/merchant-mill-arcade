@@ -11,20 +11,10 @@ fastify.register(fastifySwagger, {
     exposeRoute: true, // enable documentation route
     routePrefix: '/docs',
     swagger: {
-        info: { title: 'fastify-api routes'}
+        info: { title: 'fastify-api routes' }
     }
 })
 fastify.register(gameRoutes)
 fastify.register(scoreRoutes)
 
-const PORT = 7000
-const start = async () => {
-    try {
-        await fastify.listen(PORT)
-    } catch (error) {
-        fastify.log.error(error)
-        process.exit(1)
-    }
-}
-
-start()
+export default fastify

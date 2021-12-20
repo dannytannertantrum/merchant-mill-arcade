@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 
-import games from '../games.js'
+import games from '../../games.js'
 
 
 let allGames = games
