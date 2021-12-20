@@ -1,9 +1,18 @@
 import Fastify from 'fastify'
+import fastifySwagger from 'fastify-swagger'
 
 import gameRoutes from './routes/games.route.js'
 
+
 const fastify = Fastify({ logger: true })
 
+fastify.register(fastifySwagger, {
+    exposeRoute: true, // enable documentation route
+    routePrefix: '/docs',
+    swagger: {
+        info: { title: 'fastify-api routes'}
+    }
+})
 fastify.register(gameRoutes)
 
 const PORT = 7000

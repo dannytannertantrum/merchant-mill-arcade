@@ -1,39 +1,17 @@
-import { getGame, getGames } from "../controllers/games.controller.js"
-
-// Game schema
-const Game = {
-    type: 'object',
-    properties: {
-        id: { type: 'string' },
-        title: { type: 'string' },
-        description: { type: 'string' }
-    }
-}
-
-const getGamesOptions = {
-    schema: {
-        response: {
-            200: {
-                type: 'array',
-                items: Game
-            }
-        }
-    },
-    handler: getGames
-}
-
-const getGameOptions = {
-    schema: {
-        response: {
-            200: Game
-        }
-    },
-    handler: getGame
-}
+import {
+    deleteGameOptions,
+    getGameOptions,
+    getGamesOptions,
+    postGameOptions,
+    updateGameOptions
+} from './options/games.options.js'
 
 const gameRoutes = (fastify, options, done) => {
     fastify.get('/games', getGamesOptions)
     fastify.get('/games/:id', getGameOptions)
+    fastify.post('/games', postGameOptions)
+    fastify.delete('/games/:id', deleteGameOptions)
+    fastify.put('/games/:id', updateGameOptions)
 
     done()
 }
