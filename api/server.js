@@ -1,7 +1,8 @@
 import Fastify from 'fastify'
 import fastifySwagger from 'fastify-swagger'
 
-import gameRoutes from './routes/games.route.js'
+import gameRoutes from './routes/games.routes.js'
+import scoreRoutes from './routes/scores.routes.js'
 
 
 const fastify = Fastify({ logger: true })
@@ -14,6 +15,7 @@ fastify.register(fastifySwagger, {
     }
 })
 fastify.register(gameRoutes)
+fastify.register(scoreRoutes)
 
 const PORT = 7000
 const start = async () => {
