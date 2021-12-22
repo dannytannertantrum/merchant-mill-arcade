@@ -1,11 +1,11 @@
-import fastify from './app.js'
+import server from './app'
 
 const PORT = 7000
 const start = async () => {
     try {
-        await fastify.listen(PORT)
+        await server.listen(PORT)
     } catch (error) {
-        fastify.log.error(error)
+        server.log.error(error)
         process.exit(1)
     }
 }

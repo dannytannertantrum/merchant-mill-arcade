@@ -2,20 +2,26 @@
   "name": "merchant-mill-arcade-api",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "server.ts",
   "scripts": {
     "start": "node src/server",
-    "dev": "nodemon src/server"
+    "dev": "nodemon src/server",
+    "typecheck": "npx tsc",
+    "typecheck-watch": "npx tsc --watch"
   },
   "author": "Jaime",
   "license": "ISC",
-  "type": "module",
   "dependencies": {
+    "@sinclair/typebox": "^0.23.1",
     "fastify": "^3.25.0",
     "fastify-swagger": "^4.13.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "@types/node": "^17.0.1",
+    "@types/uuid": "^8.3.3",
+    "nodemon": "^2.0.15",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.4"
   }
 }

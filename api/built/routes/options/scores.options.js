@@ -1,12 +1,8 @@
-import {
-    addScore,
-    deleteScore,
-    getScore,
-    getScores,
-    updateScore
-} from "../../controllers/scores.controller.js"
-
-const Score = {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.updateScoreOptions = exports.postScoreOptions = exports.getScoresOptions = exports.getScoreOptions = exports.deleteScoreOptions = void 0;
+var scores_controller_ts_1 = require("../../controllers/scores.controller.ts");
+var Score = {
     type: 'object',
     properties: {
         id: { type: 'string' },
@@ -14,9 +10,8 @@ const Score = {
         score: { type: 'integer' },
         game: { type: 'string' }
     }
-}
-
-const getScoresOptions = {
+};
+var getScoresOptions = {
     schema: {
         response: {
             200: {
@@ -25,19 +20,19 @@ const getScoresOptions = {
             }
         }
     },
-    handler: getScores
-}
-
-const getScoreOptions = {
+    handler: scores_controller_ts_1.getScores
+};
+exports.getScoresOptions = getScoresOptions;
+var getScoreOptions = {
     schema: {
         response: {
             200: Score
         }
     },
-    handler: getScore
-}
-
-const postScoreOptions = {
+    handler: scores_controller_ts_1.getScore
+};
+exports.getScoreOptions = getScoreOptions;
+var postScoreOptions = {
     schema: {
         body: {
             type: 'object',
@@ -52,10 +47,10 @@ const postScoreOptions = {
             201: Score
         }
     },
-    handler: addScore
-}
-
-const deleteScoreOptions = {
+    handler: scores_controller_ts_1.addScore
+};
+exports.postScoreOptions = postScoreOptions;
+var deleteScoreOptions = {
     schema: {
         response: {
             200: {
@@ -66,22 +61,15 @@ const deleteScoreOptions = {
             }
         }
     },
-    handler: deleteScore
-}
-
-const updateScoreOptions = {
+    handler: scores_controller_ts_1.deleteScore
+};
+exports.deleteScoreOptions = deleteScoreOptions;
+var updateScoreOptions = {
     schema: {
         response: {
             200: Score
         }
     },
-    handler: updateScore
-}
-
-export {
-    deleteScoreOptions,
-    getScoreOptions,
-    getScoresOptions,
-    postScoreOptions,
-    updateScoreOptions
-}
+    handler: scores_controller_ts_1.updateScore
+};
+exports.updateScoreOptions = updateScoreOptions;
