@@ -1,0 +1,64 @@
+### Display games
+GET http://localhost:7000/games
+
+
+### Display scores
+GET http://localhost:7000/scores
+
+
+### Display single game
+GET http://localhost:7000/games/2
+
+
+### Display single score
+GET http://localhost:7000/scores/2
+
+
+### Add game
+POST http://localhost:7000/games
+Content-Type: application/json
+
+{
+    "title": "Metroid",
+    "description": "Samus"
+}
+
+
+### Add score
+POST http://localhost:7000/scores
+Content-Type: application/json
+
+{
+    "initials": "GLC",
+    "score": 8893201,
+    "game": "Frogger"
+}
+
+
+### Delete game
+DELETE http://localhost:7000/games/3
+
+
+### Delete score
+DELETE http://localhost:7000/scores/3
+
+
+### Update game
+PUT http://localhost:7000/games/2
+Content-Type: application/json
+
+{
+    "title": "Updated game",
+    "description": "We just updated a game"
+}
+
+
+### Update score
+PUT http://localhost:7000/scores/2
+Content-Type: application/json
+
+{
+    "initials": "GLC",
+    "score": 7543298,
+    "game": "Attack From Mars updated"
+}

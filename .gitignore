@@ -3,9 +3,6 @@ logs
 *.log
 npm-debug.log*
 
-# Request scripts
-*.http
-
 # built director
 built/
 
