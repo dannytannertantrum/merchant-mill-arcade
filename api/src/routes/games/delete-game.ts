@@ -12,7 +12,6 @@ export default async (server: FastifyInstance): Promise<void> => {
         { schema },
         async (request, reply) => {
             const { id } = await request.params
-            console.log('ID\n', id)
             allGames.filter(game => game.id !== id)
 
             reply.send(`Game ${id} removed`)

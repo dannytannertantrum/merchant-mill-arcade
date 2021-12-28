@@ -1,7 +1,9 @@
 import fastify from 'fastify'
 import { Server, IncomingMessage, ServerResponse } from 'http'
 import fastifySwagger from 'fastify-swagger'
+import { DatabasePoolType } from 'slonik'
 
+import dbConnector from './db-connector'
 import addGame from './routes/games/add-game'
 import addScore from './routes/scores/add-score'
 import getGame from './routes/games/get-game'
@@ -14,10 +16,20 @@ import updateGame from './routes/games/update-game'
 import updateScore from './routes/scores/update-score'
 
 
+interface FastifySlonik {
+    pool: DatabasePoolType
+}
+
+declare module 'fastify' {
+    interface FastifyInstance {
+        slonik: FastifySlonik
+    }
+}
+
 const server = fastify<Server, IncomingMessage, ServerResponse>({ logger: true })
 
 server.register(fastifySwagger, {
-    exposeRoute: true, // enable documentation route
+    exposeRoute: true,
     routePrefix: '/docs',
     swagger: {
         info: {
@@ -26,6 +38,8 @@ server.register(fastifySwagger, {
         },
     }
 })
+server.register(dbConnector)
+
 server.register(addGame)
 server.register(addScore)
 server.register(getGame)

@@ -1,10 +1,12 @@
 {
     "compilerOptions": {
-        "outDir": "./built",
-        "target": "es5",
+        "allowSyntheticDefaultImports": true,
+        "declaration": true,
         "noImplicitAny": true,
         "noImplicitReturns": true,
-        "strictNullChecks": true
+        "outDir": "./built",
+        "strictNullChecks": true,
+        "target": "es5"
     },
     "include": [
         "./src/**/*"

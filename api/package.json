@@ -4,8 +4,9 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "start": "node src/server",
+    "build": "tsc -p tsconfig.json",
     "dev": "nodemon src/server",
+    "start": "node src/server",
     "typecheck": "npx tsc",
     "typecheck-watch": "npx tsc --watch"
   },
@@ -14,11 +15,16 @@
   "dependencies": {
     "@sinclair/typebox": "^0.23.1",
     "fastify": "^3.25.0",
+    "fastify-plugin": "^3.0.0",
     "fastify-swagger": "^4.13.0",
+    "slonik": "^26.2.2",
+    "slonik-interceptor-field-name-transformation": "^1.6.4",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/node": "^17.0.1",
+    "@types/pg": "^8.6.3",
+    "@types/slonik": "^22.1.5",
     "@types/uuid": "^8.3.3",
     "nodemon": "^2.0.15",
     "ts-node": "^10.4.0",
