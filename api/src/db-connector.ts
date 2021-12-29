@@ -1,17 +1,17 @@
 import { FastifyInstance } from 'fastify'
 import fastifyPlugin from 'fastify-plugin'
-import { createPool, sql } from 'slonik'
+import { createPool } from 'slonik'
 import { createFieldNameTransformationInterceptor } from 'slonik-interceptor-field-name-transformation'
 
 
+const { DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USER } = process.env
 const interceptors = [
     createFieldNameTransformationInterceptor({
         format: 'CAMEL_CASE'
     })
 ]
-
 const initializeDatabase = async (server: FastifyInstance) => {
-    const pool = createPool('postgres://', {
+    const pool = createPool(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}}`, {
         interceptors
     })
 
