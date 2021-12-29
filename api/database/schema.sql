@@ -1,0 +1,8 @@
+DROP DATABASE IF EXISTS merchant_mill_arcade;
+
+CREATE DATABASE merchant_mill_arcade;
+
+DROP ROLE IF EXISTS glc;
+CREATE ROLE glc;
+ALTER ROLE glc WITH LOGIN;
+ALTER ROLE glc WITH SUPERUSER;
