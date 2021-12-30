@@ -11,6 +11,7 @@
     "migrate:down": "node -r dotenv/config database/migrate down",
     "migrate:fully-down": "node -r dotenv/config database/migrate down --to 0",
     "migrate:up": "node -r dotenv/config database/migrate up",
+    "seed": "node -r dotenv/config database/seed.js",
     "start": "node src/server",
     "typecheck": "npx tsc",
     "typecheck-watch": "npx tsc --watch"
