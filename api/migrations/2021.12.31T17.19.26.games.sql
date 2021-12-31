@@ -1,0 +1,12 @@
+-- CREATE games table
+
+CREATE TABLE IF NOT EXISTS games (
+    id uuid DEFAULT gen_random_uuid(),
+    description VARCHAR(500),
+    is_deleted BOOLEAN DEFAULT FALSE,
+    slug VARCHAR(500) NOT NULL,
+    title VARCHAR(250) NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id)
+);
