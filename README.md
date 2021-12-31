@@ -18,4 +18,4 @@ We're using [@slonik/migrator](https://www.npmjs.com/package/@slonik/migrator) f
 Up - running `up` will migrate to the latest. Per the docs, "It is also possible to migrate up or down "to" a specific migration. For example, if you have run migrations `one.sql`, `two.sql`, `three.sql` and `four.sql`, you can revert `three.sql` and `four.sql` by running `node migrate down --to three.sql`. Note that the range is _inclusive_. To revert all migrations in one go, run n`ode migrate down --to 0`. Conversely, `node migrate up` runs all up migrations by default. To run only up to a certain migration, run `node migrate up --to two.sql`. This will run migrations `one.sql` and `two.sql` - again, the range is inclusive of the name.
 
 ### Seeding
-`$ npm run seed` - This script seeds our local database. A future enhancement would be to pipe everything in from a CSV so the uuids are the same every time, but for the intents and purposes of this project, it's not necessary.
+`$ npm run seed` - This script seeds our local database.
