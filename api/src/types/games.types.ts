@@ -20,21 +20,13 @@ const GameSchema = Type.Object({
     createdAt: Type.Integer(),
     updatedAt: Type.Integer()
 })
-const SoftDeleteGameSchema = Type.Object({
-    message: Type.String()
-})
 
 type AllGamesData = Static<typeof AllGamesSchema>
 type GameData = Static<typeof GameSchema>
-type ReplyMessage = {
-    message: string
-}
 
 export {
     AllGamesData,
     GameData,
-    ReplyMessage,
     AllGamesSchema,
-    GameSchema,
-    SoftDeleteGameSchema
+    GameSchema
 }

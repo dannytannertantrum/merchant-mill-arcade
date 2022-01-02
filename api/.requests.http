@@ -3,7 +3,7 @@ GET http://localhost:7000/games
 
 
 ### Display single game
-GET http://localhost:7000/games/528e26f5-df0f-4255-a5e8-acf0fddddad0
+GET http://localhost:7000/games/eae79bac-0a26-47f6-aff3-9e4d072186de
 
 
 ### Add game
@@ -17,17 +17,17 @@ Content-Type: application/json
 
 
 ### Update game
-PUT http://localhost:7000/games/528e26f5-df0f-4255-a5e8-acf0fddddad0
+PUT http://localhost:7000/games/eae79bac-0a26-47f6-aff3-9e4d072186de
 Content-Type: application/json
 
 {
-    "title": "Updated GAMEEEEE",
-    "description": "We just updated a game"
+    "title": "Ninja Gaiden",
+    "description": "A classic"
 }
 
 
 ### Delete game
-DELETE http://localhost:7000/games/528e26f5-df0f-4255-a5e8-acf0fddddad0
+DELETE http://localhost:7000/games/eae79bac-0a26-47f6-aff3-9e4d072186de
 
 
 ##############
@@ -40,7 +40,7 @@ GET http://localhost:7000/scores
 
 
 ### Display single score
-GET http://localhost:7000/scores/2
+GET http://localhost:7000/scores/95e25db0-9057-42f7-bb87-03d6335f65c2
 
 
 ### Add score
@@ -48,22 +48,22 @@ POST http://localhost:7000/scores
 Content-Type: application/json
 
 {
-    "initials": "GLC",
-    "score": 8893201,
-    "game": "Frogger"
+    "game": "eae79bac-0a26-47f6-aff3-9e4d072186de",
+    "initials": "DRJ",
+    "score": 100029020
 }
 
 
 ### Delete score
-DELETE http://localhost:7000/scores/3
+DELETE http://localhost:7000/scores/eae79bac-0a26-47f6-aff3-9e4d072186de
 
 
 ### Update score
-PUT http://localhost:7000/scores/2
+PUT http://localhost:7000/scores/8119e6fc-d3d7-41e1-a57a-ebe4379a216c
 Content-Type: application/json
 
 {
-    "initials": "GLC",
-    "score": 7543298,
-    "game": "Attack From Mars updated"
+    "initials": "DRJ",
+    "score": 1000010,
+    "game": "eae79bac-0a26-47f6-aff3-9e4d072186de"
 }

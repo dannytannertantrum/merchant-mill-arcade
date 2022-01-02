@@ -1,8 +1,9 @@
-import { FastifyInstance } from "fastify"
-import { DatabasePoolType, sql } from "slonik"
+import { FastifyInstance } from 'fastify'
+import { DatabasePoolType, sql } from 'slonik'
 
-import { GameData, GameSchema, ReplyMessage } from "../../types/games.types"
-import { queryForDuplicateGame } from "../common-queries"
+import { GameData, GameSchema } from '../../types/games.types'
+import { ReplyMessage } from '../../types/shared.types'
+import { queryForDuplicateGame } from '../common-queries'
 import { constructSlug } from '../utilities'
 
 
@@ -16,7 +17,7 @@ const insertGame = async (
         INSERT INTO
             games (description, title, slug)
         VALUES
-            (${description}, ${title}, ${slug})
+            (${description}, ${title}, ${slug});
     `)
 }
 

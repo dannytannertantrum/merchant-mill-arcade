@@ -7,7 +7,7 @@ import { getGameById } from '../common-queries'
 const schema = { response: { 200: GameSchema } }
 
 export default async (server: FastifyInstance): Promise<void> => {
-    server.get<{ Params: GameData }>(
+    server.get<{ Params: Pick<GameData, 'id'>, Reply: GameData }>(
         '/games/:id',
         { schema },
         async (request, reply) => {
