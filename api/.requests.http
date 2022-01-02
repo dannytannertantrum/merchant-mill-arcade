@@ -2,16 +2,8 @@
 GET http://localhost:7000/games
 
 
-### Display scores
-GET http://localhost:7000/scores
-
-
 ### Display single game
-GET http://localhost:7000/games/2
-
-
-### Display single score
-GET http://localhost:7000/scores/2
+GET http://localhost:7000/games/528e26f5-df0f-4255-a5e8-acf0fddddad0
 
 
 ### Add game
@@ -19,9 +11,36 @@ POST http://localhost:7000/games
 Content-Type: application/json
 
 {
-    "title": "Metroid",
-    "description": "Samus"
+    "title": "New game",
+    "description": "This should not be added!"
 }
+
+
+### Update game
+PUT http://localhost:7000/games/528e26f5-df0f-4255-a5e8-acf0fddddad0
+Content-Type: application/json
+
+{
+    "title": "Updated GAMEEEEE",
+    "description": "We just updated a game"
+}
+
+
+### Delete game
+DELETE http://localhost:7000/games/528e26f5-df0f-4255-a5e8-acf0fddddad0
+
+
+##############
+### SCORES ###
+##############
+
+
+### Display scores
+GET http://localhost:7000/scores
+
+
+### Display single score
+GET http://localhost:7000/scores/2
 
 
 ### Add score
@@ -35,22 +54,8 @@ Content-Type: application/json
 }
 
 
-### Delete game
-DELETE http://localhost:7000/games/3
-
-
 ### Delete score
 DELETE http://localhost:7000/scores/3
-
-
-### Update game
-PUT http://localhost:7000/games/2
-Content-Type: application/json
-
-{
-    "title": "Updated game",
-    "description": "We just updated a game"
-}
 
 
 ### Update score
