@@ -1,6 +1,7 @@
 import { DatabasePoolType, sql } from 'slonik'
 
 import { GameData } from '../types/games.types'
+import { ScoreData } from '../types/scores.types'
 
 
 type DuplicateGameCheck = {
@@ -12,7 +13,16 @@ type DuplicateGameCheck = {
 const getGameById = async (pool: DatabasePoolType, id: string): Promise<GameData> => {
     const result = await pool.one(sql<GameData>`
         SELECT * FROM games
-        WHERE id = ${id}
+        WHERE id = ${id};
+    `)
+
+    return result
+}
+
+const getScoreById = async (pool: DatabasePoolType, id: string): Promise<ScoreData> => {
+    const result = await pool.one(sql<ScoreData>`
+        SELECT * FROM scores
+        WHERE id = ${id};
     `)
 
     return result
@@ -28,7 +38,7 @@ const queryForDuplicateGame = async ({ pool, title, id }: DuplicateGameCheck): P
         }
 
         const titleQuery = await pool.query(sql<GameData>`
-            SELECT * FROM games WHERE LOWER(title) = ${title}
+            SELECT * FROM games WHERE LOWER(title) = ${title};
         `)
 
         const titleExists = titleQuery.rows.length > 0
@@ -46,5 +56,6 @@ const queryForDuplicateGame = async ({ pool, title, id }: DuplicateGameCheck): P
 
 export {
     getGameById,
+    getScoreById,
     queryForDuplicateGame
 }

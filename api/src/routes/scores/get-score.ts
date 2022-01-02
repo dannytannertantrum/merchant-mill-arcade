@@ -1,18 +1,23 @@
 import { FastifyInstance } from 'fastify'
 
-import scores from '../../../scores'
 import { ScoreSchema, ScoreData } from '../../types/scores.types'
+import { getScoreById } from '../common-queries'
+
 
 const schema = { response: { 200: ScoreSchema } }
 
 export default async (server: FastifyInstance): Promise<void> => {
-    server.get<{ Params: ScoreData }>(
+    server.get<{ Params: Pick<ScoreData, 'id'>, Reply: ScoreData }>(
         '/scores/:id',
         { schema },
         async (request, reply) => {
-            const { id } = await request.params
-            const scoreToGet = scores.find(score => score.id === id)
+            const { id } = request.params
 
-            reply.send(scoreToGet)
+            try {
+                const score = await getScoreById(server.slonik.pool, id)   
+                reply.send(score)
+            } catch (err) {
+                throw new Error(`Get score error: ${err}`)
+            }
         })
 }

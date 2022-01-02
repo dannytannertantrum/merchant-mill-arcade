@@ -1,20 +1,38 @@
 import { FastifyInstance } from 'fastify'
+import { DatabasePoolType, sql } from 'slonik'
 
-import scores from '../../../scores'
-import { ScoreSchema, ScoreData } from '../../types/scores.types'
+import { ScoreData } from '../../types/scores.types'
+import { SoftDeleteSchema } from '../../types/shared.types'
+import { ReplyMessage } from '../../types/shared.types'
 
-const schema = { response: { 200: ScoreSchema } }
-let allScores = scores
 
+const schema = { response: { 200: SoftDeleteSchema } }
+
+const softDeleteScore = async (pool: DatabasePoolType, id: string): Promise<void> => {
+    await pool.query(sql<ScoreData>`
+        UPDATE scores
+        SET is_deleted = TRUE
+        WHERE id = ${id};
+    `)
+}
 
 export default async (server: FastifyInstance): Promise<void> => {
-    server.delete<{ Params: ScoreData }>(
+    server.delete<{ Params: Pick<ScoreData, 'id'>, Reply: ReplyMessage }>(
         '/scores/:id',
         { schema },
         async (request, reply) => {
-            const { id } = await request.params
-            allScores = allScores.filter(score => score.id !== id)
+            const { id } = request.params
 
-            reply.send(`Score ${id} has been removed`)
+            try {
+                await softDeleteScore(server.slonik.pool, id)
+                reply.send({message: `Score with ${id} has been removed from the Merchant Mill Arcade`})
+            } catch (err) {
+                throw new Error(`Delete score error: ${err}`)
+            }
+
         })
+}
+
+export {
+    softDeleteScore
 }
