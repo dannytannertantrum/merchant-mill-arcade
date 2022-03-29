@@ -2,14 +2,15 @@
 If it's your first time here, let's clone the repo, install packages, run migrations/seeds, get the server running and take things for a test spin! Steps below:
 
 1. `$ git clone git@github.com:dannytannertantrum/merchant-mill-arcade.git`
-2. `$ npm i` inside of `api`
-3. If you do not have it installed, [download Postgres here](https://www.postgresql.org/download/)
-4. Start the Postgres servers
-5. `$ npm run create-db-schema`
-6. `$ npm run migrate:up`
-7. `$ npm run seed`
-8. `$ npm run dev`
-9. At this point, the server should be running and you should have a local database populated with some data. In the root of `api`, there's a `.requests.http` file. In order to make use of it, [install the `REST Client` extension](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) for VS Code. This allows us to send requests right from VS Code. Take note of the little "Send Request" link above each HTTP method and try it out!
+2. Inside of `api`, run `$ nvm use` and follow the commands to install the correct node version if you do not have it.
+3. Inside of `api`, run `$ npm i`
+4. If you do not have it installed, [download Postgres here](https://www.postgresql.org/download/)
+5. Start the Postgres servers
+6. `$ npm run create-db-schema`
+7. `$ npm run migrate:up`
+8. `$ npm run seed`
+9. `$ npm run dev`
+10. At this point, the server should be running and you should have a local database populated with some data. In the root of `api`, there's a `.requests.http` file. In order to make use of it, [install the `REST Client` extension](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) for VS Code. This allows us to send requests right from VS Code. Take note of the little "Send Request" link above each HTTP method and try it out!
 
 # DATABASE
 We are using [Slonik](https://github.com/gajus/slonik) because it promotes writing raw SQL while still baking in basic protections such as SQL injection. If we look in the `package.json` file, we'll see some other Slonik packages for interceptors and migrations.
