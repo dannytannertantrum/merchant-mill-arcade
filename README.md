@@ -33,3 +33,12 @@ Up - running `up` will take us to the latest migration. [Per the docs](https://w
 
 ### Seeding
 `$ npm run seed` - This script seeds our local database.
+
+### Test Database
+We have a test database for integration tests to avoid polluting our dev database (in case we forget to clean something up, there's an error, etc.). Just like the commands above, we can create the test schema, migrate, seed, etc. with the following:
+
+`$ npm run create-test-db-schema`
+`$ npm run migrate-test:up`
+`$ npm run seed-test`
+
+There are also the subsequent down commands for migrating.
