@@ -17,7 +17,6 @@
     "migrate-test:up": "NODE_ENV=TEST node -r dotenv/config database/migrate up",
     "seed": "node -r dotenv/config database/seed.js",
     "seed-test": "NODE_ENV=TEST node -r dotenv/config database/seed.js",
-    "start": "node src/server",
     "test": "jest",
     "test-watch": "jest --watch",
     "typecheck": "npx tsc",
