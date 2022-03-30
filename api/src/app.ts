@@ -2,6 +2,7 @@ import fastify from 'fastify'
 import { Server, IncomingMessage, ServerResponse } from 'http'
 import fastifySwagger from 'fastify-swagger'
 import { DatabasePoolType } from 'slonik'
+import 'dotenv/config'
 
 import dbConnector from './db-connector'
 import addGame from './routes/games/add-game'

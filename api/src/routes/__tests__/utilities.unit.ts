@@ -1,7 +1,7 @@
 import { constructSlug } from '../utilities'
 
-describe('Construct Slug', () => {
 
+describe('Construct Slug', () => {
     test('should trim whitespace and replace with hyphens', () => {
         const trimStringBefore = 'dwayne the rock johnson     '
         const trimStringAfter = 'dwayne-the-rock-johnson'
