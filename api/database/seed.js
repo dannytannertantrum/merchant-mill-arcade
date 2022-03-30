@@ -3,9 +3,12 @@ const { createPool, sql } = require('slonik')
 
 const initials = ['glc', 'jss', 'cak', 'erb']
 const scoresForInsert = [443656, 358246, 838559, 454114, 247629, 719800, 662903, 103299, 865354, 294080]
+const CONNECTION_STRING = process.env.NODE_ENV === 'TEST'
+    ? process.env.TEST_POSTGRES_CONNECTION_STRING
+    : process.env.POSTGRES_CONNECTION_STRING
 
 async function seedAllData() {
-    const slonik = createPool(process.env.POSTGRES_CONNECTION_STRING)
+    const slonik = createPool(CONNECTION_STRING)
     try {
         await slonik.query(sql`
             DELETE FROM scores;
