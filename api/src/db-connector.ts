@@ -4,14 +4,17 @@ import { createPool } from 'slonik'
 import { createFieldNameTransformationInterceptor } from 'slonik-interceptor-field-name-transformation'
 
 
-const { POSTGRES_CONNECTION_STRING } = process.env
+const CONNECTION_STRING = process.env.NODE_ENV === 'TEST'
+    ? process.env.TEST_POSTGRES_CONNECTION_STRING
+    : process.env.POSTGRES_CONNECTION_STRING
+
 const interceptors = [
     createFieldNameTransformationInterceptor({
         format: 'CAMEL_CASE'
     })
 ]
 const initializeDatabase = async (server: FastifyInstance) => {
-    const pool = createPool(`${POSTGRES_CONNECTION_STRING}`, {
+    const pool = createPool(`${CONNECTION_STRING}`, {
         interceptors
     })
 
