@@ -27,7 +27,9 @@ declare module 'fastify' {
     }
 }
 
-const server = fastify<Server, IncomingMessage, ServerResponse>({ logger: true })
+const server = fastify<Server, IncomingMessage, ServerResponse>(
+    { logger: process.env.NODE_ENV === 'TEST' ? false : true }
+)
 
 server.register(fastifySwagger, {
     exposeRoute: true,
