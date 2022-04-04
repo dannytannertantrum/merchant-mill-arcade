@@ -51,7 +51,7 @@ export default async (server: FastifyInstance): Promise<void> => {
             }
 
             reply.code(201).send({
-                body: insertedGame,
+                data: insertedGame,
                 message: `You just added ${title} to the Merchant Mill Arcade!`
             })
         }

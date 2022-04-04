@@ -6,7 +6,7 @@ const SoftDeleteSchema = Type.Object({
 
 type ReplyMessage<T> = {
     message: string
-    body?: T
+    data?: T
 }
 
 export {
