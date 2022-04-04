@@ -4,8 +4,9 @@ const SoftDeleteSchema = Type.Object({
     message: Type.String()
 })
 
-type ReplyMessage = {
+type ReplyMessage<T> = {
     message: string
+    body?: T
 }
 
 export {

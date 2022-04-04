@@ -17,7 +17,7 @@ const softDeleteGame = async (pool: DatabasePoolType, id: string): Promise<void>
 }
 
 export default async (server: FastifyInstance): Promise<void> => {
-    server.delete<{ Params: Pick<GameData, 'id'>, Reply: ReplyMessage }>(
+    server.delete<{ Params: Pick<GameData, 'id'>, Reply: ReplyMessage<Partial<GameData>> }>(
         '/games/:id',
         { schema },
         async (request, reply) => {

@@ -1,5 +1,6 @@
 import { FastifyInstance } from 'fastify'
 import { DatabasePoolType, sql } from 'slonik'
+import { GameData } from '../../types/games.types'
 
 import { ScoreData } from '../../types/scores.types'
 import { SoftDeleteSchema } from '../../types/shared.types'
@@ -17,7 +18,7 @@ const softDeleteScore = async (pool: DatabasePoolType, id: string): Promise<void
 }
 
 export default async (server: FastifyInstance): Promise<void> => {
-    server.delete<{ Params: Pick<ScoreData, 'id'>, Reply: ReplyMessage }>(
+    server.delete<{ Params: Pick<ScoreData, 'id'>, Reply: Partial<ReplyMessage<GameData>> }>(
         '/scores/:id',
         { schema },
         async (request, reply) => {

@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify'
-import { DatabasePoolType, sql } from 'slonik'
+import { DatabasePoolType, QueryResultType, sql } from 'slonik'
 
 import { GameData, GameSchema } from '../../types/games.types'
 import { ReplyMessage } from '../../types/shared.types'
@@ -12,17 +12,20 @@ const schema = { response: { 200: GameSchema } }
 const insertGame = async (
     pool: DatabasePoolType,
     { description, slug, title }: { description: string, slug: string, title: string }
-): Promise<void> => {
-    await pool.query(sql<GameData>`
+): Promise<GameData> => {
+    const result = await pool.query(sql<GameData>`
         INSERT INTO
             games (description, title, slug)
         VALUES
-            (${description}, ${title}, ${slug});
+            (${description}, ${title}, ${slug})
+        RETURNING *;
     `)
+
+    return result.rows[0]
 }
 
 export default async (server: FastifyInstance): Promise<void> => {
-    server.post<{ Body: Pick<GameData, 'title' | 'description'>, Reply: ReplyMessage }>(
+    server.post<{ Body: Pick<GameData, 'title' | 'description'>, Reply: ReplyMessage<GameData> }>(
         '/games',
         { schema },
         async (request, reply) => {
@@ -39,13 +42,18 @@ export default async (server: FastifyInstance): Promise<void> => {
                 title
             }
 
+            let insertedGame: GameData
+
             try {
-                await insertGame(server.slonik.pool, gameToAdd)
+                insertedGame = await insertGame(server.slonik.pool, gameToAdd)
             } catch (err) {
                 throw new Error(`Add game error: ${err}`)
             }
 
-            reply.code(201).send({ message: `You just added ${title} to the Merchant Mill Arcade!` })
+            reply.code(201).send({
+                body: insertedGame,
+                message: `You just added ${title} to the Merchant Mill Arcade!`
+            })
         }
     )
 }

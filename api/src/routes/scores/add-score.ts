@@ -10,17 +10,20 @@ const schema = { response: { 200: ScoreSchema } }
 const insertScore = async (
     pool: DatabasePoolType,
     { game, initials, score }: { game: string, initials: string, score: number }
-): Promise<void> => {
-    await pool.query(sql<ScoreData>`
+): Promise<ScoreData> => {
+    const result = await pool.query(sql<ScoreData>`
         INSERT INTO
             scores (game, initials, score)
         VALUES
-            (${game}, ${initials}, ${score});
+            (${game}, ${initials}, ${score})
+        RETURNING *;
     `)
+
+    return result.rows[0]
 }
 
 export default async (server: FastifyInstance): Promise<void> => {
-    server.post<{ Body: Pick<ScoreData, 'game' | 'initials' | 'score'>, Reply: ReplyMessage }>(
+    server.post<{ Body: Pick<ScoreData, 'game' | 'initials' | 'score'>, Reply: ReplyMessage<ScoreData> }>(
         '/scores',
         { schema },
         async (request, reply) => {
@@ -34,13 +37,18 @@ export default async (server: FastifyInstance): Promise<void> => {
                 score
             }
 
+            let insertedScore: ScoreData
+
             try {
-                await insertScore(server.slonik.pool, scoreToAdd)
+                insertedScore = await insertScore(server.slonik.pool, scoreToAdd)
             } catch (err) {
                 throw new Error(`Add score error: ${err}`)
             }
 
-            reply.code(201).send({ message: `You just added a score of ${score} to the Merchant Mill Arcade for ${game}!` })
+            reply.code(201).send({
+                body: insertedScore,
+                message: `You just added a score of ${score} to the Merchant Mill Arcade for ${game}!`
+            })
         })
 }
 
