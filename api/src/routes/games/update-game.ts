@@ -19,7 +19,7 @@ const upsertGame = async (
             description = ${game.description},
             slug = ${game.slug},
             title = ${game.title},
-            updated_at = CURRENT_TIMESTAMP
+            updated_at = ${game.updatedAt}::timestamptz
         WHERE id = ${game.id};
     `)
 }
@@ -37,6 +37,7 @@ export default async (server: FastifyInstance): Promise<void> => {
             if (isDuplicateGame) throw new Error(`${title} already exists in the Merchant Mill Arcade!`)
 
             const slug = constructSlug(title)
+            const updatedAt = new Date().toISOString()
 
             try {
                 const game = await getGameById(server.slonik.pool, id)
@@ -45,7 +46,8 @@ export default async (server: FastifyInstance): Promise<void> => {
                     ...game,
                     title,
                     description: description || '',
-                    slug
+                    slug,
+                    updatedAt
                 }
 
                 await upsertGame(server.slonik.pool, gameToUpdate)

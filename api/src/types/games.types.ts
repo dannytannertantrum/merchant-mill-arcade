@@ -7,8 +7,8 @@ const AllGamesSchema = Type.Array(
         isDeleted: Type.Boolean(),
         slug: Type.String(),
         title: Type.String(),
-        createdAt: Type.Integer(),
-        updatedAt: Type.Integer()
+        createdAt: Type.String(),
+        updatedAt: Type.String()
     })
 )
 const GameSchema = Type.Object({
@@ -17,8 +17,8 @@ const GameSchema = Type.Object({
     isDeleted: Type.Boolean(),
     slug: Type.String(),
     title: Type.String(),
-    createdAt: Type.Integer(),
-    updatedAt: Type.Integer()
+    createdAt: Type.String(),
+    updatedAt: Type.String()
 })
 
 type AllGamesData = Static<typeof AllGamesSchema>

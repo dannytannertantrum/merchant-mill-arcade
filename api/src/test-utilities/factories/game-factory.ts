@@ -6,13 +6,13 @@ import { Disposable } from '../disposables'
 
 const gameFactory = async (
     pool: DatabasePoolType,
-    { id, description, slug, title }: { id: string, description: string, slug: string, title: string }
+    { id, description, isDeleted, slug, title, createdAt }: { id: string, description: string, isDeleted: boolean, slug: string, title: string, createdAt: string }
 ): Promise<Disposable<({ id: string })>> => {
     await pool.query(sql<GameData>`
         INSERT INTO
-            games (id, description, slug, title)
+            games (id, description, is_deleted, slug, title, created_at)
         VALUES
-            (${id}, ${description}, ${slug}, ${title})
+            (${id}, ${description}, ${isDeleted}, ${slug}, ${title}, ${createdAt}::timestamptz);
     `)
 
     return {
