@@ -22,9 +22,11 @@ const GameSchema = Type.Object({
 })
 
 type GameData = Static<typeof GameSchema>
+type AllGamesData = Static<typeof AllGamesSchema>
 
 export {
-    GameData,
+    AllGamesData,
     AllGamesSchema,
+    GameData,
     GameSchema
 }

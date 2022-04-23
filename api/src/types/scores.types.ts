@@ -22,9 +22,11 @@ const ScoreSchema = Type.Object({
 })
 
 type ScoreData = Static<typeof ScoreSchema>
+type AllScoresData = Static<typeof AllScoresSchema>
 
 export {
-    ScoreData,
+    AllScoresData,
     AllScoresSchema,
+    ScoreData,
     ScoreSchema
 }

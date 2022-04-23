@@ -1,12 +1,12 @@
 import { FastifyInstance } from 'fastify'
 import { DatabasePoolType, sql } from 'slonik'
 
-import { ScoreData, AllScoresSchema } from '../../types/scores.types'
+import { ScoreData, AllScoresSchema, AllScoresData } from '../../types/scores.types'
 
 
 const schema = { response: { 200: AllScoresSchema } }
 
-const getAllScores = async (pool: DatabasePoolType): Promise<readonly ScoreData[]> => {
+const getAllScores = async (pool: DatabasePoolType): Promise<Readonly<AllScoresData>> => {
     const result = await pool.query(sql<ScoreData>`
         SELECT * FROM scores;
     `)
@@ -15,7 +15,7 @@ const getAllScores = async (pool: DatabasePoolType): Promise<readonly ScoreData[
 }
 
 export default async (server: FastifyInstance): Promise<void> => {
-    server.get<{Reply: readonly ScoreData[]}>(
+    server.get<{Reply: Readonly<AllScoresData>}>(
         '/scores',
         { schema },
         async (request, reply) => {
