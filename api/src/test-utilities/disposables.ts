@@ -1,4 +1,4 @@
-type Disposable<T> = {
+interface Disposable<T> {
     data: T
     cleanUp: () => Promise<void>
 }

@@ -21,11 +21,9 @@ const GameSchema = Type.Object({
     updatedAt: Type.String()
 })
 
-type AllGamesData = Static<typeof AllGamesSchema>
 type GameData = Static<typeof GameSchema>
 
 export {
-    AllGamesData,
     GameData,
     AllGamesSchema,
     GameSchema

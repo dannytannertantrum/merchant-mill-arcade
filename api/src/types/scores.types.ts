@@ -21,11 +21,9 @@ const ScoreSchema = Type.Object({
     updatedAt: Type.Integer()
 })
 
-type AllScoresData = Static<typeof AllScoresSchema>
 type ScoreData = Static<typeof ScoreSchema>
 
 export {
-    AllScoresData,
     ScoreData,
     AllScoresSchema,
     ScoreSchema

@@ -4,7 +4,7 @@ const SoftDeleteSchema = Type.Object({
     message: Type.String()
 })
 
-type ReplyMessage<T> = {
+interface ReplyMessage<T> {
     message: string
     data?: T
 }
