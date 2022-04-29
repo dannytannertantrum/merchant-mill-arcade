@@ -27,9 +27,18 @@ declare module 'fastify' {
     }
 }
 
-const server = fastify<Server, IncomingMessage, ServerResponse>(
-    { logger: process.env.NODE_ENV === 'TEST' ? false : true }
-)
+const server = fastify<Server, IncomingMessage, ServerResponse>({
+    logger: process.env.NODE_ENV === 'TEST' ? false : true,
+    disableRequestLogging: true // replace the standard output with our own custom logging below with hooks
+})
+
+server.addHook('onRequest', (req, reply, done) => {
+    req.log.info({ url: req.raw.url, id: req.id, requestBody: req.body }, 'RECEIVED REQUEST')
+    done()
+}).addHook('onResponse', (req, reply, done) => {
+    req.log.info({ url: req.raw.url, statusCode: reply.raw.statusCode }, 'REQUEST COMPLETED')
+    done()
+})
 
 server.register(fastifySwagger, {
     exposeRoute: true,

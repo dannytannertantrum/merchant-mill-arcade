@@ -3,9 +3,9 @@ import { DatabasePoolType, sql } from 'slonik'
 import { v4 as uuidv4 } from 'uuid'
 
 import { GameData, GameSchema } from '../../types/games.types'
-import { ReplyMessage } from '../../types/shared.types'
 import { queryForDuplicateGame } from '../common-queries'
-import { constructSlug } from '../utilities'
+import { constructSlug, textInputCleanUp } from '../utilities'
+import { handleApiError, handleValidationError, handleDuplicateEntryError } from '../../customErrors'
 
 
 const schema = { response: { 200: GameSchema } }
@@ -23,17 +23,23 @@ const insertGame = async (
 }
 
 export default async (server: FastifyInstance): Promise<void> => {
-    server.post<{ Body: Omit<GameData, 'updatedAt'>, Reply: ReplyMessage<Omit<GameData, 'updatedAt'>> }>(
+    server.post<{ Body: Omit<GameData, 'updatedAt'>, Reply: Omit<GameData, 'updatedAt'> }>(
         '/games',
         { schema },
         async (request, reply) => {
-            const { title, description } = request.body
-            if (!title) throw new Error('Title is required')
+            const { description } = request.body
+            const id = request.body.id || uuidv4()
+            let { title } = request.body
 
-            const isDuplicateGame = await queryForDuplicateGame({ pool: server.slonik.pool, title })
-            if (isDuplicateGame) throw new Error(`${title} already exists in the Merchant Mill Arcade!`)
+            if (title !== undefined) title = textInputCleanUp(title)
+            if (title === '' || title === undefined) handleValidationError('Title is required!')
 
-            const id = uuidv4()
+            const duplicateGameCheck = await queryForDuplicateGame({ pool: server.slonik.pool, title, id, isPutRequest: false }).catch(reason =>
+                handleApiError(`ERROR CHECKING FOR DUPLICATE GAME: ${reason}`)
+            )
+
+            if (duplicateGameCheck?.isDuplicate) handleDuplicateEntryError('CONFLICT ERROR: That game already exists in the Merchant Mill Arcade!')
+
             const isDeleted = false
             const slug = constructSlug(title)
             const createdAt = new Date().toISOString()
@@ -47,16 +53,11 @@ export default async (server: FastifyInstance): Promise<void> => {
                 createdAt
             }
 
-            try {
-                await insertGame(server.slonik.pool, gameToAdd)
-            } catch (err) {
-                throw new Error(`Add game error: ${err}`)
-            }
-
-            reply.code(201).send({
-                data: gameToAdd,
-                message: `You just added ${title} to the Merchant Mill Arcade!`
+            await insertGame(server.slonik.pool, gameToAdd).catch(reason => {
+                handleApiError(`ERROR ADDING GAME: ${reason}`)
             })
+
+            reply.code(201).send(gameToAdd)
         }
     )
 }

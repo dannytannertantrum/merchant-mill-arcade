@@ -1,17 +1,24 @@
 import { DatabasePoolType, sql } from 'slonik'
 
+import { handleApiError } from '../customErrors'
 import { GameData } from '../types/games.types'
 import { ScoreData } from '../types/scores.types'
 
 
-type DuplicateGameCheck = {
+interface DuplicateGameCheck {
     pool: DatabasePoolType
     title: string
+    isPutRequest: boolean
     id?: string
 }
 
-const getGameById = async (pool: DatabasePoolType, id: string): Promise<GameData> => {
-    const result = await pool.one(sql<GameData>`
+interface DuplicateGameReturnValue {
+    isDuplicate: boolean
+    game: GameData | null
+}
+
+const getGameById = async (pool: DatabasePoolType, id: string): Promise<GameData | null> => {
+    const result = await pool.maybeOne(sql<GameData>`
         SELECT * FROM games
         WHERE id = ${id};
     `)
@@ -19,8 +26,8 @@ const getGameById = async (pool: DatabasePoolType, id: string): Promise<GameData
     return result
 }
 
-const getScoreById = async (pool: DatabasePoolType, id: string): Promise<ScoreData> => {
-    const result = await pool.one(sql<ScoreData>`
+const getScoreById = async (pool: DatabasePoolType, id: string): Promise<ScoreData | null> => {
+    const result = await pool.maybeOne(sql<ScoreData>`
         SELECT * FROM scores
         WHERE id = ${id};
     `)
@@ -28,33 +35,33 @@ const getScoreById = async (pool: DatabasePoolType, id: string): Promise<ScoreDa
     return result
 }
 
-const queryForDuplicateGame = async ({ pool, title, id }: DuplicateGameCheck): Promise<Boolean> => {
-    let existingGame: GameData | undefined
+const queryForDuplicateGame = async ({ pool, title, id, isPutRequest }: DuplicateGameCheck): Promise<DuplicateGameReturnValue> => {
+    let gameIdExists: GameData | null = null
     title = title.toLowerCase()
 
-    try {
-        if (id) {
-            existingGame = await getGameById(pool, id)
-        }
+    if (id) {
+        gameIdExists = await getGameById(pool, id).catch(reason =>
+            handleApiError(`The following error occurred when searching for a duplicate game by id: ${reason}`)
+        )
+    }
 
-        const titleQuery = await pool.query(sql<GameData>`
-            SELECT * FROM games WHERE LOWER(title) = ${title};
-        `)
+    const titleQuery = await pool.query(sql<GameData>`
+        SELECT title, is_deleted
+        FROM games
+        WHERE LOWER(title) = ${title};
+    `).catch(reason => handleApiError(`The following error occurred when searching for a duplicate game by title: ${reason}`))
 
-        const titleExists = titleQuery.rows.length > 0
-        const titleIsActive = titleQuery.rows.some(game => game.isDeleted === false)
+    const titleIsActive = titleQuery.rows.some(game => game.isDeleted === false)
 
-        if (existingGame && existingGame.title.toLowerCase() === title) {
-            return false
-        }
-
-        return !!(titleExists && titleIsActive)
-    } catch (err) {
-        throw new Error(`The following error occurred when searching for a duplicate game: ${err}`)
+    if ((gameIdExists && gameIdExists.isDeleted === false && !isPutRequest) || (titleIsActive)) {
+        return { isDuplicate: true, game: gameIdExists }
+    } else {
+        return { isDuplicate: false, game: gameIdExists }
     }
 }
 
 export {
+    DuplicateGameReturnValue,
     getGameById,
     getScoreById,
     queryForDuplicateGame
