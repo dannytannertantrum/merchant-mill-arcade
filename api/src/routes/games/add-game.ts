@@ -3,8 +3,8 @@ import { DatabasePoolType, sql } from 'slonik'
 import { v4 as uuidv4 } from 'uuid'
 
 import { GameData, GameSchema } from '../../types/games.types'
-import { queryForDuplicateGame } from '../common-queries'
-import { constructSlug, textInputCleanUp } from '../utilities'
+import { queryForDuplicateGame } from '../utilities/common-queries'
+import { constructSlug, textInputCleanUp } from '../utilities/stringHelpers'
 import { handleApiError, handleValidationError, handleDuplicateEntryError } from '../../customErrors'
 
 

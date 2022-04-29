@@ -1,8 +1,8 @@
 import { DatabasePoolType, sql } from 'slonik'
 
-import { handleApiError } from '../customErrors'
-import { GameData } from '../types/games.types'
-import { ScoreData } from '../types/scores.types'
+import { handleApiError } from '../../customErrors'
+import { GameData } from '../../types/games.types'
+import { ScoreData } from '../../types/scores.types'
 
 
 interface DuplicateGameCheck {

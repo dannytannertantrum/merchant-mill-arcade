@@ -2,7 +2,7 @@ import { FastifyInstance } from 'fastify'
 import { DatabasePoolType, sql } from 'slonik'
 
 import { ScoreSchema, ScoreData } from '../../types/scores.types'
-import { getScoreById } from '../common-queries'
+import { getScoreById } from '../utilities/common-queries'
 
 
 const schema = { response: { 200: ScoreSchema } }
@@ -29,12 +29,16 @@ export default async (server: FastifyInstance): Promise<void> => {
         async (request, reply) => {
             const { id } = request.params
             const { game, initials, score } = request.body
+            console.log('FIRST', initials, score)
+            // console log blank initials here - is it null or undefined?
+            // check if throwing breaks all things
+            // check if .catch lets us keep going?
             if (!initials) throw new Error(`Initials are required`)
             if (!score) throw new Error(`Score is required`)
 
-            try {
-                const oldScore = await getScoreById(server.slonik.pool, id)
+            const oldScore = await getScoreById(server.slonik.pool, id)
 
+            if (oldScore !== null) {
                 const scoreToUpdate = {
                     ...oldScore,
                     game,
@@ -45,10 +49,9 @@ export default async (server: FastifyInstance): Promise<void> => {
                 await upsertScore(server.slonik.pool, scoreToUpdate)
 
                 reply.send(scoreToUpdate)
-            } catch (err) {
-                throw new Error(`Update score error: ${err}`)
+            } else {
+                throw new Error('blah')
             }
-
         })
 }
 

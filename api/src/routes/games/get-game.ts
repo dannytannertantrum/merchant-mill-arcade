@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify'
 
 import { GameData, GameSchema } from '../../types/games.types'
-import { getGameById } from '../common-queries'
+import { getGameById } from '../utilities/common-queries'
 import { handleApiError, handleNotFoundError } from '../../customErrors'
 
 

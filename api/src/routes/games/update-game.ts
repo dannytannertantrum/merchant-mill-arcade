@@ -2,8 +2,8 @@ import { FastifyInstance } from 'fastify'
 import { DatabasePoolType, sql } from 'slonik'
 
 import { GameData, GameSchema } from '../../types/games.types'
-import { DuplicateGameReturnValue, queryForDuplicateGame } from '../common-queries'
-import { constructSlug, textInputCleanUp } from '../utilities'
+import { DuplicateGameReturnValue, queryForDuplicateGame } from '../utilities/common-queries'
+import { constructSlug, textInputCleanUp } from '../utilities/stringHelpers'
 import { handleApiError, handleValidationError, handleDuplicateEntryError, handleNotFoundError } from '../../customErrors'
 
 
