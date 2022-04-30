@@ -3,7 +3,7 @@ GET http://localhost:7000/games
 
 
 ### Display single game
-GET http://localhost:7000/games/eae79bac-0a26-47f6-aff3-9e4d072186de
+GET http://localhost:7000/games/3d907a0e-8793-4061-b170-353f885e6e10
 
 
 ### Add game
@@ -11,23 +11,23 @@ POST http://localhost:7000/games
 Content-Type: application/json
 
 {
-    "title": "New game",
-    "description": "This should not be added!"
+    "id": "48b260ee-9471-4de6-9dd4-652d4534fe06",
+    "title": "ANOTHER NEW GAME"
 }
 
 
 ### Update game
-PUT http://localhost:7000/games/eae79bac-0a26-47f6-aff3-9e4d072186de
+PUT http://localhost:7000/games/48b260ee-9471-4de6-9dd4-652d4534fe02
 Content-Type: application/json
 
 {
-    "title": "Ninja Gaiden",
-    "description": "A classic"
+    "title": "Work now!",
+    "description": "New description"
 }
 
 
 ### Delete game
-DELETE http://localhost:7000/games/eae79bac-0a26-47f6-aff3-9e4d072186de
+DELETE http://localhost:7000/games/48b260ee-9471-4de6-9dd4-652d4534fe02
 
 
 ##############
@@ -40,7 +40,7 @@ GET http://localhost:7000/scores
 
 
 ### Display single score
-GET http://localhost:7000/scores/95e25db0-9057-42f7-bb87-03d6335f65c2
+GET http://localhost:7000/scores/98b72df5-d470-45c5-a011-02444e159a07
 
 
 ### Add score
@@ -48,22 +48,21 @@ POST http://localhost:7000/scores
 Content-Type: application/json
 
 {
-    "game": "eae79bac-0a26-47f6-aff3-9e4d072186de",
+    "game": "e00a250f-8155-47b8-bf8b-61dc193784d0",
     "initials": "DRJ",
-    "score": 100029020
+    "score": 3393932
 }
 
 
 ### Delete score
-DELETE http://localhost:7000/scores/eae79bac-0a26-47f6-aff3-9e4d072186de
+DELETE http://localhost:7000/scores/98b72df5-d470-45c5-a011-02444e159a07
 
 
 ### Update score
-PUT http://localhost:7000/scores/8119e6fc-d3d7-41e1-a57a-ebe4379a216c
+PUT http://localhost:7000/scores/98b72df5-d470-45c5-a011-02444e159a07
 Content-Type: application/json
 
 {
-    "initials": "DRJ",
-    "score": 1000010,
-    "game": "eae79bac-0a26-47f6-aff3-9e4d072186de"
+    "initials": "CCC",
+    "score": "335"
 }
