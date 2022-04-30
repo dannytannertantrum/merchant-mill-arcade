@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify'
 import { DatabasePoolType, sql } from 'slonik'
 
-import { GameData, GameSchema } from '../../types/games.types'
+import { GameData, GameRequestBody, GameSchema } from '../../types/games.types'
 import { DuplicateGameReturnValue, queryForDuplicateGame } from '../utilities/common-queries'
 import { constructSlug, textInputCleanUp } from '../utilities/stringHelpers'
 import { handleApiError, handleValidationError, handleDuplicateEntryError, handleNotFoundError } from '../../customErrors'
@@ -52,7 +52,7 @@ const upsertGame = async (
 }
 
 export default async (server: FastifyInstance): Promise<void> => {
-    server.put<{ Params: GameData, Body: GameData, Reply: GameData | Error }>(
+    server.put<{ Params: Pick<GameData, 'id'>, Body: GameRequestBody, Reply: GameData | Error }>(
         '/games/:id',
         { schema },
         async (request, reply) => {
@@ -62,59 +62,63 @@ export default async (server: FastifyInstance): Promise<void> => {
             let game: GameData | null = null
             let updatedAt: string | null
 
-            if (description !== undefined) description = textInputCleanUp(description)
-            if (title !== undefined) title = textInputCleanUp(title)
-            if (title === '' || title === undefined) handleValidationError('Title is required!')
+            description = textInputCleanUp(description)
+            title = textInputCleanUp(title)
 
-            const editedGameExists = await queryForNoChanges(server.slonik.pool, id, title)
-
-            // If a user goes to edit, but keeps the title exactly the same
-            // We'll know it's not a duplicate and can by bypass our dupe check
-            if (editedGameExists?.canBypass) {
-                game = editedGameExists.game
+            if (title === '' || title === undefined) {
+                handleValidationError('Title is required!')
             } else {
-                duplicateGameCheck = await queryForDuplicateGame({ pool: server.slonik.pool, title, id, isPutRequest: true }).catch(reason =>
-                    handleApiError(`ERROR CHECKING FOR DUPLICATE GAME: ${reason}`)
-                )
+                const editedGameExists = await queryForNoChanges(server.slonik.pool, id, title)
 
-                if (duplicateGameCheck?.isDuplicate) {
-                    handleDuplicateEntryError('CONFLICT ERROR: That game already exists in the Merchant Mill Arcade!')
+                // If a user goes to edit, but keeps the title exactly the same
+                // We'll know it's not a duplicate and can by bypass our dupe check
+                if (editedGameExists?.canBypass) {
+                    game = editedGameExists.game
+                } else {
+                    duplicateGameCheck = await queryForDuplicateGame({ pool: server.slonik.pool, title, id, isPutRequest: true }).catch(reason =>
+                        handleApiError(`ERROR CHECKING FOR DUPLICATE GAME: ${reason}`)
+                    )
+
+                    if (duplicateGameCheck?.isDuplicate) {
+                        handleDuplicateEntryError('CONFLICT ERROR: That game already exists in the Merchant Mill Arcade!')
+                    }
+
+                    game = duplicateGameCheck.game
                 }
 
-                game = duplicateGameCheck.game
-            }
+                const isDeleted = false
+                const slug = constructSlug(title)
 
-            const isDeleted = false
-            const slug = constructSlug(title)
-
-            // We don't want to change updatedAt if the user essentially goes to edit
-            // But then saves a game with the except same values as before
-            if (
-                game?.title.toLowerCase() === title.toLowerCase()
-                && game?.description.toLowerCase() === description?.toLowerCase()
-            ) {
-                updatedAt = new Date(game?.updatedAt).toISOString()
-            } else {
-                updatedAt = new Date().toISOString()
-            }
-
-            if (game) {
-                const gameToUpdate = {
-                    ...game,
-                    isDeleted,
-                    title,
-                    description: description || game.description,
-                    slug,
-                    updatedAt
+                // We don't want to change updatedAt if the user essentially goes to edit
+                // But then saves a game with the same exact values as before
+                if (
+                    game?.title.toLowerCase() === title.toLowerCase()
+                    && game?.description.toLowerCase() === description?.toLowerCase()
+                    && game?.updatedAt != null
+                ) {
+                    updatedAt = new Date(game?.updatedAt).toISOString()
+                } else {
+                    updatedAt = new Date().toISOString()
                 }
 
-                await upsertGame(server.slonik.pool, gameToUpdate).catch(reason =>
-                    handleApiError(`ERROR UPDATING GAME: ${reason}`)
-                )
+                if (game) {
+                    const gameToUpdate = {
+                        ...game,
+                        isDeleted,
+                        title,
+                        description: description || game.description,
+                        slug,
+                        updatedAt
+                    }
 
-                reply.send(gameToUpdate)
-            } else {
-                reply.code(404).send(handleNotFoundError(`ERROR OnSend /PUT game: Game not found.`))
+                    await upsertGame(server.slonik.pool, gameToUpdate).catch(reason =>
+                        handleApiError(`ERROR UPDATING GAME: ${reason}`)
+                    )
+
+                    reply.send(gameToUpdate)
+                } else {
+                    reply.code(404).send(handleNotFoundError(`ERROR OnSend /PUT game: Game not found.`))
+                }
             }
         }
     )

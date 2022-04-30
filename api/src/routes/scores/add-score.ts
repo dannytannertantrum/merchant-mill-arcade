@@ -1,54 +1,60 @@
 import { FastifyInstance } from 'fastify'
 import { DatabasePoolType, sql } from 'slonik'
-import { ReplyMessage } from '../../types/shared.types'
+import { v4 as uuidv4 } from 'uuid'
 
-import { ScoreSchema, ScoreData } from '../../types/scores.types'
+import { handleApiError, handleValidationError } from '../../customErrors'
+import { ScoreData, ScoreRequestBodyWithGame, ScoreSchema } from '../../types/scores.types'
+import { sanitizeScore } from '../utilities/numberHelpers'
+import { textInputCleanUp } from '../utilities/stringHelpers'
 
 
 const schema = { response: { 200: ScoreSchema } }
 
 const insertScore = async (
     pool: DatabasePoolType,
-    { game, initials, score }: { game: string, initials: string, score: number }
-): Promise<ScoreData> => {
-    const result = await pool.query(sql<ScoreData>`
+    { id, game, initials, isDeleted, score, createdAt }: Omit<ScoreData, 'updatedAt'>
+): Promise<void> => {
+    await pool.query(sql<ScoreData>`
         INSERT INTO
-            scores (game, initials, score)
+            scores (id, game, initials, is_deleted, score, created_at)
         VALUES
-            (${game}, ${initials}, ${score})
-        RETURNING *;
+            (${id}, ${game}, ${initials}, ${isDeleted}, ${score}, ${createdAt}::timestamptz);
     `)
-
-    return result.rows[0]
 }
 
 export default async (server: FastifyInstance): Promise<void> => {
-    server.post<{ Body: Pick<ScoreData, 'game' | 'initials' | 'score'>, Reply: ReplyMessage<ScoreData> }>(
+    server.post<{ Body: ScoreRequestBodyWithGame, Reply: Omit<ScoreData, 'updatedAt'> }>(
         '/scores',
         { schema },
         async (request, reply) => {
-            const { game, initials, score } = request.body
-            if (!initials) throw new Error('Initials are required')
-            if (!score) throw new Error('Score is required')
+            const { game } = request.body
+            const id = request.body.id || uuidv4()
+            let { initials, score } = request.body
 
-            const scoreToAdd = {
-                game,
-                initials,
-                score
+            initials = textInputCleanUp(initials)
+            score = sanitizeScore(score)
+
+            if (initials === '' || initials === undefined || score === undefined) {
+                handleValidationError('Please enter 1-3 letters for initials and/or a score above 0!')
+            } else {
+                const isDeleted = false
+                const createdAt = new Date().toISOString()
+
+                const scoreToAdd = {
+                    id,
+                    initials,
+                    isDeleted,
+                    score,
+                    game,
+                    createdAt
+                }
+
+                await insertScore(server.slonik.pool, scoreToAdd).catch(reason =>
+                    handleApiError(`ERROR ADDING SCORE: ${reason}`)
+                )
+
+                reply.code(201).send(scoreToAdd)
             }
-
-            let insertedScore: ScoreData
-
-            try {
-                insertedScore = await insertScore(server.slonik.pool, scoreToAdd)
-            } catch (err) {
-                throw new Error(`Add score error: ${err}`)
-            }
-
-            reply.code(201).send({
-                data: insertedScore,
-                message: `You just added a score of ${score} to the Merchant Mill Arcade for ${game}!`
-            })
         })
 }
 

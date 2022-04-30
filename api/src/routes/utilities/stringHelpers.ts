@@ -15,8 +15,8 @@ const constructSlug = (title: string): string => {
     return title
 }
 
-const textInputCleanUp = (title: string): string => {
-    return title.trim().replace(/\s+/g, ' ')
+const textInputCleanUp = (textInput: string | undefined): string | undefined => {
+    return textInput?.trim().replace(/\s+/g, ' ')
 }
 
 export {

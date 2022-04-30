@@ -8,15 +8,17 @@ import { handleApiError, handleNotFoundError } from '../../customErrors'
 
 const schema = { response: { 200: SoftDeleteSchema } }
 
-const softDeleteGame = async (pool: DatabasePoolType, id: string): Promise<Pick<GameData, 'title' | 'id'>> => {
-    const result = await pool.query(sql<GameData>`
+const softDeleteGame = async (
+    pool: DatabasePoolType, id: string
+): Promise<Pick<GameData, 'title' | 'id'> | null> => {
+    const result = await pool.maybeOne(sql<GameData>`
         UPDATE games
         SET is_deleted = TRUE
         WHERE id = ${id}
         RETURNING title, id;
     `)
 
-    return result.rows[0]
+    return result
 }
 
 export default async (server: FastifyInstance): Promise<void> => {

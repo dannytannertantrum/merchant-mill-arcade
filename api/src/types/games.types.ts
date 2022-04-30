@@ -21,6 +21,12 @@ const GameSchema = Type.Object({
     updatedAt: Type.String()
 })
 
+interface GameRequestBody {
+    id: string | undefined
+    description: string | undefined
+    title: string | undefined
+}
+
 type GameData = Static<typeof GameSchema>
 type AllGamesData = Static<typeof AllGamesSchema>
 
@@ -28,5 +34,6 @@ export {
     AllGamesData,
     AllGamesSchema,
     GameData,
+    GameRequestBody,
     GameSchema
 }

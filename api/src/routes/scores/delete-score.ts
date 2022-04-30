@@ -1,37 +1,43 @@
 import { FastifyInstance } from 'fastify'
 import { DatabasePoolType, sql } from 'slonik'
-import { GameData } from '../../types/games.types'
 
+import { handleApiError, handleNotFoundError } from '../../customErrors'
 import { ScoreData } from '../../types/scores.types'
 import { SoftDeleteSchema } from '../../types/shared.types'
-import { ReplyMessage } from '../../types/shared.types'
 
 
 const schema = { response: { 200: SoftDeleteSchema } }
 
-const softDeleteScore = async (pool: DatabasePoolType, id: string): Promise<void> => {
-    await pool.query(sql<ScoreData>`
+const softDeleteScore = async (
+    pool: DatabasePoolType,
+    id: string
+): Promise<Pick<ScoreData, 'id'> | null> => {
+    const result = await pool.maybeOne(sql<ScoreData>`
         UPDATE scores
         SET is_deleted = TRUE
-        WHERE id = ${id};
+        WHERE id = ${id}
+        RETURNING id;
     `)
+
+    return result
 }
 
 export default async (server: FastifyInstance): Promise<void> => {
-    server.delete<{ Params: Pick<ScoreData, 'id'>, Reply: Partial<ReplyMessage<GameData>> }>(
+    server.delete<{ Params: Pick<ScoreData, 'id'>, Reply: string | Error }>(
         '/scores/:id',
         { schema },
         async (request, reply) => {
             const { id } = request.params
 
-            try {
-                await softDeleteScore(server.slonik.pool, id)
-                reply.send({message: `Score with ${id} has been removed from the Merchant Mill Arcade`})
-            } catch (err) {
-                throw new Error(`Delete score error: ${err}`)
-            }
+            const scoreToDelete = await softDeleteScore(server.slonik.pool, id).catch(reason =>
+                handleApiError(`ERROR DELETING SCORE: ${reason}`)
+            )
 
-        })
+            scoreToDelete
+                ? reply.send(`Score with id ${id} has been removed from the Merchant Mill Arcade!`)
+                : reply.code(404).send(handleNotFoundError(`ERROR OnSend /DELETE score with id ${id}. Score not found.`))
+        }
+    )
 }
 
 export {

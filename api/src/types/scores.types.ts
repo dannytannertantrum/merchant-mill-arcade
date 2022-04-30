@@ -7,8 +7,8 @@ const AllScoresSchema = Type.Array(
         isDeleted: Type.Boolean(),
         score: Type.Integer(),
         game: Type.String(),
-        createdAt: Type.Integer(),
-        updatedAt: Type.Integer()
+        createdAt: Type.String(),
+        updatedAt: Type.String()
     })
 )
 const ScoreSchema = Type.Object({
@@ -17,9 +17,19 @@ const ScoreSchema = Type.Object({
     isDeleted: Type.Boolean(),
     score: Type.Integer(),
     game: Type.String(),
-    createdAt: Type.Integer(),
-    updatedAt: Type.Integer()
+    createdAt: Type.String(),
+    updatedAt: Type.String()
 })
+
+interface ScoreRequestBody {
+    id: string | undefined
+    initials: string | undefined
+    score: number | undefined
+}
+
+interface ScoreRequestBodyWithGame extends ScoreRequestBody {
+    game: string
+}
 
 type ScoreData = Static<typeof ScoreSchema>
 type AllScoresData = Static<typeof AllScoresSchema>
@@ -28,5 +38,7 @@ export {
     AllScoresData,
     AllScoresSchema,
     ScoreData,
+    ScoreRequestBody,
+    ScoreRequestBodyWithGame,
     ScoreSchema
 }
