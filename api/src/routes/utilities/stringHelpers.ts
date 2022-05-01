@@ -15,11 +15,11 @@ const constructSlug = (title: string): string => {
     return title
 }
 
-const textInputCleanUp = (textInput: string | undefined): string | undefined => {
+const textInputCleanUpWhitespace = (textInput: string | undefined): string | undefined => {
     return textInput?.trim().replace(/\s+/g, ' ')
 }
 
 export {
     constructSlug,
-    textInputCleanUp
+    textInputCleanUpWhitespace
 }

@@ -3,22 +3,22 @@ import { Static, Type } from '@sinclair/typebox'
 const AllScoresSchema = Type.Array(
     Type.Object({
         id: Type.String(),
+        game: Type.String(),
         initials: Type.String(),
         isDeleted: Type.Boolean(),
         score: Type.Integer(),
-        game: Type.String(),
         createdAt: Type.String(),
-        updatedAt: Type.String()
+        updatedAt: Type.Union([Type.String(), Type.Null()])
     })
 )
 const ScoreSchema = Type.Object({
     id: Type.String(),
-    initials: Type.String(),
-    isDeleted: Type.Boolean(),
-    score: Type.Integer(),
     game: Type.String(),
+    isDeleted: Type.Boolean(),
+    initials: Type.String(),
+    score: Type.Integer(),
     createdAt: Type.String(),
-    updatedAt: Type.String()
+    updatedAt: Type.Union([Type.String(), Type.Null()]),
 })
 
 interface ScoreRequestBody {

@@ -3,7 +3,7 @@ import { DatabasePoolType, sql } from 'slonik'
 
 import { GameData, GameRequestBody, GameSchema } from '../../types/games.types'
 import { DuplicateGameReturnValue, queryForDuplicateGame } from '../utilities/common-queries'
-import { constructSlug, textInputCleanUp } from '../utilities/stringHelpers'
+import { constructSlug, textInputCleanUpWhitespace } from '../utilities/stringHelpers'
 import { handleApiError, handleValidationError, handleDuplicateEntryError, handleNotFoundError } from '../../customErrors'
 
 
@@ -24,7 +24,9 @@ const queryForNoChanges = async (
     const result = await pool.maybeOne(sql<GameData>`
         SELECT *
         FROM games
-        WHERE LOWER(title) = ${title} AND id = ${id} AND is_deleted = FALSE;
+        WHERE LOWER(title) = ${title}
+            AND id = ${id}
+            AND is_deleted = FALSE;
     `)
 
     return result
@@ -43,6 +45,7 @@ const upsertGame = async (
             games
         SET 
             description = ${game.description},
+            image_url = ${game.imageUrl},
             is_deleted = ${game.isDeleted},
             slug = ${game.slug},
             title = ${game.title},
@@ -57,25 +60,30 @@ export default async (server: FastifyInstance): Promise<void> => {
         { schema },
         async (request, reply) => {
             const { id } = request.params
-            let { description, title } = request.body
+            let { description, imageUrl, title } = request.body
             let duplicateGameCheck: DuplicateGameReturnValue
             let game: GameData | null = null
             let updatedAt: string | null
 
-            description = textInputCleanUp(description)
-            title = textInputCleanUp(title)
+            let [
+                scrubbedDescription,
+                scrubbedImageUrl,
+                scrubbedTitle
+            ] = [description, imageUrl, title].map(val => textInputCleanUpWhitespace(val))
 
-            if (title === '' || title === undefined) {
+            if (scrubbedTitle === '' || scrubbedTitle === undefined) {
                 handleValidationError('Title is required!')
             } else {
-                const editedGameExists = await queryForNoChanges(server.slonik.pool, id, title)
+                const editedGameExists = await queryForNoChanges(server.slonik.pool, id, scrubbedTitle)
 
                 // If a user goes to edit, but keeps the title exactly the same
                 // We'll know it's not a duplicate and can by bypass our dupe check
                 if (editedGameExists?.canBypass) {
                     game = editedGameExists.game
                 } else {
-                    duplicateGameCheck = await queryForDuplicateGame({ pool: server.slonik.pool, title, id, isPutRequest: true }).catch(reason =>
+                    duplicateGameCheck = await queryForDuplicateGame({
+                        pool: server.slonik.pool, title: scrubbedTitle, id, isPutRequest: true
+                    }).catch(reason =>
                         handleApiError(`ERROR CHECKING FOR DUPLICATE GAME: ${reason}`)
                     )
 
@@ -87,13 +95,14 @@ export default async (server: FastifyInstance): Promise<void> => {
                 }
 
                 const isDeleted = false
-                const slug = constructSlug(title)
+                const slug = constructSlug(scrubbedTitle)
 
                 // We don't want to change updatedAt if the user essentially goes to edit
                 // But then saves a game with the same exact values as before
                 if (
-                    game?.title.toLowerCase() === title.toLowerCase()
-                    && game?.description.toLowerCase() === description?.toLowerCase()
+                    game?.title.toLowerCase() === scrubbedTitle.toLowerCase()
+                    && (game?.description?.toLowerCase() === scrubbedDescription?.toLowerCase() || scrubbedDescription === undefined)
+                    && (game?.imageUrl?.toLowerCase() === scrubbedImageUrl?.toLowerCase() || scrubbedImageUrl === undefined)
                     && game?.updatedAt != null
                 ) {
                     updatedAt = new Date(game?.updatedAt).toISOString()
@@ -104,9 +113,10 @@ export default async (server: FastifyInstance): Promise<void> => {
                 if (game) {
                     const gameToUpdate = {
                         ...game,
+                        description: scrubbedDescription === '' ? null : scrubbedDescription || game.description,
+                        imageUrl: scrubbedImageUrl === '' ? null : scrubbedImageUrl || game.imageUrl,
                         isDeleted,
-                        title,
-                        description: description || game.description,
+                        title: scrubbedTitle,
                         slug,
                         updatedAt
                     }

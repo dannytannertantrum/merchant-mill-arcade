@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { handleApiError, handleValidationError } from '../../customErrors'
 import { ScoreData, ScoreRequestBodyWithGame, ScoreSchema } from '../../types/scores.types'
 import { sanitizeScore } from '../utilities/numberHelpers'
-import { textInputCleanUp } from '../utilities/stringHelpers'
+import { textInputCleanUpWhitespace } from '../utilities/stringHelpers'
 
 
 const schema = { response: { 200: ScoreSchema } }
@@ -31,10 +31,10 @@ export default async (server: FastifyInstance): Promise<void> => {
             const id = request.body.id || uuidv4()
             let { initials, score } = request.body
 
-            initials = textInputCleanUp(initials)
+            let scrubbedInitials = textInputCleanUpWhitespace(initials)
             score = sanitizeScore(score)
 
-            if (initials === '' || initials === undefined || score === undefined) {
+            if (scrubbedInitials === '' || scrubbedInitials === undefined || score === undefined) {
                 handleValidationError('Please enter 1-3 letters for initials and/or a score above 0!')
             } else {
                 const isDeleted = false
@@ -42,7 +42,7 @@ export default async (server: FastifyInstance): Promise<void> => {
 
                 const scoreToAdd = {
                     id,
-                    initials,
+                    initials: scrubbedInitials,
                     isDeleted,
                     score,
                     game,

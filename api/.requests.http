@@ -12,17 +12,20 @@ Content-Type: application/json
 
 {
     "id": "48b260ee-9471-4de6-9dd4-652d4534fe06",
-    "title": "ANOTHER NEW GAME"
+    "title": "ANOTHER NEW GAME",
+    "description": "",
+    "imageUrl": "https://www.thisoldgamearchive.com/sc_images/products/BurgerTimeMqD-sca1-1000.jpg"
 }
 
 
 ### Update game
-PUT http://localhost:7000/games/48b260ee-9471-4de6-9dd4-652d4534fe02
+PUT http://localhost:7000/games/48b260ee-9471-4de6-9dd4-652d4534fe06
 Content-Type: application/json
 
 {
-    "title": "Work now!",
-    "description": "New description"
+    "title": "Work nowwww!",
+    "description": "this is a description",
+    "imageUrl": "https://www.thisoldgamearchive.com/sc_images/products/BurgerTimeMqD-sca1-1000.jpg"
 }
 
 
@@ -49,7 +52,7 @@ Content-Type: application/json
 
 {
     "game": "e00a250f-8155-47b8-bf8b-61dc193784d0",
-    "initials": "DRJ",
+    "initials": "AB",
     "score": 3393932
 }
 
@@ -63,6 +66,6 @@ PUT http://localhost:7000/scores/98b72df5-d470-45c5-a011-02444e159a07
 Content-Type: application/json
 
 {
-    "initials": "CCC",
-    "score": "335"
+    "initials": "FF",
+    "score": "336"
 }

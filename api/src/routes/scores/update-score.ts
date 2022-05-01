@@ -4,7 +4,7 @@ import { DatabasePoolType, sql } from 'slonik'
 import { handleApiError, handleNotFoundError, handleValidationError } from '../../customErrors'
 import { ScoreSchema, ScoreData, ScoreRequestBody } from '../../types/scores.types'
 import { getScoreById } from '../utilities/common-queries'
-import { textInputCleanUp } from '../utilities/stringHelpers'
+import { textInputCleanUpWhitespace } from '../utilities/stringHelpers'
 import { sanitizeScore } from '../utilities/numberHelpers'
 
 
@@ -36,10 +36,10 @@ export default async (server: FastifyInstance): Promise<void> => {
             let { initials, score } = request.body
             let updatedAt: string | null
 
-            initials = textInputCleanUp(initials)
-            score = sanitizeScore(score)
+            let scrubbedInitials = textInputCleanUpWhitespace(initials)
+            let sanitizedScore = sanitizeScore(score)
 
-            if (initials === '' || initials === undefined || score === undefined) {
+            if (scrubbedInitials === '' || scrubbedInitials === undefined || sanitizedScore === undefined) {
                 handleValidationError('Please enter 1-3 letters for initials and/or a score above 0!')
             } else {
                 const oldScore = await getScoreById(server.slonik.pool, id)
@@ -47,8 +47,8 @@ export default async (server: FastifyInstance): Promise<void> => {
                 // We don't want to change updatedAt if the user essentially goes to edit
                 // But then saves a score with the same exact values as before
                 if (
-                    initials.toLowerCase() === oldScore?.initials.toLowerCase()
-                    && score === Number(oldScore?.score)
+                    scrubbedInitials.toLowerCase() === oldScore?.initials.toLowerCase()
+                    && sanitizedScore === Number(oldScore?.score)
                     && oldScore?.updatedAt != null
                 ) {
                     updatedAt = new Date(oldScore?.updatedAt).toISOString()
@@ -59,8 +59,8 @@ export default async (server: FastifyInstance): Promise<void> => {
                 if (oldScore !== null) {
                     const scoreToUpdate = {
                         ...oldScore,
-                        initials,
-                        score,
+                        initials: scrubbedInitials,
+                        score: sanitizedScore,
                         updatedAt
                     }
 
