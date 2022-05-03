@@ -71,7 +71,7 @@ export default async (server: FastifyInstance): Promise<void> => {
                 scrubbedTitle
             ] = [description, imageUrl, title].map(val => textInputCleanUpWhitespace(val))
 
-            if (scrubbedTitle === '' || scrubbedTitle === undefined) {
+            if (scrubbedTitle === undefined) {
                 handleValidationError('Title is required!')
             } else {
                 const editedGameExists = await queryForNoChanges(server.slonik.pool, id, scrubbedTitle)

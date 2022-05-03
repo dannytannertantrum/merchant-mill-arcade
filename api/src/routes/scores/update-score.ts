@@ -39,7 +39,7 @@ export default async (server: FastifyInstance): Promise<void> => {
             let scrubbedInitials = textInputCleanUpWhitespace(initials)
             let sanitizedScore = sanitizeScore(score)
 
-            if (scrubbedInitials === '' || scrubbedInitials === undefined || sanitizedScore === undefined) {
+            if (scrubbedInitials === undefined || sanitizedScore === undefined) {
                 handleValidationError('Please enter 1-3 letters for initials and/or a score above 0!')
             } else {
                 const oldScore = await getScoreById(server.slonik.pool, id)

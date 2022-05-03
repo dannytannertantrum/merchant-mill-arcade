@@ -34,7 +34,7 @@ export default async (server: FastifyInstance): Promise<void> => {
             let scrubbedInitials = textInputCleanUpWhitespace(initials)
             score = sanitizeScore(score)
 
-            if (scrubbedInitials === '' || scrubbedInitials === undefined || score === undefined) {
+            if (scrubbedInitials === undefined || score === undefined) {
                 handleValidationError('Please enter 1-3 letters for initials and/or a score above 0!')
             } else {
                 const isDeleted = false

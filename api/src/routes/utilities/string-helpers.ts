@@ -5,7 +5,7 @@ const constructSlug = (title: string): string => {
     let from = 'àáäâèéëêìíïîòóöôùúüûñç·/_,:;'
     let to = 'aaaaeeeeiiiioooouuuunc------'
     for (let i = 0, l = from.length; i < l; i++) {
-        title = title.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+        title = title.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i))
     }
 
     title = title.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
@@ -16,7 +16,9 @@ const constructSlug = (title: string): string => {
 }
 
 const textInputCleanUpWhitespace = (textInput: string | undefined): string | undefined => {
-    return textInput?.trim().replace(/\s+/g, ' ')
+    if (textInput === '' || textInput === undefined) return undefined
+
+    return textInput.trim().replace(/\s+/g, ' ')
 }
 
 export {

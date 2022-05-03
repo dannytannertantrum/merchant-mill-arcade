@@ -1,7 +1,7 @@
-import { constructSlug } from '../utilities'
+import { constructSlug, textInputCleanUpWhitespace } from '../utilities/string-helpers'
 
 
-describe('Construct Slug', () => {
+describe('constructSlug', () => {
     test('should trim whitespace and replace with hyphens', () => {
         const trimStringBefore = 'dwayne the rock johnson     '
         const trimStringAfter = 'dwayne-the-rock-johnson'
@@ -35,5 +35,28 @@ describe('Construct Slug', () => {
         const lowercaseAfter = 'xentrex-it-works'
 
         expect(constructSlug(lowercaseBefore)).toEqual(lowercaseAfter)
+    })
+})
+
+describe('textInputCleanUpWhitespace', () => {
+    test('should return undefined when passing undefined', () => {
+        expect(textInputCleanUpWhitespace(undefined)).toBeUndefined()
+    })
+
+    test('should return undefined with empty string', () => {
+        expect(textInputCleanUpWhitespace('')).toBeUndefined()
+    })
+
+    test('should return string as is if no whitespace', () => {
+        const str = 'This is a normal string!'
+
+        expect(textInputCleanUpWhitespace(str)).toEqual(str)
+    })
+
+    test('should return string with all whitespace removed', () => {
+        const str = ' Whitespace should     be removed   '
+        const expectedString = 'Whitespace should be removed'
+
+        expect(textInputCleanUpWhitespace(str)).toEqual(expectedString)
     })
 })
