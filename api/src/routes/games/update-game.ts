@@ -3,8 +3,8 @@ import { DatabasePoolType, sql } from 'slonik'
 
 import { GameData, GameRequestBody, GameSchema } from '../../types/games.types'
 import { DuplicateGameReturnValue, queryForDuplicateGame } from '../utilities/common-queries'
-import { constructSlug, textInputCleanUpWhitespace } from '../utilities/stringHelpers'
-import { handleApiError, handleValidationError, handleDuplicateEntryError, handleNotFoundError } from '../../customErrors'
+import { constructSlug, textInputCleanUpWhitespace } from '../utilities/string-helpers'
+import { handleApiError, handleValidationError, handleDuplicateEntryError, handleNotFoundError } from '../../custom-errors'
 
 
 const schema = { response: { 200: GameSchema } }

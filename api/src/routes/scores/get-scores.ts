@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify'
 import { DatabasePoolType, sql } from 'slonik'
 
-import { handleApiError, handleNotFoundError } from '../../customErrors'
+import { handleApiError, handleNotFoundError } from '../../custom-errors'
 import { ScoreData, AllScoresSchema, AllScoresData } from '../../types/scores.types'
 
 

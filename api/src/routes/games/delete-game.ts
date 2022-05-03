@@ -3,7 +3,7 @@ import { DatabasePoolType, sql } from 'slonik'
 
 import { GameData } from '../../types/games.types'
 import { SoftDeleteSchema } from '../../types/shared.types'
-import { handleApiError, handleNotFoundError } from '../../customErrors'
+import { handleApiError, handleNotFoundError } from '../../custom-errors'
 
 
 const schema = { response: { 200: SoftDeleteSchema } }

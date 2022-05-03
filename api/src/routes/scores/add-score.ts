@@ -2,10 +2,10 @@ import { FastifyInstance } from 'fastify'
 import { DatabasePoolType, sql } from 'slonik'
 import { v4 as uuidv4 } from 'uuid'
 
-import { handleApiError, handleValidationError } from '../../customErrors'
+import { handleApiError, handleValidationError } from '../../custom-errors'
 import { ScoreData, ScoreRequestBodyWithGame, ScoreSchema } from '../../types/scores.types'
-import { sanitizeScore } from '../utilities/numberHelpers'
-import { textInputCleanUpWhitespace } from '../utilities/stringHelpers'
+import { sanitizeScore } from '../utilities/number-helpers'
+import { textInputCleanUpWhitespace } from '../utilities/string-helpers'
 
 
 const schema = { response: { 200: ScoreSchema } }

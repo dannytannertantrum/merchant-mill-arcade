@@ -2,7 +2,7 @@ import { FastifyInstance } from 'fastify'
 
 import { GameData, GameSchema } from '../../types/games.types'
 import { getGameById } from '../utilities/common-queries'
-import { handleApiError, handleNotFoundError } from '../../customErrors'
+import { handleApiError, handleNotFoundError } from '../../custom-errors'
 
 
 const schema = { response: { 200: GameSchema } }

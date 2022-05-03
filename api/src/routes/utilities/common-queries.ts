@@ -1,6 +1,6 @@
 import { DatabasePoolType, sql } from 'slonik'
 
-import { handleApiError } from '../../customErrors'
+import { handleApiError } from '../../custom-errors'
 import { GameData } from '../../types/games.types'
 import { ScoreData } from '../../types/scores.types'
 

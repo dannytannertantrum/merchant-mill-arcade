@@ -1,11 +1,11 @@
 import { FastifyInstance } from 'fastify'
 import { DatabasePoolType, sql } from 'slonik'
 
-import { handleApiError, handleNotFoundError, handleValidationError } from '../../customErrors'
+import { handleApiError, handleNotFoundError, handleValidationError } from '../../custom-errors'
 import { ScoreSchema, ScoreData, ScoreRequestBody } from '../../types/scores.types'
 import { getScoreById } from '../utilities/common-queries'
-import { textInputCleanUpWhitespace } from '../utilities/stringHelpers'
-import { sanitizeScore } from '../utilities/numberHelpers'
+import { textInputCleanUpWhitespace } from '../utilities/string-helpers'
+import { sanitizeScore } from '../utilities/number-helpers'
 
 
 const schema = { response: { 200: ScoreSchema } }

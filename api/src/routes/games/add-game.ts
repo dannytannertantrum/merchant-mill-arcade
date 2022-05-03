@@ -4,8 +4,8 @@ import { v4 as uuidv4 } from 'uuid'
 
 import { GameData, GameRequestBody, GameSchema } from '../../types/games.types'
 import { queryForDuplicateGame } from '../utilities/common-queries'
-import { constructSlug, textInputCleanUpWhitespace } from '../utilities/stringHelpers'
-import { handleApiError, handleValidationError, handleDuplicateEntryError } from '../../customErrors'
+import { constructSlug, textInputCleanUpWhitespace } from '../utilities/string-helpers'
+import { handleApiError, handleValidationError, handleDuplicateEntryError } from '../../custom-errors'
 
 
 const schema = { response: { 200: GameSchema } }

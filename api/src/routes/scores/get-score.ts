@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify'
 
-import { handleApiError, handleNotFoundError } from '../../customErrors'
+import { handleApiError, handleNotFoundError } from '../../custom-errors'
 import { ScoreSchema, ScoreData } from '../../types/scores.types'
 import { getScoreById } from '../utilities/common-queries'
 
