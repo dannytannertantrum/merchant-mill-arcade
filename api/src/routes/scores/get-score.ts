@@ -8,7 +8,7 @@ import { getScoreById } from '../utilities/common-queries'
 const schema = { response: { 200: ScoreSchema } }
 
 export default async (server: FastifyInstance): Promise<void> => {
-    server.get<{ Params: Pick<ScoreData, 'id'>, Reply: ScoreData | Error }>(
+    server.get<{ Params: Pick<ScoreData, 'id'> }>(
         '/scores/:id',
         { schema },
         async (request, reply) => {
@@ -19,7 +19,7 @@ export default async (server: FastifyInstance): Promise<void> => {
             )
 
             score
-                ? reply.send(score)
+                ? reply.send(JSON.stringify(score))
                 : reply.code(404).send(handleNotFoundError('ERROR OnSend /GET score: Score not found.'))
         })
 }

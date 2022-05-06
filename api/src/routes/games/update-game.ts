@@ -55,7 +55,7 @@ const upsertGame = async (
 }
 
 export default async (server: FastifyInstance): Promise<void> => {
-    server.put<{ Params: Pick<GameData, 'id'>, Body: GameRequestBody, Reply: GameData | Error }>(
+    server.put<{ Params: Pick<GameData, 'id'>, Body: GameRequestBody }>(
         '/games/:id',
         { schema },
         async (request, reply) => {
@@ -125,7 +125,7 @@ export default async (server: FastifyInstance): Promise<void> => {
                         handleApiError(`ERROR UPDATING GAME: ${reason}`)
                     )
 
-                    reply.send(gameToUpdate)
+                    reply.send(JSON.stringify(gameToUpdate))
                 } else {
                     reply.code(404).send(handleNotFoundError(`ERROR OnSend /PUT game: Game not found.`))
                 }

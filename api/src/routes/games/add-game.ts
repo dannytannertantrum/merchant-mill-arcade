@@ -2,10 +2,10 @@ import { FastifyInstance } from 'fastify'
 import { DatabasePoolType, sql } from 'slonik'
 import { v4 as uuidv4 } from 'uuid'
 
-import { GameData, GameRequestBody, GameSchema } from '../../types/games.types'
-import { queryForDuplicateGame } from '../utilities/common-queries'
 import { constructSlug, textInputCleanUpWhitespace } from '../utilities/string-helpers'
+import { GameData, GameRequestBody, GameSchema } from '../../types/games.types'
 import { handleApiError, handleValidationError, handleDuplicateEntryError } from '../../custom-errors'
+import { queryForDuplicateGame } from '../utilities/common-queries'
 
 
 const schema = { response: { 200: GameSchema } }
@@ -23,7 +23,7 @@ const insertGame = async (
 }
 
 export default async (server: FastifyInstance): Promise<void> => {
-    server.post<{ Body: GameRequestBody, Reply: Omit<GameData, 'updatedAt'> }>(
+    server.post<{ Body: GameRequestBody }>(
         '/games',
         { schema },
         async (request, reply) => {
@@ -65,7 +65,7 @@ export default async (server: FastifyInstance): Promise<void> => {
                     handleApiError(`ERROR ADDING GAME: ${reason}`)
                 )
 
-                reply.code(201).send(gameToAdd)
+                reply.code(201).send(JSON.stringify(gameToAdd))
             }
         }
     )

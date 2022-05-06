@@ -23,7 +23,7 @@ PUT http://localhost:7000/games/d8fafa3f-988d-4b64-88e0-ea793f54fce6
 Content-Type: application/json
 
 {
-    "title": "Work nowwww!",
+    "title": "Update this title!",
     "description": "this is a description",
     "imageUrl": "https://www.thisoldgamearchive.com/sc_images/products/BurgerTimeMqD-sca1-1000.jpg"
 }

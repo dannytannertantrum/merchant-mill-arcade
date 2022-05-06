@@ -28,7 +28,7 @@ const upsertScore = async (
 }
 
 export default async (server: FastifyInstance): Promise<void> => {
-    server.put<{ Params: Pick<ScoreData, 'id'>, Body: ScoreRequestBody, Reply: ScoreData | Error }>(
+    server.put<{ Params: Pick<ScoreData, 'id'>, Body: ScoreRequestBody }>(
         '/scores/:id',
         { schema },
         async (request, reply) => {
@@ -68,7 +68,7 @@ export default async (server: FastifyInstance): Promise<void> => {
                         handleApiError(`ERROR UPDATING SCORE: ${reason}`)
                     )
 
-                    reply.send(scoreToUpdate)
+                    reply.send(JSON.stringify(scoreToUpdate))
                 } else {
                     reply.code(404).send(handleNotFoundError('ERROR OnSend /PUT score: Score not found.'))
                 }

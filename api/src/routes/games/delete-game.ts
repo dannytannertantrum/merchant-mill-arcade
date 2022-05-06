@@ -9,11 +9,15 @@ import { handleApiError, handleNotFoundError } from '../../custom-errors'
 const schema = { response: { 200: SoftDeleteSchema } }
 
 const softDeleteGame = async (
-    pool: DatabasePoolType, id: string
+    pool: DatabasePoolType,
+    id: string,
+    updatedAt: string
 ): Promise<Pick<GameData, 'title' | 'id'> | null> => {
     const result = await pool.maybeOne(sql<GameData>`
         UPDATE games
-        SET is_deleted = TRUE
+        SET
+            is_deleted = TRUE,
+            updated_at = ${updatedAt}::timestamptz
         WHERE id = ${id}
         RETURNING title, id;
     `)
@@ -22,13 +26,14 @@ const softDeleteGame = async (
 }
 
 export default async (server: FastifyInstance): Promise<void> => {
-    server.delete<{ Params: Pick<GameData, 'id'>, Reply: string | Error }>(
+    server.delete<{ Params: Pick<GameData, 'id'> }>(
         '/games/:id',
         { schema },
         async (request, reply) => {
             const { id } = request.params
+            const updatedAt = new Date().toISOString()
 
-            const gameToDelete = await softDeleteGame(server.slonik.pool, id).catch(reason =>
+            const gameToDelete = await softDeleteGame(server.slonik.pool, id, updatedAt).catch(reason =>
                 handleApiError(`ERROR DELETING GAME: ${reason}`)
             )
 

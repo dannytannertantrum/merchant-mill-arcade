@@ -8,7 +8,7 @@ import { handleApiError, handleNotFoundError } from '../../custom-errors'
 const schema = { response: { 200: GameSchema } }
 
 export default async (server: FastifyInstance): Promise<void> => {
-    server.get<{ Params: Pick<GameData, 'id'>, Reply: GameData | Error }>(
+    server.get<{ Params: Pick<GameData, 'id'> }>(
         '/games/:id',
         { schema },
         async (request, reply) => {
@@ -19,7 +19,7 @@ export default async (server: FastifyInstance): Promise<void> => {
             )
 
             game
-                ? reply.send(game)
+                ? reply.send(JSON.stringify(game))
                 : reply.code(404).send(handleNotFoundError(`ERROR OnSend /GET game: Game not found.`))
         }
     )
