@@ -49,7 +49,6 @@ async function seedAllData() {
         // We need to split this up from the DELETE commands because when using parameters with Postgres,
         // We can only run a single query https://github.com/lib/pq/issues/928#issuecomment-575254724
         for (let i = 0; i < gameData.length; i++) {
-            console.log('\nGAME DATA', gameData[i][6], gameData[i][7])
             await slonik.query(sql`
                 INSERT INTO
                     games (id, description, image_url, is_deleted, slug, title, created_at, updated_at)
