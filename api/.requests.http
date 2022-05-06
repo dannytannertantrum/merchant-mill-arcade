@@ -19,7 +19,7 @@ Content-Type: application/json
 
 
 ### Update game
-PUT http://localhost:7000/games/48b260ee-9471-4de6-9dd4-652d4534fe06
+PUT http://localhost:7000/games/d8fafa3f-988d-4b64-88e0-ea793f54fce6
 Content-Type: application/json
 
 {
@@ -30,7 +30,7 @@ Content-Type: application/json
 
 
 ### Delete game
-DELETE http://localhost:7000/games/48b260ee-9471-4de6-9dd4-652d4534fe06
+DELETE http://localhost:7000/games/d8fafa3f-988d-4b64-88e0-ea793f54fce6
 
 
 ##############

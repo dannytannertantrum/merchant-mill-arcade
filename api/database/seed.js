@@ -49,11 +49,20 @@ async function seedAllData() {
         // We need to split this up from the DELETE commands because when using parameters with Postgres,
         // We can only run a single query https://github.com/lib/pq/issues/928#issuecomment-575254724
         for (let i = 0; i < gameData.length; i++) {
+            console.log('\nGAME DATA', gameData[i][6], gameData[i][7])
             await slonik.query(sql`
                 INSERT INTO
                     games (id, description, image_url, is_deleted, slug, title, created_at, updated_at)
-                VALUES
-                    (${gameData[i][0]}, ${gameData[i][1]}, ${gameData[i][2]}, ${gameData[i][3]}, ${gameData[i][4]}, ${gameData[i][5]}, ${gameData[i][6]}, ${gameData[i][7]});
+                VALUES (
+                    ${gameData[i][0]},
+                    ${gameData[i][1]},
+                    ${gameData[i][2]},
+                    ${gameData[i][3]},
+                    ${gameData[i][4]},
+                    ${gameData[i][5]},
+                    ${gameData[i][6]}::timestamptz,
+                    ${gameData[i][7]}::timestamptz
+                );
             `)
         }
 
@@ -61,8 +70,15 @@ async function seedAllData() {
             await slonik.query(sql`
                 INSERT INTO
                     scores (id, game, initials, is_deleted, score, created_at, updated_at)
-                VALUES
-                    (${scoreData[i][0]}, ${scoreData[i][1]}, ${scoreData[i][2]}, ${scoreData[i][3]}, ${scoreData[i][4]}, ${scoreData[i][5]}, ${scoreData[i][6]});
+                VALUES (
+                    ${scoreData[i][0]},
+                    ${scoreData[i][1]},
+                    ${scoreData[i][2]},
+                    ${scoreData[i][3]},
+                    ${scoreData[i][4]},
+                    ${scoreData[i][5]}::timestamptz,
+                    ${scoreData[i][6]}::timestamptz
+                );
             `)
         }
 

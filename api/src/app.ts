@@ -32,11 +32,16 @@ const server = fastify<Server, IncomingMessage, ServerResponse>({
     disableRequestLogging: true // replace the standard output with our own custom logging below with hooks
 })
 
-server.addHook('onRequest', (req, reply, done) => {
-    req.log.info({ url: req.raw.url, id: req.id, requestBody: req.body }, 'RECEIVED REQUEST')
+server.addHook('onRequest', (req, _reply, done) => {
+    req.log.info({
+        method: req.method,
+        url: req.raw.url,
+        requestBody: req.body
+    }, 'RECEIVED REQUEST')
+
     done()
 }).addHook('onResponse', (req, reply, done) => {
-    req.log.info({ url: req.raw.url, statusCode: reply.raw.statusCode }, 'REQUEST COMPLETED')
+    req.log.info({ url: req.raw.url }, `REQUEST COMPLETED ${reply.raw.statusCode}`)
     done()
 })
 
