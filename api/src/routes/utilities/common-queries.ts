@@ -23,6 +23,14 @@ const getGameById = async (pool: DatabasePoolType, id: string): Promise<GameData
         WHERE id = ${id};
     `)
 
+    if (result !== null) {
+        return {
+            ...result,
+            createdAt: new Date(result.createdAt).toISOString(),
+            updatedAt: result.updatedAt && new Date(result.updatedAt).toISOString()
+        }
+    }
+
     return result
 }
 
@@ -31,6 +39,14 @@ const getScoreById = async (pool: DatabasePoolType, id: string): Promise<ScoreDa
         SELECT * FROM scores
         WHERE id = ${id};
     `)
+
+    if (result !== null) {
+        return {
+            ...result,
+            createdAt: new Date(result.createdAt).toISOString(),
+            updatedAt: result.updatedAt && new Date(result.updatedAt).toISOString()
+        }
+    }
 
     return result
 }

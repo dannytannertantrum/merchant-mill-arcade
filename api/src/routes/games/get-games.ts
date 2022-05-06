@@ -7,12 +7,20 @@ import { handleApiError, handleNotFoundError } from '../../custom-errors'
 
 const schema = { response: { 200: AllGamesSchema } }
 
-const getAllGames = async (pool: DatabasePoolType): Promise<Readonly<AllGamesData | []>> => {
+const getAllGames = async (pool: DatabasePoolType): Promise<AllGamesData | []> => {
     const result = await pool.query(sql<GameData>`
         SELECT * FROM games;
     `)
 
-    return result.rows
+    if (result.rows === []) return []
+    return result.rows.map(game => {
+        return {
+            ...game,
+            createdAt: new Date(game.createdAt).toISOString(),
+            updatedAt: game.updatedAt && new Date(game.updatedAt).toISOString()
+        }
+    })
+
 }
 
 export default async (server: FastifyInstance): Promise<void> => {

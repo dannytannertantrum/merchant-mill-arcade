@@ -12,7 +12,14 @@ const getAllScores = async (pool: DatabasePoolType): Promise<Readonly<AllScoresD
         SELECT * FROM scores;
     `)
 
-    return result.rows
+    if (result.rows === []) return []
+    return result.rows.map(score => {
+        return {
+            ...score,
+            createdAt: new Date(score.createdAt).toISOString(),
+            updatedAt: score.updatedAt && new Date(score.updatedAt).toISOString()
+        }
+    })
 }
 
 export default async (server: FastifyInstance): Promise<void> => {
