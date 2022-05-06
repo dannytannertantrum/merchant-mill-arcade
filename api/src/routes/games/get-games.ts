@@ -2,7 +2,7 @@ import { FastifyInstance } from 'fastify'
 import { DatabasePoolType, sql } from 'slonik'
 
 import { AllGamesSchema, GameData, AllGamesData } from '../../types/games.types'
-import { handleApiError } from '../../custom-errors'
+import { handleApiError, handleNotFoundError } from '../../custom-errors'
 
 
 const schema = { response: { 200: AllGamesSchema } }
@@ -16,15 +16,17 @@ const getAllGames = async (pool: DatabasePoolType): Promise<Readonly<AllGamesDat
 }
 
 export default async (server: FastifyInstance): Promise<void> => {
-    server.get(
+    server.get<{ Reply: Readonly<AllGamesData | Error> }>(
         '/games',
         { schema },
-        async (_request, reply) => {
+        async (request, reply) => {
             const games = await getAllGames(server.slonik.pool).catch(reason =>
                 handleApiError(`ERROR GETTING GAMES: ${reason}`)
             )
 
-            reply.send(JSON.stringify(games))
+            games
+                ? reply.send(games)
+                : reply.code(404).send(handleNotFoundError(`ERROR OnSend /GET games: Games not found.`))
         }
     )
 }

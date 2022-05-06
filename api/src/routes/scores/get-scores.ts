@@ -16,16 +16,19 @@ const getAllScores = async (pool: DatabasePoolType): Promise<Readonly<AllScoresD
 }
 
 export default async (server: FastifyInstance): Promise<void> => {
-    server.get(
+    server.get<{ Reply: Readonly<AllScoresData | Error> }>(
         '/scores',
         { schema },
-        async (_request, reply) => {
+        async (request, reply) => {
 
             const scores = await getAllScores(server.slonik.pool).catch(reason =>
                 handleApiError(`ERROR GETTING SCORES: ${reason}`)
             )
 
-            reply.send(JSON.stringify(scores))
+            scores
+                ? reply.send(scores)
+                : reply.code(404).send(handleNotFoundError('ERROR OnSend /GET scores: Scores not found.'))
+
         }
     )
 }

@@ -23,7 +23,7 @@ const insertScore = async (
 }
 
 export default async (server: FastifyInstance): Promise<void> => {
-    server.post<{ Body: ScoreRequestBodyWithGame }>(
+    server.post<{ Body: ScoreRequestBodyWithGame, Reply: Omit<ScoreData, 'updatedAt'> }>(
         '/scores',
         { schema },
         async (request, reply) => {
@@ -53,7 +53,7 @@ export default async (server: FastifyInstance): Promise<void> => {
                     handleApiError(`ERROR ADDING SCORE: ${reason}`)
                 )
 
-                reply.code(201).send(JSON.stringify(scoreToAdd))
+                reply.code(201).send(scoreToAdd)
             }
         })
 }
