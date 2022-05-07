@@ -16,7 +16,7 @@ const constructSlug = (title: string): string => {
 }
 
 const textInputCleanUpWhitespace = (textInput: string | undefined): string | undefined => {
-    if (textInput === '' || textInput === undefined) return undefined
+    if (textInput === '' || textInput == null) return undefined
 
     return textInput.trim().replace(/\s+/g, ' ')
 }

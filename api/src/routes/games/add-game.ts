@@ -36,8 +36,8 @@ export default async (server: FastifyInstance): Promise<void> => {
                 scrubbedTitle
             ] = [description, imageUrl, title].map(val => textInputCleanUpWhitespace(val))
 
-            if (scrubbedTitle === undefined) {
-                handleValidationError('Title is required!')
+            if (scrubbedTitle === undefined || scrubbedTitle === '') {
+                handleValidationError('VALIDATION ERROR: Title is required for adding a game!')
             } else {
                 const duplicateGameCheck = await queryForDuplicateGame({
                     pool: server.slonik.pool, title: scrubbedTitle, id, isPutRequest: false
@@ -45,7 +45,9 @@ export default async (server: FastifyInstance): Promise<void> => {
                     handleApiError(`ERROR CHECKING FOR DUPLICATE GAME: ${reason}`)
                 )
 
-                if (duplicateGameCheck?.isDuplicate) handleDuplicateEntryError('CONFLICT ERROR: That game already exists in the Merchant Mill Arcade!')
+                if (duplicateGameCheck?.isDuplicate) {
+                    handleDuplicateEntryError('CONFLICT ERROR: That game already exists in the Merchant Mill Arcade!')
+                }
 
                 const isDeleted = false
                 const slug = constructSlug(scrubbedTitle)
@@ -53,8 +55,8 @@ export default async (server: FastifyInstance): Promise<void> => {
 
                 const gameToAdd = {
                     id,
-                    description: scrubbedDescription || null,
-                    imageUrl: scrubbedImageUrl || null,
+                    description: scrubbedDescription === undefined ? null : scrubbedDescription,
+                    imageUrl: scrubbedImageUrl === undefined ? null : scrubbedImageUrl,
                     isDeleted,
                     slug,
                     title: scrubbedTitle,

@@ -1,22 +1,23 @@
 import supertest from 'supertest'
+
 import server from '../../app'
 
 
 describe('GET /games', () => {
-    beforeEach(async () => {
+    beforeAll(async () => {
         await server.ready()
     })
 
-    afterEach(async () => {
+    afterAll(async () => {
         await server.close()
     })
 
-    it('responds with json', async () => {
+    it('responds with game data', async () => {
+        const { body, headers, status } = await supertest(server.server).get('/games')
 
-        const response = await supertest(server.server)
-            .get('/games')
-
-        expect(response.headers['content-type']).toMatch(/json/)
-        expect(response.status).toEqual(200)
+        expect(headers['content-type']).toMatch(/json/)
+        expect(status).toEqual(200)
+        expect(body.length).toBeGreaterThan(0)
+        expect(body[0].title).toBeDefined()
     })
 })

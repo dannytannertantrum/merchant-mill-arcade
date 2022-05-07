@@ -71,10 +71,12 @@ export default async (server: FastifyInstance): Promise<void> => {
                 scrubbedTitle
             ] = [description, imageUrl, title].map(val => textInputCleanUpWhitespace(val))
 
-            if (scrubbedTitle === undefined) {
-                handleValidationError('Title is required!')
+            if (scrubbedTitle === undefined || scrubbedTitle === '') {
+                handleValidationError('VALIDATION ERROR: Title is required for updating a game!')
             } else {
-                const editedGameExists = await queryForNoChanges(server.slonik.pool, id, scrubbedTitle)
+                const editedGameExists = await queryForNoChanges(server.slonik.pool, id, scrubbedTitle).catch(reason =>
+                    handleApiError(`ERROR CHECKING QUERY FOR NO CHANGES: ${reason}`)
+                )
 
                 // If a user goes to edit, but keeps the title exactly the same
                 // We'll know it's not a duplicate and can by bypass our dupe check
@@ -114,7 +116,7 @@ export default async (server: FastifyInstance): Promise<void> => {
                     const gameToUpdate = {
                         ...game,
                         description: scrubbedDescription === '' ? null : scrubbedDescription || game.description,
-                        imageUrl: scrubbedImageUrl === '' ? null : scrubbedImageUrl || game.imageUrl,
+                        imageUrl: scrubbedImageUrl === undefined ? null : scrubbedImageUrl || game.imageUrl,
                         isDeleted,
                         title: scrubbedTitle,
                         slug,
