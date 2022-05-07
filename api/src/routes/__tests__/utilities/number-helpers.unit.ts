@@ -1,4 +1,4 @@
-import { sanitizeScore } from "../utilities/number-helpers"
+import { sanitizeScore } from "../../utilities/number-helpers"
 
 describe('sanitizeScore', () => {
     test('should return undefined if passing null or undefined', () => {

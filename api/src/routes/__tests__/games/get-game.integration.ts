@@ -1,11 +1,11 @@
 import supertest from 'supertest'
 import { v4 as uuidv4 } from 'uuid'
 
-import { Disposable, disposeAll } from '../../test-utilities/disposables'
-import { GameData } from '../../types/games.types'
-import { gameFactory } from '../../test-utilities/factories/game-factory'
-import { mockHandleApiError, mockHandleNotFoundError } from './__mocks__/customErrorMocks'
-import server from '../../app'
+import { Disposable, disposeAll } from '../../../test-utilities/disposables'
+import { GameData } from '../../../types/games.types'
+import { gameFactory } from '../../../test-utilities/factories/game-factory'
+import { mockHandleApiError, mockHandleNotFoundError } from '../__mocks__/customErrorMocks'
+import server from '../../../app'
 
 
 describe('GET /games/id', () => {

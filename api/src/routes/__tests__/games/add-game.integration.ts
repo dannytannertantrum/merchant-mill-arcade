@@ -2,16 +2,16 @@ import { sql } from 'slonik'
 import supertest from 'supertest'
 import { v4 as uuidv4 } from 'uuid'
 
-import { Disposable, disposeAll } from '../../test-utilities/disposables'
-import { GameData } from '../../types/games.types'
-import { gameFactory } from '../../test-utilities/factories/game-factory'
+import { Disposable, disposeAll } from '../../../test-utilities/disposables'
+import { GameData } from '../../../types/games.types'
+import { gameFactory } from '../../../test-utilities/factories/game-factory'
 import {
     mockHandleApiError,
     mockHandleDuplicateEntryError,
     mockHandleValidationError
-} from './__mocks__/customErrorMocks'
-import { overrideValues } from '../../test-utilities/overrides'
-import server from '../../app'
+} from '../__mocks__/customErrorMocks'
+import { overrideValues } from '../../../test-utilities/overrides'
+import server from '../../../app'
 
 
 describe('POST /games', () => {

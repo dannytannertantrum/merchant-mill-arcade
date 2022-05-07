@@ -1,6 +1,6 @@
 import supertest from 'supertest'
 
-import server from '../../app'
+import server from '../../../app'
 
 
 describe('GET /games', () => {

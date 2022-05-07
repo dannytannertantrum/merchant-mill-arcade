@@ -1,4 +1,4 @@
-import { constructSlug, textInputCleanUpWhitespace } from '../utilities/string-helpers'
+import { constructSlug, textInputCleanUpWhitespace } from '../../utilities/string-helpers'
 
 
 describe('constructSlug', () => {
