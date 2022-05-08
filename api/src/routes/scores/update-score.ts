@@ -39,10 +39,12 @@ export default async (server: FastifyInstance): Promise<void> => {
             let scrubbedInitials = textInputCleanUpWhitespace(initials)
             let sanitizedScore = sanitizeScore(score)
 
-            if (scrubbedInitials === undefined || sanitizedScore === undefined) {
-                handleValidationError('Please enter 1-3 letters for initials and/or a score above 0!')
+            if (scrubbedInitials === undefined || scrubbedInitials === '' || sanitizedScore === undefined) {
+                handleValidationError('VALIDATION ERROR UPDATING SCORE: Please enter 1-3 letters for initials and/or a score above 0!')
             } else {
-                const oldScore = await getScoreById(server.slonik.pool, id)
+                const oldScore = await getScoreById(server.slonik.pool, id).catch(reason =>
+                    handleApiError(`API ERROR GETTING SCORE IN UPDATE SCORE: ${reason}`)
+                )
 
                 // We don't want to change updatedAt if the user essentially goes to edit
                 // But then saves a score with the same exact values as before
@@ -65,12 +67,12 @@ export default async (server: FastifyInstance): Promise<void> => {
                     }
 
                     await upsertScore(server.slonik.pool, scoreToUpdate).catch(reason =>
-                        handleApiError(`ERROR UPDATING SCORE: ${reason}`)
+                        handleApiError(`API ERROR UPDATING SCORE: ${reason}`)
                     )
 
                     reply.send(scoreToUpdate)
                 } else {
-                    reply.code(404).send(handleNotFoundError('ERROR OnSend /PUT score: Score not found.'))
+                    reply.code(404).send(handleNotFoundError('NOT FOUND ERROR OnSend /PUT score: Score not found.'))
                 }
             }
         }

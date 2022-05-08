@@ -34,12 +34,12 @@ export default async (server: FastifyInstance): Promise<void> => {
             const updatedAt = new Date().toISOString()
 
             const scoreToDelete = await softDeleteScore(server.slonik.pool, id, updatedAt).catch(reason =>
-                handleApiError(`ERROR DELETING SCORE: ${reason}`)
+                handleApiError(`API ERROR DELETING SCORE: ${reason}`)
             )
 
             scoreToDelete
                 ? reply.send(`Score ${scoreToDelete.score} with id ${id} has been removed from the Merchant Mill Arcade!`)
-                : reply.code(404).send(handleNotFoundError(`ERROR OnSend /DELETE score with id ${id}. Score not found.`))
+                : reply.code(404).send(handleNotFoundError(`NOT FOUND ERROR OnSend /DELETE score with id ${id}. Score not found.`))
         }
     )
 }

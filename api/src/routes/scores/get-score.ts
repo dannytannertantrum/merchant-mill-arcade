@@ -15,11 +15,11 @@ export default async (server: FastifyInstance): Promise<void> => {
             const { id } = request.params
 
             const score = await getScoreById(server.slonik.pool, id).catch(reason =>
-                handleApiError(`ERROR GETTING SCORE: ${reason}`)
+                handleApiError(`API ERROR GETTING SCORE: ${reason}`)
             )
 
             score
                 ? reply.send(score)
-                : reply.code(404).send(handleNotFoundError('ERROR OnSend /GET score: Score not found.'))
+                : reply.code(404).send(handleNotFoundError('NOT FOUND ERROR OnSend /GET score: Score not found.'))
         })
 }

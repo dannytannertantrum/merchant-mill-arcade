@@ -29,7 +29,7 @@ export default async (server: FastifyInstance): Promise<void> => {
         async (_request, reply) => {
 
             const scores = await getAllScores(server.slonik.pool).catch(reason =>
-                handleApiError(`ERROR GETTING SCORES: ${reason}`)
+                handleApiError(`API ERROR GETTING SCORES: ${reason}`)
             )
 
             reply.send(scores)

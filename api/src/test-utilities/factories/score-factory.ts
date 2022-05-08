@@ -10,7 +10,7 @@ const scoreFactory = async (
 ): Promise<Disposable<({ id: string })>> => {
     await pool.query(sql<ScoreData>`
         INSERT INTO
-            scores (id, game, isDeleted, initials, score, createdAt, updatedAt)
+            scores (id, game, is_deleted, initials, score, created_at, updated_at)
         VALUES
             (${id}, ${game}, ${isDeleted}, ${initials}, ${score}, ${createdAt}::timestamptz, ${updatedAt}::timestamptz);
     `)

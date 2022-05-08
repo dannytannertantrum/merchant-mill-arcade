@@ -34,8 +34,8 @@ export default async (server: FastifyInstance): Promise<void> => {
             let scrubbedInitials = textInputCleanUpWhitespace(initials)
             score = sanitizeScore(score)
 
-            if (scrubbedInitials === undefined || score === undefined) {
-                handleValidationError('Please enter 1-3 letters for initials and/or a score above 0!')
+            if (scrubbedInitials === undefined || scrubbedInitials === '' || score === undefined) {
+                handleValidationError('VALIDATION ERROR ADDING SCORE: Please enter 1-3 letters for initials and/or a score above 0!')
             } else {
                 const isDeleted = false
                 const createdAt = new Date().toISOString()
@@ -50,7 +50,7 @@ export default async (server: FastifyInstance): Promise<void> => {
                 }
 
                 await insertScore(server.slonik.pool, scoreToAdd).catch(reason =>
-                    handleApiError(`ERROR ADDING SCORE: ${reason}`)
+                    handleApiError(`API ERROR ADDING SCORE: ${reason}`)
                 )
 
                 reply.code(201).send(scoreToAdd)
