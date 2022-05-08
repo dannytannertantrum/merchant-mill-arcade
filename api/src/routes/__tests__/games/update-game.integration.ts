@@ -68,10 +68,67 @@ describe('PUT /games', () => {
             const oldUpdatedAt = new Date(baseGame.updatedAt)
 
             expect(status).toEqual(200)
+            expect(body.id).toEqual(baseGame.id)
             expect(body.description).toEqual(updatedGame.description)
+            expect(body.description).not.toEqual(baseGame.description)
             expect(body.imageUrl).toEqual(updatedGame.imageUrl)
+            expect(body.imageUrl).not.toEqual(baseGame.imageUrl)
             expect(body.title).toEqual(updatedGame.title)
-            expect(body.updatedAt).toBeDefined()
+            expect(body.title).not.toEqual(baseGame.title)
+            // @ts-ignore - we know oldUpdatedAt exists
+            expect(newUpdatedAt > oldUpdatedAt).toBe(true)
+            expect(body.id).toEqual(baseGame.id)
+        })
+
+        it('should update updatedAt if only description is changed', async () => {
+            const onlyDescriptionChange = overrideValues<GameData>(baseGame, { description: 'new, eh?' })
+
+            const { body, status } = await supertest(server.server).put(`/games/${updatedGame.id}`).send(onlyDescriptionChange)
+
+            const newUpdatedAt = new Date(body.updatedAt)
+            // @ts-ignore - we know oldUpdatedAt exists
+            const oldUpdatedAt = new Date(baseGame.updatedAt)
+
+            expect(status).toEqual(200)
+            expect(body.id).toEqual(baseGame.id)
+            expect(body.description).toEqual(onlyDescriptionChange.description)
+            expect(body.description).not.toEqual(baseGame.description)
+            // @ts-ignore - we know oldUpdatedAt exists
+            expect(newUpdatedAt > oldUpdatedAt).toBe(true)
+            expect(body.id).toEqual(baseGame.id)
+        })
+
+        it('should update updatedAt if only title is changed', async () => {
+            const onlyTitleChange = overrideValues<GameData>(baseGame, { title: 'new, eh?' })
+
+            const { body, status } = await supertest(server.server).put(`/games/${updatedGame.id}`).send(onlyTitleChange)
+
+            const newUpdatedAt = new Date(body.updatedAt)
+            // @ts-ignore - we know oldUpdatedAt exists
+            const oldUpdatedAt = new Date(baseGame.updatedAt)
+
+            expect(status).toEqual(200)
+            expect(body.id).toEqual(baseGame.id)
+            expect(body.title).toEqual(onlyTitleChange.title)
+            expect(body.title).not.toEqual(baseGame.title)
+            // @ts-ignore - we know oldUpdatedAt exists
+            expect(newUpdatedAt > oldUpdatedAt).toBe(true)
+            expect(body.id).toEqual(baseGame.id)
+        })
+
+        it('should update updatedAt if only image url is changed', async () => {
+            const onlyImageUrlChange = overrideValues<GameData>(baseGame, { imageUrl: 'https://new.com/new-eh.jpg' })
+
+            const { body, status } = await supertest(server.server).put(`/games/${updatedGame.id}`).send(onlyImageUrlChange)
+
+            const newUpdatedAt = new Date(body.updatedAt)
+            // @ts-ignore - we know oldUpdatedAt exists
+            const oldUpdatedAt = new Date(baseGame.updatedAt)
+
+            expect(status).toEqual(200)
+            expect(body.id).toEqual(baseGame.id)
+            expect(body.imageUrl).toEqual(onlyImageUrlChange.imageUrl)
+            expect(body.imageUrl).not.toEqual(baseGame.imageUrl)
             // @ts-ignore - we know oldUpdatedAt exists
             expect(newUpdatedAt > oldUpdatedAt).toBe(true)
             expect(body.id).toEqual(baseGame.id)
@@ -131,7 +188,7 @@ describe('PUT /games', () => {
             expect(mockHandleApiError).toHaveBeenCalled()
             expect(status).toEqual(500)
             expect(body.error).toEqual('Internal Server Error')
-            expect(body.message).toMatch(/ERROR CHECKING QUERY FOR NO CHANGES/)
+            expect(body.message).toMatch(/API ERROR CHECKING QUERY FOR NO CHANGES/)
         })
 
         it('throws a conflict error when trying to add a game with a matching title', async () => {
@@ -163,7 +220,7 @@ describe('PUT /games', () => {
 
             expect(status).toEqual(404)
             expect(body.error).toEqual('Not Found')
-            expect(body.message).toEqual('ERROR OnSend /PUT game: Game not found.')
+            expect(body.message).toEqual('NOT FOUND ERROR OnSend /PUT game: Game not found.')
         })
     })
 })

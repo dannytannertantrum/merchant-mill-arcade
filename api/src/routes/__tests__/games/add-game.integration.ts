@@ -166,7 +166,7 @@ describe('POST /games', () => {
             expect(status).toEqual(500)
             expect(body.error).toEqual('Internal Server Error')
             // It errors out checking for the duplicate game which is why we see this message
-            expect(body.message).toMatch(/ERROR CHECKING FOR DUPLICATE GAME/)
+            expect(body.message).toMatch(/API ERROR CHECKING FOR DUPLICATE GAME/)
         })
 
         it('throws a conflict error when a uuid already exists', async () => {
@@ -199,7 +199,7 @@ describe('POST /games', () => {
             expect(mockHandleValidationError).toHaveBeenCalled()
             expect(status).toEqual(400)
             expect(body.error).toEqual('Bad Request')
-            expect(body.message).toMatch(/VALIDATION ERROR/)
+            expect(body.message).toMatch(/VALIDATION ERROR ADDING GAME/)
         })
 
         it('throws a validation error when title is an empty string', async () => {
@@ -212,7 +212,7 @@ describe('POST /games', () => {
             expect(mockHandleValidationError).toHaveBeenCalled()
             expect(status).toEqual(400)
             expect(body.error).toEqual('Bad Request')
-            expect(body.message).toMatch(/VALIDATION ERROR/)
+            expect(body.message).toMatch(/VALIDATION ERROR ADDING GAME/)
         })
     })
 })

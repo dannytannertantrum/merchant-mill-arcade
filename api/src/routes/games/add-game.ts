@@ -37,12 +37,12 @@ export default async (server: FastifyInstance): Promise<void> => {
             ] = [description, imageUrl, title].map(val => textInputCleanUpWhitespace(val))
 
             if (scrubbedTitle === undefined || scrubbedTitle === '') {
-                handleValidationError('VALIDATION ERROR: Title is required for adding a game!')
+                handleValidationError('VALIDATION ERROR ADDING GAME: Title is required for adding a game!')
             } else {
                 const duplicateGameCheck = await queryForDuplicateGame({
                     pool: server.slonik.pool, title: scrubbedTitle, id, isPutRequest: false
                 }).catch(reason =>
-                    handleApiError(`ERROR CHECKING FOR DUPLICATE GAME: ${reason}`)
+                    handleApiError(`API ERROR CHECKING FOR DUPLICATE GAME: ${reason}`)
                 )
 
                 if (duplicateGameCheck?.isDuplicate) {
@@ -64,7 +64,7 @@ export default async (server: FastifyInstance): Promise<void> => {
                 }
 
                 await insertGame(server.slonik.pool, gameToAdd).catch(reason =>
-                    handleApiError(`ERROR ADDING GAME: ${reason}`)
+                    handleApiError(`API ERROR ADDING GAME: ${reason}`)
                 )
 
                 reply.code(201).send(gameToAdd)

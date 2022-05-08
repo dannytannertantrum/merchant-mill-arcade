@@ -44,12 +44,12 @@ describe('GET /games/id', () => {
             const { body, status } = await supertest(server.server).get(`/games/${game.id}`)
 
             expect(status).toEqual(200)
-            expect(body.id).toMatch(game.id)
+            expect(body.id).toEqual(game.id)
             expect(body.description).toEqual(game.description)
             expect(body.imageUrl).toBeNull()
             expect(body.isDeleted).toBe(false)
-            expect(body.slug).toMatch(game.slug)
-            expect(body.title).toMatch(game.title)
+            expect(body.slug).toEqual(game.slug)
+            expect(body.title).toEqual(game.title)
             expect(body.createdAt).toBeDefined()
             expect(body.updatedAt).toBeNull()
         })
@@ -63,7 +63,7 @@ describe('GET /games/id', () => {
 
             expect(mockHandleApiError).toHaveBeenCalled()
             expect(status).toEqual(500)
-            expect(body.message).toMatch(/ERROR GETTING GAME/)
+            expect(body.message).toMatch(/API ERROR GETTING GAME/)
         })
 
         it('throws a not found error if game not found', async () => {
@@ -73,7 +73,7 @@ describe('GET /games/id', () => {
 
             expect(mockHandleNotFoundError).toHaveBeenCalled()
             expect(status).toEqual(404)
-            expect(body.message).toEqual('ERROR OnSend /GET game: Game not found.')
+            expect(body.message).toEqual('NOT FOUND ERROR OnSend /GET game: Game not found.')
         })
     })
 })

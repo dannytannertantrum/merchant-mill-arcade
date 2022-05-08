@@ -75,7 +75,7 @@ export default async (server: FastifyInstance): Promise<void> => {
                 handleValidationError('VALIDATION ERROR: Title is required for updating a game!')
             } else {
                 const editedGameExists = await queryForNoChanges(server.slonik.pool, id, scrubbedTitle).catch(reason =>
-                    handleApiError(`ERROR CHECKING QUERY FOR NO CHANGES: ${reason}`)
+                    handleApiError(`API ERROR CHECKING QUERY FOR NO CHANGES: ${reason}`)
                 )
 
                 // If a user goes to edit, but keeps the title exactly the same
@@ -86,7 +86,7 @@ export default async (server: FastifyInstance): Promise<void> => {
                     duplicateGameCheck = await queryForDuplicateGame({
                         pool: server.slonik.pool, title: scrubbedTitle, id, isPutRequest: true
                     }).catch(reason =>
-                        handleApiError(`ERROR CHECKING FOR DUPLICATE GAME: ${reason}`)
+                        handleApiError(`API ERROR CHECKING FOR DUPLICATE GAME: ${reason}`)
                     )
 
                     if (duplicateGameCheck?.isDuplicate) {
@@ -124,12 +124,12 @@ export default async (server: FastifyInstance): Promise<void> => {
                     }
 
                     await upsertGame(server.slonik.pool, gameToUpdate).catch(reason =>
-                        handleApiError(`ERROR UPDATING GAME: ${reason}`)
+                        handleApiError(`API ERROR UPDATING GAME: ${reason}`)
                     )
 
                     reply.send(gameToUpdate)
                 } else {
-                    reply.code(404).send(handleNotFoundError(`ERROR OnSend /PUT game: Game not found.`))
+                    reply.code(404).send(handleNotFoundError(`NOT FOUND ERROR OnSend /PUT game: Game not found.`))
                 }
             }
         }

@@ -15,12 +15,12 @@ export default async (server: FastifyInstance): Promise<void> => {
             const { id } = request.params
 
             const game = await getGameById(server.slonik.pool, id).catch(reason =>
-                handleApiError(`ERROR GETTING GAME: ${reason}`)
+                handleApiError(`API ERROR GETTING GAME: ${reason}`)
             )
 
             game
                 ? reply.send(game)
-                : reply.code(404).send(handleNotFoundError(`ERROR OnSend /GET game: Game not found.`))
+                : reply.code(404).send(handleNotFoundError(`NOT FOUND ERROR OnSend /GET game: Game not found.`))
         }
     )
 }

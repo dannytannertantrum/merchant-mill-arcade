@@ -28,7 +28,7 @@ export default async (server: FastifyInstance): Promise<void> => {
         { schema },
         async (_request, reply) => {
             const games = await getAllGames(server.slonik.pool).catch(reason =>
-                handleApiError(`ERROR GETTING GAMES: ${reason}`)
+                handleApiError(`API ERROR GETTING GAMES: ${reason}`)
             )
 
             reply.send(games)
