@@ -5,15 +5,14 @@ import { GameData } from '../../types/games.types'
 import { ScoreData } from '../../types/scores.types'
 
 
-interface DuplicateGameCheck {
+interface ActiveGameCheck {
     pool: DatabasePoolType
     title: string
-    isPutRequest: boolean
     id?: string
 }
 
-interface DuplicateGameReturnValue {
-    isDuplicate: boolean
+interface ActiveGameReturnValue {
+    isActive: boolean
     game: GameData | null
 }
 
@@ -51,13 +50,13 @@ const getScoreById = async (pool: DatabasePoolType, id: string): Promise<ScoreDa
     return result
 }
 
-const queryForDuplicateGame = async ({ pool, title, id, isPutRequest }: DuplicateGameCheck): Promise<DuplicateGameReturnValue> => {
-    let gameIdExists: GameData | null = null
+const queryForActiveGame = async ({ pool, title, id }: ActiveGameCheck): Promise<ActiveGameReturnValue> => {
+    let game: GameData | null = null
     title = title.toLowerCase()
 
     if (id) {
-        gameIdExists = await getGameById(pool, id).catch(reason =>
-            handleApiError(`The following error occurred when searching for a duplicate game by id: ${reason}`)
+        game = await getGameById(pool, id).catch(reason =>
+            handleApiError(`API ERROR: The following error occurred when searching for an active game by id: ${reason}`)
         )
     }
 
@@ -65,20 +64,20 @@ const queryForDuplicateGame = async ({ pool, title, id, isPutRequest }: Duplicat
         SELECT title, is_deleted
         FROM games
         WHERE LOWER(title) = ${title};
-    `).catch(reason => handleApiError(`The following error occurred when searching for a duplicate game by title: ${reason}`))
+    `).catch(reason => handleApiError(`API ERROR: The following error occurred when searching for an active game by title: ${reason}`))
 
     const titleIsActive = titleQuery.rows.some(game => game.isDeleted === false)
 
-    if ((gameIdExists && gameIdExists.isDeleted === false && !isPutRequest) || (titleIsActive)) {
-        return { isDuplicate: true, game: gameIdExists }
+    if (titleIsActive) {
+        return { isActive: true, game }
     } else {
-        return { isDuplicate: false, game: gameIdExists }
+        return { isActive: false, game }
     }
 }
 
 export {
-    DuplicateGameReturnValue,
+    ActiveGameReturnValue,
     getGameById,
     getScoreById,
-    queryForDuplicateGame
+    queryForActiveGame
 }

@@ -7,7 +7,7 @@ import { gameFactory } from '../../../test-utilities/factories/game-factory'
 import { mockHandleApiError, mockHandleNotFoundError, mockHandleValidationError } from '../__mocks__/customErrorMocks'
 import { overrideValues } from '../../../test-utilities/overrides'
 import { scoreFactory } from '../../../test-utilities/factories/score-factory'
-import { ScoreRequestBodyWithGame } from '../../../types/scores.types'
+import { ScoreData, ScoreRequestBodyWithGame } from '../../../types/scores.types'
 import server from '../../../app'
 
 
@@ -30,7 +30,7 @@ describe('PUT /scores/id', () => {
         createdAt: new Date().toISOString(),
         updatedAt: null
     }
-    const score = {
+    const score: ScoreData = {
         id: uuidv4(),
         game: game.id,
         initials: 'GLC',
@@ -43,6 +43,7 @@ describe('PUT /scores/id', () => {
     let createGame: Disposable<unknown>[]
     let createScore: Disposable<unknown>[]
 
+    // Don't forget to add the game first and delete the score first
     beforeEach(async () => {
         createGame = await Promise.all([gameFactory(server.slonik.pool, game)])
         createScore = await Promise.all([scoreFactory(server.slonik.pool, score)])

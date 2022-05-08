@@ -3,7 +3,7 @@ import { DatabasePoolType, sql } from 'slonik'
 import { v4 as uuidv4 } from 'uuid'
 
 import { GameData, GameRequestBody, GameSchema } from '../../types/games.types'
-import { queryForDuplicateGame } from '../utilities/common-queries'
+import { queryForActiveGame } from '../utilities/common-queries'
 import { constructSlug, textInputCleanUpWhitespace } from '../utilities/string-helpers'
 import { handleApiError, handleValidationError, handleDuplicateEntryError } from '../../custom-errors'
 
@@ -39,13 +39,13 @@ export default async (server: FastifyInstance): Promise<void> => {
             if (scrubbedTitle === undefined || scrubbedTitle === '') {
                 handleValidationError('VALIDATION ERROR ADDING GAME: Title is required for adding a game!')
             } else {
-                const duplicateGameCheck = await queryForDuplicateGame({
-                    pool: server.slonik.pool, title: scrubbedTitle, id, isPutRequest: false
+                const ActiveGameCheck = await queryForActiveGame({
+                    pool: server.slonik.pool, title: scrubbedTitle, id
                 }).catch(reason =>
                     handleApiError(`API ERROR CHECKING FOR DUPLICATE GAME: ${reason}`)
                 )
 
-                if (duplicateGameCheck?.isDuplicate) {
+                if (ActiveGameCheck?.isActive) {
                     handleDuplicateEntryError('CONFLICT ERROR: That game already exists in the Merchant Mill Arcade!')
                 }
 
@@ -74,6 +74,5 @@ export default async (server: FastifyInstance): Promise<void> => {
 }
 
 export {
-    insertGame,
-    queryForDuplicateGame
+    insertGame
 }

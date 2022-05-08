@@ -165,19 +165,21 @@ describe('POST /games', () => {
             expect(mockHandleApiError).toHaveBeenCalled()
             expect(status).toEqual(500)
             expect(body.error).toEqual('Internal Server Error')
-            // It errors out checking for the duplicate game which is why we see this message
+            // It errors out checking for a duplicate game which is why we see this message
             expect(body.message).toMatch(/API ERROR CHECKING FOR DUPLICATE GAME/)
         })
 
-        it('throws a conflict error when a uuid already exists', async () => {
+        // It would be crazy if we add a game with a uuid that already exists
+        // Our database should catch this error on a primary key constraint violation
+        it('throws an api error when a uuid already exists', async () => {
             const gameWithDuplicateUuid = overrideValues<GameData>(baseGameFailures, { title: 'New title should not matter!' })
 
             const { body, status } = await supertest(server.server).post('/games').send(gameWithDuplicateUuid)
 
-            expect(mockHandleDuplicateEntryError).toHaveBeenCalled()
-            expect(status).toEqual(409)
-            expect(body.error).toEqual('Conflict')
-            expect(body.message).toMatch(/CONFLICT ERROR/)
+            expect(mockHandleApiError).toHaveBeenCalled()
+            expect(status).toEqual(500)
+            expect(body.error).toEqual('Internal Server Error')
+            expect(body.message).toMatch(/API ERROR ADDING GAME/)
         })
 
         it('throws a conflict error when trying to add a game with a matching title', async () => {

@@ -2,7 +2,7 @@ import { FastifyInstance } from 'fastify'
 import { DatabasePoolType, sql } from 'slonik'
 
 import { GameData, GameRequestBody, GameSchema } from '../../types/games.types'
-import { DuplicateGameReturnValue, queryForDuplicateGame } from '../utilities/common-queries'
+import { ActiveGameReturnValue, queryForActiveGame } from '../utilities/common-queries'
 import { constructSlug, textInputCleanUpWhitespace } from '../utilities/string-helpers'
 import { handleApiError, handleValidationError, handleDuplicateEntryError, handleNotFoundError } from '../../custom-errors'
 
@@ -61,7 +61,7 @@ export default async (server: FastifyInstance): Promise<void> => {
         async (request, reply) => {
             const { id } = request.params
             let { description, imageUrl, title } = request.body
-            let duplicateGameCheck: DuplicateGameReturnValue
+            let ActiveGameCheck: ActiveGameReturnValue
             let game: GameData | null = null
             let updatedAt: string | null
 
@@ -83,17 +83,17 @@ export default async (server: FastifyInstance): Promise<void> => {
                 if (editedGameExists?.canBypass) {
                     game = editedGameExists.game
                 } else {
-                    duplicateGameCheck = await queryForDuplicateGame({
-                        pool: server.slonik.pool, title: scrubbedTitle, id, isPutRequest: true
+                    ActiveGameCheck = await queryForActiveGame({
+                        pool: server.slonik.pool, title: scrubbedTitle, id
                     }).catch(reason =>
                         handleApiError(`API ERROR CHECKING FOR DUPLICATE GAME: ${reason}`)
                     )
 
-                    if (duplicateGameCheck?.isDuplicate) {
+                    if (ActiveGameCheck?.isActive) {
                         handleDuplicateEntryError('CONFLICT ERROR: That game already exists in the Merchant Mill Arcade!')
                     }
 
-                    game = duplicateGameCheck.game
+                    game = ActiveGameCheck.game
                 }
 
                 const isDeleted = false
