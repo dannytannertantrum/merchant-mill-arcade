@@ -10,14 +10,23 @@ Already done? Great! Now let's clone the repo, install packages, run migrations/
 1. **Clone the repo**: `$ git clone git@github.com:dannytannertantrum/merchant-mill-arcade.git`
 2. **Install and use nvm**: This project uses `nvm`. If you need to install it on your machine, follow the instructions [outlined here](https://github.com/nvm-sh/nvm#installation-and-update). Then, inside of the `api` directory, run `$ nvm use` and follow the commands to install the correct node version if you do not have it.
 3. **Install packages**: Inside of `api`, run `$ npm i`
-4. **Start the Postgres servers**: Open Postgres and click the "Start" button. Once you see things running, run the rest of the commands below within the `api` directory.
-5. **Create the database schema**: `$ npm run create-db-schema`
-6. **Create the test database schema**: `$ npm run create-test-db-schema`
-7. **Run migrations**: `$ npm run migrate:up`
-8. **Run migrations for test**: `$ npm run migrate-test:up`
-9. **Seed data**: `$ npm run seed`
-10. **Seed test data**: `$ npm run seed-test`
-11. **Start the server**: `$ npm run dev`
+4. **Start the Postgres servers**: Open Postgres and click the "Start" button.
+5. **Set local environment variables**: Create a `.env` file in the `api` directory and add the following keys:
+
+```
+POSTGRES_CONNECTION_STRING=postgres://glc@localhost:5432/merchant_mill_arcade
+TEST_POSTGRES_CONNECTION_STRING=postgres://glc@localhost:5432/test_merchant_mill_arcade
+```
+
+Run the rest of the commands below within the `api` directory:
+
+6. **Create the database schema**: `$ npm run create-db-schema`
+7. **Create the test database schema**: `$ npm run create-test-db-schema`
+8. **Run migrations**: `$ npm run migrate:up`
+9. **Run migrations for test**: `$ npm run migrate-test:up`
+10. **Seed data**: `$ npm run seed`
+11. **Seed test data**: `$ npm run seed-test`
+12. **Start the server**: `$ npm run dev`
 
 At this point, the server should be running! A local database and test database should be populated with some data. Feel free to use Postman or any REST client of your choice, but if you're using VS Code, check out the `.requests.http` file in `api`. In order to make use of it, [install the `REST Client` extension](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) for VS Code. This allows us to send requests right from VS Code. Take note of the little "Send Request" link above each HTTP method and try it out!
 
@@ -64,8 +73,18 @@ We use [jest](https://jestjs.io/) with `ts-jest` so we can get TypeScript suppor
 # Troubleshooting
 Sometimes, we get errors. Sometimes these errors are from not taking enough code breaks (bad!) and they leave us feeling silly. Here are some common ones and what to look out for:
 
-1. `connect ECONNREFUSED` - Is Postgres running?
-2. `Exceeded timeout of 5000 ms for a hook` - is Postgres running?
-3. `“connect ECONNREFUSED 127.0.0.1:80”` - are you seeing this while running/adding tests or trying to hit routes? If so, make sure routes are valid, e.g. prefixed with a forward slash: `/game/:id` and not `game/:id`
-4. `Error: Cannot find module 'fs/promises'` or `code: 'MODULE_NOT_FOUND'` - did you run `$ nvm use`?
-5. Are processes hanging? If so, check and make sure all our hooks are calling `done()` and passing to the next handler.
+1. Just starting out and seeing the error below? We're probably missing local environment variables. Take a look at [step 5 under Getting Started](#getting-started).
+
+```
+...api/node_modules/slonik/dist/src/utilities/parseDsn.js:10
+    if (dsn.trim() === '') {
+            ^
+
+TypeError: Cannot read properties of undefined (reading 'trim')
+```
+
+2. `connect ECONNREFUSED` - Is Postgres running?
+3. `Exceeded timeout of 5000 ms for a hook` - is Postgres running?
+4. `“connect ECONNREFUSED 127.0.0.1:80”` - are you seeing this while running/adding tests or trying to hit routes? If so, make sure routes are valid, e.g. prefixed with a forward slash: `/game/:id` and not `game/:id`
+5. `Error: Cannot find module 'fs/promises'` or `code: 'MODULE_NOT_FOUND'` - did you run `$ nvm use`?
+6. Are processes hanging? If so, check and make sure all our hooks are calling `done()` and passing to the next handler.
