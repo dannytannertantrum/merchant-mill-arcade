@@ -2,8 +2,8 @@ const constructSlug = (title: string): string => {
     title = title.trim().toLowerCase()
 
     // remove accents, swap ñ for n, etc
-    let from = 'àáäâèéëêìíïîòóöôùúüûñç·/_,:;'
-    let to = 'aaaaeeeeiiiioooouuuunc------'
+    let from = 'àáâäæãåāçćčèéêëēėęîïíīįìłñńôöòóœøōõßśšûüùúūÿžźż·/_,:;'
+    let to = 'aaaaaaaaccceeeeeeeiiiiiilnnoooooooosssuuuuuyzzz------'
     for (let i = 0, l = from.length; i < l; i++) {
         title = title.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i))
     }
