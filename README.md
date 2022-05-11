@@ -8,17 +8,17 @@ Before we fruitlessly attempt to dethrone George Costanza from the #1 spot in *F
 Already done? Great! Now let's clone the repo, install packages, run migrations/seeds, get the server running and take things for a test spin! Steps below:
 
 1. **Clone the repo**: `$ git clone git@github.com:dannytannertantrum/merchant-mill-arcade.git`
-2. **Install and use nvm**: This project uses `nvm`. If you need to install it on your machine, follow the instructions [outlined here](https://github.com/nvm-sh/nvm#installation-and-update). Then, inside of the `api` directory, run `$ nvm use` and follow the commands to install the correct node version if you do not have it.
-3. **Install packages**: Inside of `api`, run `$ npm i`
+2. **Install and use nvm**: This project uses `nvm`. If you need to install it on your machine, follow the instructions [outlined here](https://github.com/nvm-sh/nvm#installation-and-update). Then, inside of the root directory, run `$ nvm use` and follow the commands to install the correct node version if you do not have it.
+3. **Install packages**: Inside of root, run `$ npm i`
 4. **Start the Postgres servers**: Open Postgres and click the "Start" button.
-5. **Set local environment variables**: Create a `.env` file in the `api` directory and add the following keys:
+5. **Set local environment variables**: Create a `.env` file in the root directory and add the following keys:
 
 ```
 POSTGRES_CONNECTION_STRING=postgres://glc@localhost:5432/merchant_mill_arcade
 TEST_POSTGRES_CONNECTION_STRING=postgres://glc@localhost:5432/test_merchant_mill_arcade
 ```
 
-Run the rest of the commands below within the `api` directory:
+Run the rest of the commands below inside of root:
 
 6. **Create the database schema**: `$ npm run create-db-schema`
 7. **Create the test database schema**: `$ npm run create-test-db-schema`
@@ -28,7 +28,7 @@ Run the rest of the commands below within the `api` directory:
 11. **Seed test data**: `$ npm run seed-test`
 12. **Start the server**: `$ npm run dev`
 
-At this point, the server should be running! A local database and test database should be populated with some data. Feel free to use Postman or any REST client of your choice, but if you're using VS Code, check out the `.requests.http` file in `api`. In order to make use of it, [install the `REST Client` extension](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) for VS Code. This allows us to send requests right from VS Code. Take note of the little "Send Request" link above each HTTP method and try it out!
+At this point, the server should be running. A local database and test database should be populated with some data. Feel free to use Postman or any REST client of your choice, but if you're using VS Code, check out the `.requests.http` file in root. In order to make use of it, [install the `REST Client` extension](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) for VS Code. This allows us to send requests right from VS Code. Take note of the little "Send Request" link above each HTTP method and try it out!
 
 You can also take a peek at what request and response bodies should look like via swagger: http://localhost:7000/docs
 
@@ -49,7 +49,7 @@ We have scripts set up to migrate up and down:
 - `$ npm run migrate:fully-down`
 
 ## Seeding (local data)
-As outlined above in the *Getting Started* section, we can run separate seed scripts. For the simplicity of things, the data is the same - but the tests hit the test database.
+As outlined above, we can run separate seed scripts for local and test data.
 - `$ npm run seed` - This script seeds our local database.
 - `$ npm run seed-test` - This script seeds our test database.
 
