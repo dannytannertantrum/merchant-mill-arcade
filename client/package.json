@@ -1,27 +1,30 @@
 {
-  "name": "merchant-mill-arcade-ui",
-  "version": "1.0.0",
+  "author": "Jaime",
+  "browserslist": "> 0.5%, last 2 versions, not dead",
   "description": "",
   "main": "index.js",
+  "name": "merchant-mill-arcade-ui",
   "source": [
     "src/index.html",
     "src/index.js"
   ],
-  "browserslist": "> 0.5%, last 2 versions, not dead",
+  "version": "1.0.0",
+  "@parcel/transformer-css": {
+    "cssModules": true
+  },
   "scripts": {
     "build": "parcel build",
     "start": "parcel",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Jaime",
   "license": "ISC",
+  "dependencies": {
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0"
+  },
   "devDependencies": {
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.3",
     "parcel": "^2.5.0"
-  },
-  "dependencies": {
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0"
   }
 }

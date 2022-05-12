@@ -2,6 +2,7 @@
     "compilerOptions": {
         "allowSyntheticDefaultImports": true,
         "declaration": true,
+        "jsx": "react-jsx",
         "noImplicitAny": true,
         "noImplicitReturns": true,
         "outDir": "./built",
