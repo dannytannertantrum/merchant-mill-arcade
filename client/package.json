@@ -22,6 +22,8 @@
   "devDependencies": {
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.4",
-    "parcel": "^2.5.0"
+    "goober": "^2.1.9",
+    "parcel": "^2.5.0",
+    "sharp": "^0.29.3"
   }
 }

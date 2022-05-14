@@ -1,14 +1,17 @@
-import { Fragment } from 'react'
-
 import AddGamePage from './components/AddGamePage'
-import HomePage from './components/HomePage'
+import logo from './assets/logo.png'
+import HomePage from './components/HomePage/HomePage'
 import Route from './components/Route'
 import ScorePage from './components/ScorePage'
+import * as styles from './index.css'
 
 
 const App = () => {
     return (
-        <Fragment>
+        <div className={styles.arcade}>
+            <a href='/'>
+                <img src={logo} alt='logo' className={styles.logo} />
+            </a>
             <Route path='/'>
                 <HomePage />
             </Route>
@@ -18,7 +21,7 @@ const App = () => {
             <Route path='/scores'>
                 <ScorePage />
             </Route>
-        </Fragment>
+        </div>
     )
 }
 
