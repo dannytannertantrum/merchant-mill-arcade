@@ -1,7 +1,8 @@
 import AddGamePage from './components/AddGamePage/AddGamePage'
-import logo from './assets/logo.png'
 import HomePage from './components/HomePage/HomePage'
-import Route from './components/Route'
+import Link from './components/Link/Link'
+import logo from './assets/logo.png'
+import Route from './components/Route/Route'
 import ScorePage from './components/ScorePage'
 import * as styles from './global.css'
 
@@ -9,9 +10,9 @@ import * as styles from './global.css'
 const App = () => {
     return (
         <div className={styles.arcade}>
-            <a href='/'>
+            <Link href='/'>
                 <img src={logo} alt='logo' className={styles.logo} />
-            </a>
+            </Link>
             <Route path='/'>
                 <HomePage />
             </Route>

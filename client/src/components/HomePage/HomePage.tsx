@@ -1,6 +1,7 @@
 import { Fragment } from 'react'
 
 import { gridItemGame } from './HomePageGoober'
+import Link from '../Link/Link'
 import './HomePage.css'
 
 
@@ -18,15 +19,15 @@ const HomePage = () => {
         <Fragment>
             <nav>
                 <h2>Select a game</h2>
-                <a href='/add-game'>+ Add a game</a>
+                <Link href='/add-game'>+ Add a game</Link>
             </nav>
             <hr />
             <ul>
                 {fakeData.map(game => (
                     <li key={game.id}>
-                        <a href='/' className={gridItemGame(game.imageUrl)}>
+                        <Link href='/' className={gridItemGame(game.imageUrl)}>
                             <h3>{game.title}</h3>
-                        </a>
+                        </Link>
                     </li>
                 ))}
             </ul>
