@@ -1,16 +1,4 @@
-nav {
-    display: flex;
-    justify-content: space-between;
-}
-
-hr {
-    background: var(--borders);
-    border: 0 none;
-    height: 2px;
-    margin: 0 0 50px;
-}
-
-ul {
+.gameGrid {
     column-gap: 30px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -20,13 +8,13 @@ ul {
     row-gap: 30px;
 }
 
-ul li {
+.gameGrid li {
     position: relative;
     padding-bottom: 60px;
     cursor: pointer;
 }
 
-ul li::before {
+.gameGrid li::before {
     content: '';
     position: absolute;
     top: 0;
@@ -37,7 +25,7 @@ ul li::before {
     z-index: 2;
 }
 
-ul li:hover::before {
+.gameGrid li:hover::before {
     background-color: var(--link-color-hover);
     opacity: .2;
 }

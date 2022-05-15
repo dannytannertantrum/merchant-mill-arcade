@@ -14,7 +14,6 @@ body {
     font-family: 'Press Start 2P', monospace, sans-serif;
     text-transform: uppercase;
     line-height: 1.5;
-    text-align: center;
 }
 
 canvas {
@@ -49,9 +48,9 @@ h2 {
 }
 
 h3 {
-    color: #cf0000;
+    color: #fec11e;
     font-size: 16px;
-    margin-bottom: 24px;
+    margin: 0 0 24px;
 }
 
 form {
@@ -114,6 +113,13 @@ label {
     margin-bottom: 36px;
 }
 
+nav {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 2px solid var(--borders);
+    margin: 0 0 30px;
+}
+
 p {
     font-size: 16px;
     margin: 0 0 14px;
@@ -124,6 +130,7 @@ p {
 }
 
 .logo {
+    display: block;
     width: 350px;
-    margin-bottom: 20px;
+    margin: 0 auto 20px;
 }

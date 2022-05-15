@@ -2,7 +2,7 @@ import { Fragment } from 'react'
 
 import { gridItemGame } from './HomePageGoober'
 import Link from '../Link/Link'
-import './HomePage.css'
+import * as styles from './HomePage.css'
 
 
 const fakeData = [
@@ -21,8 +21,7 @@ const HomePage = () => {
                 <h2>Select a game</h2>
                 <Link href='/add-game'>+ Add a game</Link>
             </nav>
-            <hr />
-            <ul>
+            <ul className={styles.gameGrid}>
                 {fakeData.map(game => (
                     <li key={game.id}>
                         <Link href='/' className={gridItemGame(game.imageUrl)}>
