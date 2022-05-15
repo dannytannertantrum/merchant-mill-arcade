@@ -4,7 +4,7 @@ nav {
 }
 
 hr {
-    background: #b142c8;
+    background: var(--borders);
     border: 0 none;
     height: 2px;
     margin: 0 0 50px;

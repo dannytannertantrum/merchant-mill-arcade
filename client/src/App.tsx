@@ -1,9 +1,9 @@
-import AddGamePage from './components/AddGamePage'
+import AddGamePage from './components/AddGamePage/AddGamePage'
 import logo from './assets/logo.png'
 import HomePage from './components/HomePage/HomePage'
 import Route from './components/Route'
 import ScorePage from './components/ScorePage'
-import * as styles from './index.css'
+import * as styles from './global.css'
 
 
 const App = () => {
