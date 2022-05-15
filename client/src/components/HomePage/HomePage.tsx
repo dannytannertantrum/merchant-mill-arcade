@@ -1,6 +1,6 @@
 import { Fragment } from 'react'
 
-import { gridItemGame } from './HomePageGoober'
+import { marquee } from './HomePageGoober'
 import Link from '../Link/Link'
 import * as styles from './HomePage.css'
 
@@ -24,8 +24,11 @@ const HomePage = () => {
             <ul className={styles.gameGrid}>
                 {fakeData.map(game => (
                     <li key={game.id}>
-                        <Link href='/' className={gridItemGame(game.imageUrl)}>
-                            <h3>{game.title}</h3>
+                        <Link href='/scores' className={styles.gameLink}>
+                            <Fragment>
+                                <span className={marquee(game.imageUrl)}></span>
+                                <span className={styles.gameTitle}>{game.title}</span>
+                            </Fragment>
                         </Link>
                     </li>
                 ))}

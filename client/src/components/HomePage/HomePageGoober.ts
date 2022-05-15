@@ -1,7 +1,7 @@
 import { css } from 'goober'
 
 
-const gridItemGame = (bgImage: string) => css`
+const marquee = (bgImage: string) => css`
     background-image: url(${bgImage});
     background-size: cover;
     display: flex;
@@ -9,15 +9,8 @@ const gridItemGame = (bgImage: string) => css`
     justify-content: center;
     position: relative;
     width: 100%;
-
-    h3 {
-        position: absolute;
-        bottom: -40px;
-        color: var(--link-color);
-        margin: 0;
-    }
 `
 
 export {
-    gridItemGame
+    marquee
 }

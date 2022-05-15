@@ -8,13 +8,15 @@
     row-gap: 30px;
 }
 
-.gameGrid li {
+.gameLink {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 40px;
     position: relative;
-    padding-bottom: 60px;
-    cursor: pointer;
 }
 
-.gameGrid li::before {
+.gameLink::before {
     content: '';
     position: absolute;
     top: 0;
@@ -25,7 +27,12 @@
     z-index: 2;
 }
 
-.gameGrid li:hover::before {
+.gameLink:hover::before {
     background-color: var(--link-color-hover);
     opacity: .2;
+}
+
+.gameTitle {
+    margin-top: 10px;
+    text-align: center;
 }
