@@ -1,3 +1,5 @@
+import React, { useState, useEffect } from 'react'
+
 import AddGamePage from './components/AddGamePage/AddGamePage'
 import HomePage from './components/HomePage/HomePage'
 import Link from './components/Link/Link'
@@ -9,18 +11,24 @@ import * as styles from './appStyles'
 
 
 const App = () => {
+    let currentGame = { id: '2', slug: 'frogger' }
+
+    const handleClickGameSelection = (e: React.MouseEvent, game: any) => {
+        e.preventDefault()
+    }
+
     return (
         <div className={styles.arcade}>
             <Link href='/' className={styles.logo}>
                 <img src={logo} alt='logo' />
             </Link>
             <Route path='/'>
-                <HomePage />
+                <HomePage handleClickGameSelection={handleClickGameSelection} />
             </Route>
             <Route path='/add-game'>
                 <AddGamePage />
             </Route>
-            <Route path='/scores'>
+            <Route path={`/scores/${currentGame.slug}`}>
                 <ScorePage />
             </Route>
         </div>

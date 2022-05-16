@@ -5,15 +5,19 @@ import Link from '../Link/Link'
 
 
 const fakeData = [
-    { id: 1, title: 'Frogger', imageUrl: 'https://arcademarquee.com/wp-content/uploads/2015/02/frogger_marquee_24x6_dedicated.jpg' },
-    { id: 2, title: 'Burger Time', imageUrl: 'https://www.thisoldgamearchive.com/sc_images/products/BurgerTimeMqD-sca1-1000.jpg' },
-    { id: 3, title: 'Attack From Mars', imageUrl: 'https://classicplayfields.com/wp-content/uploads/2019/02/AFM-Backglass.jpg' },
-    { id: 4, title: 'Space Invaders', imageUrl: 'https://i0.wp.com/arcademarquee.com/wp-content/uploads/2015/02/space-invaders_marquee.jpg' },
-    { id: 5, title: 'Centipede', imageUrl: 'https://i0.wp.com/arcademarquee.com/wp-content/uploads/2015/02/centipede_marquee-scaled.jpg' },
-    { id: 6, title: 'Ms. Pac Man', imageUrl: 'https://i0.wp.com/arcademarquee.com/wp-content/uploads/2015/02/ms-pacman_marquee_23x9-scaled.jpg' },
+    { id: '1', slug: 'frogger', title: 'Frogger', imageUrl: 'https://arcademarquee.com/wp-content/uploads/2015/02/frogger_marquee_24x6_dedicated.jpg' },
+    { id: '2', slug: 'burger-time', title: 'Burger Time', imageUrl: 'https://www.thisoldgamearchive.com/sc_images/products/BurgerTimeMqD-sca1-1000.jpg' },
+    { id: '3', slug: 'attack-from-mars', title: 'Attack From Mars', imageUrl: 'https://classicplayfields.com/wp-content/uploads/2019/02/AFM-Backglass.jpg' },
+    { id: '4', slug: 'space-invaders', title: 'Space Invaders', imageUrl: 'https://i0.wp.com/arcademarquee.com/wp-content/uploads/2015/02/space-invaders_marquee.jpg' },
+    { id: '5', slug: 'centipede', title: 'Centipede', imageUrl: 'https://i0.wp.com/arcademarquee.com/wp-content/uploads/2015/02/centipede_marquee-scaled.jpg' },
+    { id: '6', slug: 'ms-pac-man', title: 'Ms. Pac Man', imageUrl: 'https://i0.wp.com/arcademarquee.com/wp-content/uploads/2015/02/ms-pacman_marquee_23x9-scaled.jpg' },
 ]
 
-const HomePage = () => {
+interface HomePageProps {
+    handleClickGameSelection: (event: React.MouseEvent, gameData: any) => any
+}
+
+const HomePage = ({ handleClickGameSelection }: HomePageProps) => {
     return (
         <Fragment>
             <nav>
@@ -23,10 +27,10 @@ const HomePage = () => {
             <ul className={styles.gameGrid}>
                 {fakeData.map(game => (
                     <li key={game.id}>
-                        <Link href='/scores' className={styles.gameLink}>
+                        <Link href={`/scores/${game.slug}`} className={styles.gameLink}>
                             <Fragment>
                                 <span className={styles.marquee(game.imageUrl)}></span>
-                                <span className={styles.gameTitle}>{game.title}</span>
+                                <span className={styles.gameTitle} onClick={(e) => handleClickGameSelection(e, game)}>{game.title}</span>
                             </Fragment>
                         </Link>
                     </li>
