@@ -4,7 +4,8 @@ import Link from './components/Link/Link'
 import logo from './assets/logo.png'
 import Route from './components/Route/Route'
 import ScorePage from './components/ScorePage/ScorePage'
-import * as styles from './global.css'
+import './global.css'
+import * as styles from './appStyles'
 
 
 const App = () => {

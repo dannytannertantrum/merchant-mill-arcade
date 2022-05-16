@@ -1,7 +1,7 @@
 import { Fragment } from 'react'
 
 import Link from '../Link/Link'
-import * as styles from './ScorePage.css'
+import * as styles from './ScorePageStyles'
 
 
 // When replacing with real data, do ORDER BY DESC high scores
@@ -28,7 +28,7 @@ const ScorePage = () => {
             </div>
             <ul className={styles.scoresContainer}>
                 {fakeData.map((score, index) => (
-                    <Fragment>
+                    <Fragment key={score.score + index}>
                         <li>{index + 1}</li>
                         <li>{score.score}</li>
                         <li>{score.initials}</li>

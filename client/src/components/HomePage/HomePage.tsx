@@ -1,8 +1,7 @@
 import { Fragment } from 'react'
 
-import { marquee } from './HomePageGoober'
+import * as styles from './HomePageStyles'
 import Link from '../Link/Link'
-import * as styles from './HomePage.css'
 
 
 const fakeData = [
@@ -26,7 +25,7 @@ const HomePage = () => {
                     <li key={game.id}>
                         <Link href='/scores' className={styles.gameLink}>
                             <Fragment>
-                                <span className={marquee(game.imageUrl)}></span>
+                                <span className={styles.marquee(game.imageUrl)}></span>
                                 <span className={styles.gameTitle}>{game.title}</span>
                             </Fragment>
                         </Link>
