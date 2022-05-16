@@ -1,6 +1,7 @@
 import React from 'react'
 
 import AddGamePage from './components/AddGamePage/AddGamePage'
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary'
 import HomePage from './components/HomePage/HomePage'
 import Link from './components/Link/Link'
 import logo from './assets/logo.png'
@@ -23,15 +24,17 @@ const App = () => {
             <Link href='/' className={styles.logo}>
                 <img src={logo} alt='logo' />
             </Link>
-            <Route path='/'>
-                <HomePage handleClickGameSelection={handleClickGameSelection} />
-            </Route>
-            <Route path='/add-game'>
-                <AddGamePage />
-            </Route>
-            <Route path={`/scores/${currentGame.slug}`}>
-                <ScorePage />
-            </Route>
+            <ErrorBoundary>
+                <Route path='/'>
+                    <HomePage handleClickGameSelection={handleClickGameSelection} />
+                </Route>
+                <Route path='/add-game'>
+                    <AddGamePage />
+                </Route>
+                <Route path={`/scores/${currentGame.slug}`}>
+                    <ScorePage />
+                </Route>
+            </ErrorBoundary>
         </div>
     )
 }
