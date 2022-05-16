@@ -80,6 +80,7 @@ input[type='submit'] {
     cursor: pointer;
     padding: 12px;
     transition: background-color ease .5s;
+    width: 150px;
 }
 
 input[type='submit']:hover {
@@ -87,7 +88,8 @@ input[type='submit']:hover {
 }
 
 input[type='submit']:active {
-    margin-top: 2px;
+    box-shadow: inset 1px 1px 7px rgba(0, 0, 0, .5), inset -1px -1px 7px rgba(0, 0, 0, .5);
+    font-size: .95em;
 }
 
 input[type='text'] {
@@ -124,11 +126,13 @@ nav {
 }
 
 nav h2,
-nav a {
+nav a,
+nav button {
     font-size: 12px;
 }
 
-nav a {
+nav a,
+nav button {
     text-align: right;
     padding-left: 30px;
 }
@@ -138,6 +142,7 @@ nav a {
 
     nav h2,
     nav a,
+    nav button,
     h3 {
         font-size: 16px;
     }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 
 import AddGamePage from './components/AddGamePage/AddGamePage'
 import HomePage from './components/HomePage/HomePage'
@@ -11,6 +11,7 @@ import * as styles from './appStyles'
 
 
 const App = () => {
+    // TODO Rip this out when pulling in real data
     let currentGame = { id: '2', slug: 'frogger' }
 
     const handleClickGameSelection = (e: React.MouseEvent, game: any) => {

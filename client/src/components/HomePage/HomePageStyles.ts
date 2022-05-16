@@ -29,7 +29,7 @@ const gameLink = css`
     align-items: center;
     position: relative;
 
-    ::before {
+    &::before {
         content: '';
         position: absolute;
         top: 0;
@@ -40,7 +40,7 @@ const gameLink = css`
         z-index: 2;
     }
 
-    :hover::before {
+    &:hover::before {
         background-color: var(--link-color-hover);
         opacity: .2;
     }
