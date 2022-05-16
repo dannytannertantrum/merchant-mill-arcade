@@ -12,9 +12,9 @@ const AddGamePage = () => {
         <Fragment>
             <h1 className={sharedStyles.heading}>Add a game</h1>
             <form onSubmit={handleOnSubmit}>
-                <label>
+                <label htmlFor='addGameTitle'>
                     Enter a title
-                    <input type='text' />
+                    <input type='text' id='addGameTitle' />
                 </label>
                 {
                     //

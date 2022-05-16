@@ -18,6 +18,19 @@ interface HomePageProps {
 }
 
 const HomePage = ({ handleClickGameSelection }: HomePageProps) => {
+    const gameList = (
+        fakeData.map(game => (
+            <li key={game.id}>
+                <Link href={`/scores/${game.slug}`} className={styles.gameLink}>
+                    <Fragment>
+                        <span className={styles.marquee(game.imageUrl)}></span>
+                        <span className={styles.gameTitle} onClick={(e) => handleClickGameSelection(e, game)}>{game.title}</span>
+                    </Fragment>
+                </Link>
+            </li>
+        ))
+    )
+
     return (
         <Fragment>
             <nav>
@@ -25,16 +38,7 @@ const HomePage = ({ handleClickGameSelection }: HomePageProps) => {
                 <Link href='/add-game'>+ Add a game</Link>
             </nav>
             <ul className={styles.gameGrid}>
-                {fakeData.map(game => (
-                    <li key={game.id}>
-                        <Link href={`/scores/${game.slug}`} className={styles.gameLink}>
-                            <Fragment>
-                                <span className={styles.marquee(game.imageUrl)}></span>
-                                <span className={styles.gameTitle} onClick={(e) => handleClickGameSelection(e, game)}>{game.title}</span>
-                            </Fragment>
-                        </Link>
-                    </li>
-                ))}
+                {gameList}
             </ul>
         </Fragment>
     )

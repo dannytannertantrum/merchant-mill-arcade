@@ -1,4 +1,4 @@
-import { Fragment, SyntheticEvent, useState } from 'react'
+import { createRef, Fragment, SyntheticEvent, useState } from 'react'
 
 import Modal from '../Modal/Modal'
 import * as styles from './ScorePageStyles'
@@ -16,26 +16,34 @@ const fakeData = [
 
 const ScorePage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false)
+    // We create a reference to the "Add Your Score" text so focus can return to it after the modal closes
+    // This is good for a11y: https://reactjs.org/docs/accessibility.html#programmatically-managing-focus
+    const addYourScoreRef: React.RefObject<HTMLButtonElement> = createRef()
 
     const handleOnSubmit = (event: SyntheticEvent) => {
         event.preventDefault()
     }
 
+    const handleModalToggle = () => {
+        setIsModalOpen(false)
+        addYourScoreRef && addYourScoreRef.current?.focus()
+    }
+
     const addScoreModal = (
         <div className={styles.scoreModalWrapper}>
             <div>
-                <button onClick={() => setIsModalOpen(false)} className={styles.closeModalButton} aria-label='Close modal'>
+                <button onClick={handleModalToggle} className={styles.closeModalButton} aria-label='Close modal'>
                     X
                 </button>
                 <h1 className={sharedStyles.heading}>Add your score</h1>
                 <form onSubmit={handleOnSubmit}>
-                    <label>
+                    <label htmlFor='addInitials'>
                         Enter your initials
-                        <input type='text' className={styles.inputInitials} maxLength={3} />
+                        <input type='text' className={styles.inputInitials} maxLength={3} id='addInitials' />
                     </label>
-                    <label>
+                    <label htmlFor='addScore'>
                         Enter your score
-                        <input type='text' />
+                        <input type='number' id='addScore' />
                     </label>
                     <input type='submit' value='Submit' />
                 </form>
@@ -58,7 +66,7 @@ const ScorePage = () => {
             <img src='https://arcademarquee.com/wp-content/uploads/2015/02/frogger_marquee_24x6_dedicated.jpg' className={styles.gameMarquee} />
             <nav>
                 <h2>Top 5 Scores</h2>
-                <button className={styles.addScoreButton} onClick={() => setIsModalOpen(!isModalOpen)}>
+                <button className={styles.addScoreButton} onClick={() => setIsModalOpen(!isModalOpen)} ref={addYourScoreRef}>
                     + Add your score
                 </button>
             </nav>
