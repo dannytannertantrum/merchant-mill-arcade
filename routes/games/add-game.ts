@@ -2,7 +2,7 @@ import { FastifyInstance } from 'fastify'
 import { DatabasePoolType, sql } from 'slonik'
 import { v4 as uuidv4 } from 'uuid'
 
-import { GameData, GameRequestBody, GameSchema } from '../types/games.types'
+import { GameData, GameRequestBody, GameSchema } from '../../common/games.types'
 import { queryForActiveGame } from '../common-queries'
 import { constructSlug, textInputCleanUpWhitespace } from '../../utilities/string-helpers'
 import { handleApiError, handleValidationError, handleDuplicateEntryError } from '../../utilities/custom-errors'

@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify'
 import { DatabasePoolType, sql } from 'slonik'
 
-import { AllGamesSchema, GameData, AllGamesData } from '../types/games.types'
+import { AllGamesSchema, GameData, AllGamesData } from '../../common/games.types'
 import { handleApiError } from '../../utilities/custom-errors'
 
 

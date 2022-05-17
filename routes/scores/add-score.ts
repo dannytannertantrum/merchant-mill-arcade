@@ -3,7 +3,7 @@ import { DatabasePoolType, sql } from 'slonik'
 import { v4 as uuidv4 } from 'uuid'
 
 import { handleApiError, handleValidationError } from '../../utilities/custom-errors'
-import { ScoreData, ScoreRequestBodyWithGame, ScoreSchema } from '../types/scores.types'
+import { ScoreData, ScoreRequestBodyWithGame, ScoreSchema } from '../../common/scores.types'
 import { sanitizeScore } from '../../utilities/number-helpers'
 import { textInputCleanUpWhitespace } from '../../utilities/string-helpers'
 

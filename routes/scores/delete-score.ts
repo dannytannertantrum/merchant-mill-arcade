@@ -2,8 +2,8 @@ import { FastifyInstance } from 'fastify'
 import { DatabasePoolType, sql } from 'slonik'
 
 import { handleApiError, handleNotFoundError } from '../../utilities/custom-errors'
-import { ScoreData } from '../types/scores.types'
-import { SoftDeleteSchema } from '../types/shared.types'
+import { ScoreData } from '../../common/scores.types'
+import { SoftDeleteSchema } from '../shared.types'
 
 
 const schema = { response: { 200: SoftDeleteSchema } }

@@ -5,7 +5,7 @@ import { Disposable, disposeAll } from '../test-utilities/disposables'
 import { gameFactory } from '../test-utilities/factories/game-factory'
 import server from '../../../app'
 import { mockHandleNotFoundError } from '../__mocks__/customErrorMocks'
-import { GameData } from '../../types/games.types'
+import { GameData } from '../../../common/games.types'
 import { getGameById } from '../../common-queries'
 
 

@@ -2,10 +2,10 @@ import { v4 as uuidv4 } from 'uuid'
 
 import { getGameById, getScoreById, queryForActiveGame } from '../common-queries'
 import { Disposable, disposeAll } from './test-utilities/disposables'
-import { GameData } from '../types/games.types'
+import { GameData } from '../../common/games.types'
 import { gameFactory } from './test-utilities/factories/game-factory'
 import { overrideValues } from '../../utilities/overrides'
-import { ScoreData } from '../types/scores.types'
+import { ScoreData } from '../../common/scores.types'
 import { scoreFactory } from './test-utilities/factories/score-factory'
 import server from '../../app'
 

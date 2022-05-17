@@ -1,8 +1,8 @@
 import { DatabasePoolType, sql } from 'slonik'
 
 import { handleApiError } from '../utilities/custom-errors'
-import { GameData } from './types/games.types'
-import { ScoreData } from './types/scores.types'
+import { GameData } from '../common//games.types'
+import { ScoreData } from '../common//scores.types'
 
 
 interface ActiveGameCheck {

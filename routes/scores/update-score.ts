@@ -2,7 +2,7 @@ import { FastifyInstance } from 'fastify'
 import { DatabasePoolType, sql } from 'slonik'
 
 import { handleApiError, handleNotFoundError, handleValidationError } from '../../utilities/custom-errors'
-import { ScoreSchema, ScoreData, ScoreRequestBody } from '../types/scores.types'
+import { ScoreSchema, ScoreData, ScoreRequestBody } from '../../common/scores.types'
 import { getScoreById } from '../common-queries'
 import { textInputCleanUpWhitespace } from '../../utilities/string-helpers'
 import { sanitizeScore } from '../../utilities/number-helpers'

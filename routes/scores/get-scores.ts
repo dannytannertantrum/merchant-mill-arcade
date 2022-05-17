@@ -2,7 +2,7 @@ import { FastifyInstance } from 'fastify'
 import { DatabasePoolType, sql } from 'slonik'
 
 import { handleApiError } from '../../utilities/custom-errors'
-import { ScoreData, AllScoresSchema, AllScoresData } from '../types/scores.types'
+import { ScoreData, AllScoresSchema, AllScoresData } from '../../common/scores.types'
 
 
 const schema = { response: { 200: AllScoresSchema } }

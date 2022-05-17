@@ -1,8 +1,8 @@
 import { FastifyInstance } from 'fastify'
 import { DatabasePoolType, sql } from 'slonik'
 
-import { GameData } from '../types/games.types'
-import { SoftDeleteSchema } from '../types/shared.types'
+import { GameData } from '../../common/games.types'
+import { SoftDeleteSchema } from '../shared.types'
 import { handleApiError, handleNotFoundError } from '../../utilities/custom-errors'
 
 

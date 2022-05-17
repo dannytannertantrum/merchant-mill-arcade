@@ -1,6 +1,7 @@
 import fastify from 'fastify'
 import { Server, IncomingMessage, ServerResponse } from 'http'
 import fastifySwagger from 'fastify-swagger'
+import fastifyCors from '@fastify/cors'
 import { DatabasePoolType } from 'slonik'
 import 'dotenv/config'
 
@@ -30,6 +31,12 @@ declare module 'fastify' {
 const server = fastify<Server, IncomingMessage, ServerResponse>({
     logger: process.env.NODE_ENV === 'TEST' ? false : true,
     disableRequestLogging: true // replace the standard output with our own custom logging below with hooks
+})
+
+server.register(fastifyCors, {
+    origin: process.env.NODE_ENV === 'development'
+        ? 'http://localhost:1234'
+        : 'https://merchantmillarcade.com'
 })
 
 server.addHook('onRequest', (req, _reply, done) => {

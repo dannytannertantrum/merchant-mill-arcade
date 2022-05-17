@@ -1,6 +1,6 @@
 import { DatabasePoolType, sql } from 'slonik'
 
-import { GameData } from '../../../types/games.types'
+import { GameData } from '../../../../common/games.types'
 import { Disposable } from '../disposables'
 
 
