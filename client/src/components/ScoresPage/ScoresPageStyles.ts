@@ -54,7 +54,7 @@ const scoresContainer = css`
     padding: 0;
 
     li {
-        color: #ffffff;
+        color: var(--default-text-color);
         margin-bottom: 20px;
         font-size: 12px;
     }

@@ -1,29 +1,34 @@
-import { Fragment } from 'react'
+import { css } from 'goober'
+import { Fragment, useContext } from 'react'
 
 import * as styles from './GamesPageStyles'
 import Link from '../Link/Link'
+import { GamesContext } from '../../contexts/GamesContext'
 
-
-const fakeData = [
-    { id: '1', slug: 'frogger', title: 'Frogger', imageUrl: 'https://arcademarquee.com/wp-content/uploads/2015/02/frogger_marquee_24x6_dedicated.jpg' },
-    { id: '2', slug: 'burger-time', title: 'Burger Time', imageUrl: 'https://www.thisoldgamearchive.com/sc_images/products/BurgerTimeMqD-sca1-1000.jpg' },
-    { id: '3', slug: 'attack-from-mars', title: 'Attack From Mars', imageUrl: 'https://classicplayfields.com/wp-content/uploads/2019/02/AFM-Backglass.jpg' },
-    { id: '4', slug: 'space-invaders', title: 'Space Invaders', imageUrl: 'https://i0.wp.com/arcademarquee.com/wp-content/uploads/2015/02/space-invaders_marquee.jpg' },
-    { id: '5', slug: 'centipede', title: 'Centipede', imageUrl: 'https://i0.wp.com/arcademarquee.com/wp-content/uploads/2015/02/centipede_marquee-scaled.jpg' },
-    { id: '6', slug: 'ms-pac-man', title: 'Ms. Pac Man', imageUrl: 'https://i0.wp.com/arcademarquee.com/wp-content/uploads/2015/02/ms-pacman_marquee_23x9-scaled.jpg' },
-]
 
 interface GamesPageProps {
     handleClickGameSelection: (event: React.MouseEvent, gameData: any) => any
 }
 
 const GamesPage = ({ handleClickGameSelection }: GamesPageProps) => {
+    const gamesData = useContext(GamesContext)
+
+    const displayNav = (
+        gamesData?.length > 0
+            ? (
+                <nav>
+                    <h2>Select a game</h2>
+                    <Link href='/add-game'>+ Add a game</Link>
+                </nav>
+            ) : <nav className={css`justify-content: flex-end; padding-bottom: 14px;`}><Link href='/add-game'>+ Add a game</Link></nav>
+    )
+
     const gameList = (
-        fakeData.map(game => (
+        gamesData.map(game => (
             <li key={game.id}>
                 <Link href={`/scores/${game.slug}`} className={styles.gameLink}>
                     <Fragment>
-                        <span className={styles.marquee(game.imageUrl)}></span>
+                        {game.imageUrl && <span className={styles.marquee(game.imageUrl)}></span>}
                         <span className={styles.gameTitle} onClick={(e) => handleClickGameSelection(e, game)}>{game.title}</span>
                     </Fragment>
                 </Link>
@@ -33,13 +38,11 @@ const GamesPage = ({ handleClickGameSelection }: GamesPageProps) => {
 
     return (
         <Fragment>
-            <nav>
-                <h2>Select a game</h2>
-                <Link href='/add-game'>+ Add a game</Link>
-            </nav>
-            <ul className={styles.gameGrid}>
-                {gameList}
-            </ul>
+            {displayNav}
+            {gamesData.length > 0
+                ? <ul className={styles.gameGrid}>{gameList}</ul>
+                : <h2>No games? May I suggest adding your pal, Peter Pickle to start?</h2>
+            }
         </Fragment>
     )
 }

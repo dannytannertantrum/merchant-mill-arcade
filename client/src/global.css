@@ -2,6 +2,7 @@
     --borders: #b142c8;
     --button-bg-color: #8A0070;
     --button-bg-hover: #a50087;
+    --default-text-color: #ffffff;
     --label: #ffffff;
     --large-heading: #ffffff;
     --link-color: #22d8b4;
@@ -76,7 +77,7 @@ input[type='submit'] {
     background-color: var(--button-bg-color);
     border: 1px solid var(--borders);
     border-radius: 4px;
-    color: #ffffff;
+    color: var(--default-text-color);
     cursor: pointer;
     padding: 12px;
     transition: background-color ease .5s;
@@ -137,6 +138,10 @@ nav a,
 nav button {
     text-align: right;
     padding-left: 30px;
+}
+
+p {
+    color: var(--default-text-color);
 }
 
 /* 460px is our LARGE_MOBILE size */
