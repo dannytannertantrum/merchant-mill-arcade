@@ -1,7 +1,7 @@
 import { createRef, Fragment, SyntheticEvent, useState } from 'react'
 
 import Modal from '../Modal/Modal'
-import * as styles from './ScorePageStyles'
+import * as styles from './ScoresPageStyles'
 import * as sharedStyles from '../sharedStyles'
 
 
@@ -14,7 +14,7 @@ const fakeData = [
     { initials: 'GLC', score: 60000000 }
 ]
 
-const ScorePage = () => {
+const ScoresPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false)
     // We create a reference to the "Add Your Score" text so focus can return to it after the modal closes
     // This is good for a11y: https://reactjs.org/docs/accessibility.html#programmatically-managing-focus
@@ -83,4 +83,4 @@ const ScorePage = () => {
     )
 }
 
-export default ScorePage
+export default ScoresPage

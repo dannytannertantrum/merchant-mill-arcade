@@ -2,11 +2,11 @@ import React from 'react'
 
 import AddGamePage from './components/AddGamePage/AddGamePage'
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary'
-import HomePage from './components/HomePage/HomePage'
+import GamesPage from './components/GamesPage/GamesPage'
 import Link from './components/Link/Link'
 import logo from './assets/logo.png'
 import Route from './components/Route/Route'
-import ScorePage from './components/ScorePage/ScorePage'
+import ScoresPage from './components/ScoresPage/ScoresPage'
 import './global.css'
 import * as styles from './appStyles'
 
@@ -26,13 +26,13 @@ const App = () => {
             </Link>
             <ErrorBoundary>
                 <Route path='/'>
-                    <HomePage handleClickGameSelection={handleClickGameSelection} />
+                    <GamesPage handleClickGameSelection={handleClickGameSelection} />
                 </Route>
                 <Route path='/add-game'>
                     <AddGamePage />
                 </Route>
                 <Route path={`/scores/${currentGame.slug}`}>
-                    <ScorePage />
+                    <ScoresPage />
                 </Route>
             </ErrorBoundary>
         </div>

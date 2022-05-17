@@ -1,6 +1,6 @@
 import { Fragment } from 'react'
 
-import * as styles from './HomePageStyles'
+import * as styles from './GamesPageStyles'
 import Link from '../Link/Link'
 
 
@@ -13,11 +13,11 @@ const fakeData = [
     { id: '6', slug: 'ms-pac-man', title: 'Ms. Pac Man', imageUrl: 'https://i0.wp.com/arcademarquee.com/wp-content/uploads/2015/02/ms-pacman_marquee_23x9-scaled.jpg' },
 ]
 
-interface HomePageProps {
+interface GamesPageProps {
     handleClickGameSelection: (event: React.MouseEvent, gameData: any) => any
 }
 
-const HomePage = ({ handleClickGameSelection }: HomePageProps) => {
+const GamesPage = ({ handleClickGameSelection }: GamesPageProps) => {
     const gameList = (
         fakeData.map(game => (
             <li key={game.id}>
@@ -44,4 +44,4 @@ const HomePage = ({ handleClickGameSelection }: HomePageProps) => {
     )
 }
 
-export default HomePage
+export default GamesPage
