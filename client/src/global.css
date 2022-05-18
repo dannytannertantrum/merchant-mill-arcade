@@ -142,6 +142,7 @@ nav button {
 
 p {
     color: var(--default-text-color);
+    margin: 0 0 20px;
 }
 
 /* 460px is our LARGE_MOBILE size */

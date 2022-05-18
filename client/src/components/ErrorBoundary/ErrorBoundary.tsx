@@ -1,4 +1,3 @@
-import { css } from 'goober'
 import { Component, ErrorInfo, ReactNode } from 'react'
 
 
@@ -27,16 +26,8 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
 
     public render() {
         if (this.state.hasError) {
-            // Render a custom fallback UI
-            return (
-                <div className={css`display: flex; justify-content: center; align-items: center; flex-direction: column;`}>
-                    <h1 className={css`text-align: center;`}>An Error Is You</h1>
-                    <img
-                        className={css`display: block;`}
-                        src='https://64.media.tumblr.com/3dcff8b3e5337893f065c2622546a290/tumblr_nshfz4FL2x1u0rseao1_540.gifv'
-                    />
-                </div>
-            )
+            // Direct user to Fallback UI, based on routing in App.tsx
+            return window.location.pathname = '/error'
         }
 
         return this.props.children

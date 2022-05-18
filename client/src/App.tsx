@@ -3,6 +3,7 @@ import React from 'react'
 import AddGamePage from './components/AddGamePage/AddGamePage'
 import AllGamesPage from './components/AllGamesPage/AllGamesPage'
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary'
+import ErrorPage from './components/ErrorPage/ErrorPage'
 import GamePage from './components/GamePage/GamePage'
 import Link from './components/Link/Link'
 import logo from './assets/logo.png'
@@ -27,6 +28,9 @@ const App = () => {
                 <img src={logo} alt='logo - return to homepage' />
             </Link>
             <ErrorBoundary>
+                <Route path='/error'>
+                    <ErrorPage />
+                </Route>
                 <GamesContextProvider>
                     <Route path='/'>
                         <AllGamesPage handleClickGameSelection={handleClickGameSelection} />
