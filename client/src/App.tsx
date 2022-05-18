@@ -9,7 +9,7 @@ import Route from './components/Route/Route'
 import ScoresPage from './components/ScoresPage/ScoresPage'
 import './global.css'
 import * as styles from './appStyles'
-import { GamesContext, GamesContextProvider } from './contexts/GamesContext'
+import { GamesContextProvider } from './contexts/GamesContext'
 
 
 const App = () => {
