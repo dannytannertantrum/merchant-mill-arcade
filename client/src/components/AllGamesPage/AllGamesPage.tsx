@@ -1,7 +1,7 @@
 import { css } from 'goober'
 import { Fragment, useContext } from 'react'
 
-import * as styles from './GamesPageStyles'
+import * as styles from './AllGamesPageStyles'
 import Link from '../Link/Link'
 import { GamesContext } from '../../contexts/GamesContext'
 
@@ -10,7 +10,7 @@ interface GamesPageProps {
     handleClickGameSelection: (event: React.MouseEvent, gameData: any) => any
 }
 
-const GamesPage = ({ handleClickGameSelection }: GamesPageProps) => {
+const AllGamesPage = ({ handleClickGameSelection }: GamesPageProps) => {
     const gamesData = useContext(GamesContext)
 
     const displayNav = (
@@ -26,7 +26,7 @@ const GamesPage = ({ handleClickGameSelection }: GamesPageProps) => {
     const gameList = (
         gamesData.map(game => (
             <li key={game.id}>
-                <Link href={`/scores/${game.slug}`} className={styles.gameLink}>
+                <Link href={`/game/${game.slug}`} className={styles.gameLink}>
                     <Fragment>
                         {game.imageUrl && <span className={styles.marquee(game.imageUrl)}></span>}
                         <span className={styles.gameTitle} onClick={(e) => handleClickGameSelection(e, game)}>{game.title}</span>
@@ -47,4 +47,4 @@ const GamesPage = ({ handleClickGameSelection }: GamesPageProps) => {
     )
 }
 
-export default GamesPage
+export default AllGamesPage

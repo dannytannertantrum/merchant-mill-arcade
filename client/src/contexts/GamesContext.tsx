@@ -31,6 +31,7 @@ const GamesContextProvider = ({ children }: GamesProviderProps) => {
 
     const display = () => {
         // TODO Make better loading state
+        if (isLoading && isFetchError) return <ClientError content={'games'} />
         if (isLoading) return <h1>Loading...</h1>
         if (isFetchError) return <ClientError content={'games'} />
 

@@ -1,12 +1,12 @@
 import React from 'react'
 
 import AddGamePage from './components/AddGamePage/AddGamePage'
+import AllGamesPage from './components/AllGamesPage/AllGamesPage'
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary'
-import GamesPage from './components/GamesPage/GamesPage'
+import GamePage from './components/GamePage/GamePage'
 import Link from './components/Link/Link'
 import logo from './assets/logo.png'
 import Route from './components/Route/Route'
-import ScoresPage from './components/ScoresPage/ScoresPage'
 import './global.css'
 import * as styles from './appStyles'
 import { GamesContextProvider } from './contexts/GamesContext'
@@ -29,13 +29,13 @@ const App = () => {
             <ErrorBoundary>
                 <GamesContextProvider>
                     <Route path='/'>
-                        <GamesPage handleClickGameSelection={handleClickGameSelection} />
+                        <AllGamesPage handleClickGameSelection={handleClickGameSelection} />
                     </Route>
                     <Route path='/add-game'>
                         <AddGamePage />
                     </Route>
-                    <Route path={`/scores/${currentGame.slug}`}>
-                        <ScoresPage />
+                    <Route path={`/game/${currentGame.slug}`}>
+                        <GamePage />
                     </Route>
                 </GamesContextProvider>
             </ErrorBoundary>
