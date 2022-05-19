@@ -28,6 +28,7 @@ const gameLink = css`
     flex-direction: column;
     align-items: center;
     position: relative;
+    cursor: pointer;
 
     &::before {
         content: '';

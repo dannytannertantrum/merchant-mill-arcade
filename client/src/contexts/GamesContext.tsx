@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect } from 'react'
 
 import { AllGamesData } from '../../../common/games.types'
-import getGames from '../apis/games'
+import { getGames } from '../apis/games'
 import FetchError from '../components/FetchError/FetchError'
 
 

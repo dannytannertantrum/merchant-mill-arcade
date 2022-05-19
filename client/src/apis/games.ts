@@ -1,5 +1,12 @@
-import { AllGamesData } from "../../../common/games.types"
+import { AllGamesData, GameData } from "../../../common/games.types"
 
+
+const getGame = async (id: string) => {
+    const response = await fetch(`${process.env.BASE_URL}/games/${id}`)
+    const game: GameData = await response.json()
+
+    return game
+}
 
 const getGames = async () => {
     const response = await fetch(`${process.env.BASE_URL}/games`)
@@ -8,4 +15,7 @@ const getGames = async () => {
     return data
 }
 
-export default getGames
+export {
+    getGame,
+    getGames
+}

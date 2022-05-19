@@ -4,10 +4,11 @@ import { Fragment, useContext } from 'react'
 import * as styles from './AllGamesPageStyles'
 import Link from '../Link/Link'
 import { GamesContext } from '../../contexts/GamesContext'
+import { GameData } from '../../../../common/games.types'
 
 
 interface GamesPageProps {
-    handleClickGameSelection: (event: React.MouseEvent, gameData: any) => any
+    handleClickGameSelection: (event: React.MouseEvent, gameData: GameData) => void
 }
 
 const AllGamesPage = ({ handleClickGameSelection }: GamesPageProps) => {
@@ -26,12 +27,12 @@ const AllGamesPage = ({ handleClickGameSelection }: GamesPageProps) => {
     const gameList = (
         gamesData.map(game => (
             <li key={game.id}>
-                <Link href={`/game/${game.slug}`} className={styles.gameLink}>
+                <a onClick={(e) => handleClickGameSelection(e, game)} className={styles.gameLink}>
                     <Fragment>
                         {game.imageUrl && <span className={styles.marquee(game.imageUrl)}></span>}
-                        <span className={styles.gameTitle} onClick={(e) => handleClickGameSelection(e, game)}>{game.title}</span>
+                        <span className={styles.gameTitle}>{game.title}</span>
                     </Fragment>
-                </Link>
+                </a>
             </li>
         ))
     )
@@ -41,7 +42,7 @@ const AllGamesPage = ({ handleClickGameSelection }: GamesPageProps) => {
             {displayNav}
             {gamesData.length > 0
                 ? <ul className={styles.gameGrid}>{gameList}</ul>
-                : <h2>No games? May I suggest adding your pal, Peter Pickle to start?</h2>
+                : <h2>No games? May I suggest adding your pal, Peter Peppers to start?</h2>
             }
         </Fragment>
     )
