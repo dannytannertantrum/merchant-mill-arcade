@@ -27,81 +27,16 @@ const fakeData = [
 ]
 
 interface GamePageProps {
-    currentGame: GameData | null
-}
-
-interface Action {
-    type: string
-    isLoading: boolean
-    payload?: GameData
+    game?: GameData | null
     error?: string
-}
-
-interface State {
-    game: GameData | null
     isLoading: boolean
-    error: string
 }
 
-const INITIAL_STATE = {
-    game: {
-        id: '',
-        description: null,
-        imageUrl: null,
-        isDeleted: false,
-        slug: '',
-        title: '',
-        createdAt: '',
-        updatedAt: null
-    },
-    isLoading: true,
-    error: ''
-}
-
-const gamePageReducer = (state: State, action: Action) => {
-    switch (action.type) {
-        case 'GET_DATA':
-            return { ...state, isLoading: true }
-        case 'GET_DATA_SUCCESS':
-            return { ...state, game: action.payload, isLoading: false }
-        case 'GET_DATA_ERROR':
-            return { isLoading: false, error: action.error, game: null }
-        case 'USE_PASSED_GAME_VALUE':
-            return { ...state, game: action.payload, isLoading: false }
-        default:
-            throw new Error(`Unknown action type: ${action}`)
-    }
-}
-
-const GamePage = ({ currentGame }: GamePageProps) => {
-    const gamesData = useContext(GamesContext)
-    const [state, dispatch] = useReducer(gamePageReducer, INITIAL_STATE)
+const GamePage = (gameState: GamePageProps): JSX.Element => {
     const [isModalOpen, setIsModalOpen] = useState(false)
     // We create a reference to the "Add Your Score" text so focus can return to it after the modal closes
     // This is good for a11y: https://reactjs.org/docs/accessibility.html#programmatically-managing-focus
     const addYourScoreRef: React.RefObject<HTMLButtonElement> = createRef()
-
-    useEffect(() => {
-        if (!currentGame) {
-            dispatch({ type: 'GET_DATA', isLoading: true })
-
-            const getSlugFromPathname = window.location.pathname.replace('/games/', '')
-            const gameId = gamesData
-                .filter(game => game.slug === getSlugFromPathname)
-                .map(filteredResult => filteredResult.id)
-                .join('')
-
-            getGame(gameId).then((gameReturned) => {
-                dispatch({ type: 'GET_DATA_SUCCESS', payload: gameReturned, isLoading: false })
-            }).catch(reason => {
-                dispatch({ type: 'GET_DATA_ERROR', error: reason, isLoading: false })
-            })
-
-        } else {
-            dispatch({ type: 'USE_PASSED_GAME_VALUE', payload: currentGame, isLoading: false })
-        }
-
-    }, [currentGame])
 
     const handleOnSubmit = (event: SyntheticEvent) => {
         event.preventDefault()
@@ -144,15 +79,15 @@ const GamePage = ({ currentGame }: GamePageProps) => {
         ))
     )
 
-    if (state.isLoading && state.error !== '' || state.error !== '') {
+    if (!gameState.isLoading && gameState.error !== '' || gameState.error !== '') {
         return <FetchError content={'games'} />
     }
 
-    if (state.isLoading) {
+    if (gameState.isLoading) {
         return <h1>Loading...</h1>
     }
 
-    if (!state.isLoading && !state.game) {
+    if (!gameState.isLoading && !gameState.game) {
         return (
             <h1>No game here, man.</h1>
         )
@@ -160,7 +95,7 @@ const GamePage = ({ currentGame }: GamePageProps) => {
 
     return (
         <Fragment>
-            {state.game?.imageUrl && <img src={state.game.imageUrl} className={styles.gameMarquee} />}
+            {gameState.game?.imageUrl && <img src={gameState.game.imageUrl} className={styles.gameMarquee} />}
             <nav>
                 <h2>Top 5 Scores</h2>
                 <button className={styles.addScoreButton} onClick={() => setIsModalOpen(!isModalOpen)} ref={addYourScoreRef}>
