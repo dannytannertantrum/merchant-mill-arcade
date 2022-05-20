@@ -5,6 +5,7 @@ import {
     useState
 } from 'react'
 
+import { DEFAULT_MARQUEE } from '../../utils/constants'
 import FetchError from '../FetchError/FetchError'
 import { GameData } from '../../../../common/games.types'
 import Loading from '../Loading/Loading'
@@ -76,6 +77,16 @@ const GamePage = (gameState: GamePageProps): JSX.Element => {
         ))
     )
 
+    const displayMarquee = (
+        gameState.game?.imageUrl
+            ? <img src={gameState.game.imageUrl} className={styles.gameMarquee} alt={gameState.game?.title} />
+            : <img
+                src={DEFAULT_MARQUEE}
+                className={styles.gameMarquee}
+                alt={gameState.game?.title}
+            />
+    )
+
     if (!gameState.isLoading && gameState.error !== '' || gameState.error !== '') {
         return <FetchError content={'games'} />
     }
@@ -92,7 +103,7 @@ const GamePage = (gameState: GamePageProps): JSX.Element => {
 
     return (
         <Fragment>
-            {gameState.game?.imageUrl && <img src={gameState.game.imageUrl} className={styles.gameMarquee} />}
+            {displayMarquee}
             <nav>
                 <h2>Top 5 Scores</h2>
                 <button className={styles.addScoreButton} onClick={() => setIsModalOpen(!isModalOpen)} ref={addYourScoreRef}>

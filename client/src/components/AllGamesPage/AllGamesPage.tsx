@@ -1,6 +1,7 @@
 import { css } from 'goober'
 import { Fragment, useContext } from 'react'
 
+import { DEFAULT_MARQUEE } from '../../utils/constants'
 import * as styles from './AllGamesPageStyles'
 import Link from '../Link/Link'
 import { GamesContext } from '../../contexts/GamesContext'
@@ -29,7 +30,10 @@ const AllGamesPage = ({ handleClickGameSelection }: GamesPageProps) => {
             <li key={game.id}>
                 <a href={`/games/${game.slug}`} onClick={(e) => handleClickGameSelection(e, game)} className={styles.gameLink}>
                     <Fragment>
-                        {game.imageUrl && <span className={styles.marquee(game.imageUrl)}></span>}
+                        {game.imageUrl
+                            ? <span className={styles.marquee(game.imageUrl)}></span>
+                            : <span className={styles.marquee(DEFAULT_MARQUEE)}></span>
+                        }
                         <span className={styles.gameTitle}>{game.title}</span>
                     </Fragment>
                 </a>
