@@ -7,9 +7,11 @@ import {
 
 import FetchError from '../FetchError/FetchError'
 import { GameData } from '../../../../common/games.types'
+import Loading from '../Loading/Loading'
 import Modal from '../Modal/Modal'
 import * as styles from './GamePageStyles'
 import * as sharedStyles from '../sharedStyles'
+import NotFoundPage from '../NotFoundPage/NotFoundPage'
 
 
 // When replacing with real data, do ORDER BY DESC high scores
@@ -79,12 +81,12 @@ const GamePage = (gameState: GamePageProps): JSX.Element => {
     }
 
     if (gameState.isLoading) {
-        return <h1>Loading...</h1>
+        return <Loading />
     }
 
     if (!gameState.isLoading && !gameState.game) {
         return (
-            <h1>No game here, man.</h1>
+            <NotFoundPage message="Hmmm...we had trouble finding that game." />
         )
     }
 

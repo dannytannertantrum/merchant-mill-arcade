@@ -4,6 +4,7 @@ import { AllGamesData } from '../../../common/games.types'
 import { getGames } from '../apis/games'
 import FetchError from '../components/FetchError/FetchError'
 import Link from '../components/Link/Link'
+import Loading from '../components/Loading/Loading'
 import logo from '../assets/logo.png'
 import * as styles from '../components/sharedStyles'
 
@@ -44,9 +45,8 @@ const GamesContextProvider = ({ children }: GamesProviderProps) => {
             )
         }
 
-        // TODO Make better loading state
         if (isLoading) {
-            return <h1>Loading...</h1>
+            return <Loading />
         }
 
         return children

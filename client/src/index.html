@@ -14,12 +14,38 @@
 	<!-- <link rel='manifest' href='manifest.json' /> -->
 	<link rel='preconnect' href='https://fonts.gstatic.com'>
 	<link href='https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap' rel='stylesheet'>
+	<style>
+		.loading {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin-top: 100px;
+		}
+
+		.loading img {
+			animation: spin 3s linear infinite;
+		}
+
+		@keyframes spin {
+			from {
+				transform: rotate(-360deg);
+			}
+
+			to {
+				transform: rotate(360deg);
+			}
+		}
+	</style>
 	<title>Merchant Mill Arcade</title>
 </head>
 
 <body>
 	<canvas width='1920' height='1080'></canvas>
-	<div id='root'></div>
+	<div id='root'>
+		<div class='loading'>
+			<img src='./assets/mrHotDog.png' alt='Mr. Hot Dog from Burger Time' />
+		</div>
+	</div>
 	<div id='modal-root'></div>
 	<noscript>
 		You need to enable JavaScript to run this app.
