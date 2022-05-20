@@ -27,7 +27,7 @@ const AllGamesPage = ({ handleClickGameSelection }: GamesPageProps) => {
     const gameList = (
         gamesData.map(game => (
             <li key={game.id}>
-                <a onClick={(e) => handleClickGameSelection(e, game)} className={styles.gameLink}>
+                <a href={`/games/${game.slug}`} onClick={(e) => handleClickGameSelection(e, game)} className={styles.gameLink}>
                     <Fragment>
                         {game.imageUrl && <span className={styles.marquee(game.imageUrl)}></span>}
                         <span className={styles.gameTitle}>{game.title}</span>

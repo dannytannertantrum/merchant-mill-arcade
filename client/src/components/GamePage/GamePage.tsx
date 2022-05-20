@@ -2,16 +2,11 @@ import {
     createRef,
     Fragment,
     SyntheticEvent,
-    useContext,
-    useEffect,
-    useReducer,
     useState
 } from 'react'
 
 import FetchError from '../FetchError/FetchError'
-import { getGame } from '../../apis/games'
 import { GameData } from '../../../../common/games.types'
-import { GamesContext } from '../../contexts/GamesContext'
 import Modal from '../Modal/Modal'
 import * as styles from './GamePageStyles'
 import * as sharedStyles from '../sharedStyles'

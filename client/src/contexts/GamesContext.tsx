@@ -1,8 +1,11 @@
-import { createContext, useState, useEffect } from 'react'
+import { createContext, useState, useEffect, Fragment } from 'react'
 
 import { AllGamesData } from '../../../common/games.types'
 import { getGames } from '../apis/games'
 import FetchError from '../components/FetchError/FetchError'
+import Link from '../components/Link/Link'
+import logo from '../assets/logo.png'
+import * as styles from '../components/sharedStyles'
 
 
 interface GamesProviderProps {
@@ -30,9 +33,21 @@ const GamesContextProvider = ({ children }: GamesProviderProps) => {
     }, [])
 
     const display = () => {
+        if (isLoading && isFetchError || isFetchError) {
+            return (
+                <Fragment>
+                    <Link href='/' className={styles.logoWrapper}>
+                        <img src={logo} alt='logo - return to homepage' />
+                    </Link>
+                    <FetchError content={'games'} />
+                </Fragment>
+            )
+        }
+
         // TODO Make better loading state
-        if (isLoading && isFetchError || isFetchError) return <FetchError content={'games'} />
-        if (isLoading) return <h1>Loading...</h1>
+        if (isLoading) {
+            return <h1>Loading...</h1>
+        }
 
         return children
     }
