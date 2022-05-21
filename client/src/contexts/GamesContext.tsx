@@ -65,9 +65,8 @@ const GamesContextProvider = ({ children }: GamesProviderProps) => {
                 setIsLoading(false)
                 setGames(response)
             })
-            .catch(reason => {
+            .catch(_reason => {
                 setIsFetchError(true)
-                console.log(`This error occurred when trying to get all games: ${reason}`)
             })
     }, [])
 

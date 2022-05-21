@@ -107,8 +107,6 @@ const AddGamePage = () => {
         )
     }
 
-    { console.log(errors.existingGame) }
-
     return (
         <Fragment>
             <h1 className={sharedStyles.heading}>Add a game</h1>
