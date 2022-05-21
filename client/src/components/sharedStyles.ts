@@ -6,6 +6,10 @@ const errorImage = css`
     margin-bottom: 30px;
 `
 
+const errorText = css`
+    color: var(--error);
+`
+
 const errorWrapper = css`
     display: flex;
     justify-content: center;
@@ -17,6 +21,24 @@ const errorWrapper = css`
 
     a {
         cursor: pointer;
+    }
+`
+
+const labelError = css`
+    color: var(--error);
+
+    input[type='text'] {
+        border: 2px solid var(--error);
+        box-shadow: inset 3px 3px 3px var(--error),
+            inset -3px -3px 3px var(--error),
+            inset 0px 0px 20px var(--error);
+    }
+
+    p {
+        color: var(--error);
+        font-size: 12px;
+        margin-top: 10px;
+        text-transform: none;
     }
 `
 
@@ -32,7 +54,9 @@ const logoWrapper = css`
 
 export {
     errorImage,
+    errorText,
     errorWrapper,
+    labelError,
     heading,
     logoWrapper
 }
