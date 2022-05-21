@@ -5,20 +5,21 @@ import AddGamePage from '../../components/AddGamePage/AddGamePage'
 import AllGamesPage from '../../components/AllGamesPage/AllGamesPage'
 import ErrorBoundary from '../../components/ErrorBoundary/ErrorBoundary'
 import ErrorPage from '../../components/ErrorPage/ErrorPage'
+import { FETCH_ERROR, FETCH_IN_PROGRESS, GET_GAME, GET_GAMES } from '../../utils/constants'
 import GamePage from '../../components/GamePage/GamePage'
-import { gameReducer, INITIAL_GAME_STATE } from '../../reducers/game.reducer'
-import { getGame } from '../../apis/games'
-import Link from '../../components/Link/Link'
-import logo from '../../assets/logo.png'
-import Route from '../../components/Route/Route'
-import * as styles from '../sharedStyles'
 import { GamesContext } from '../../contexts/GamesContext'
 import { GameData } from '../../../../common/games.types'
+import { gameReducer, INITIAL_GAME_STATE } from '../../reducers/game.reducer'
+import { getGame } from '../../apis/games.apis'
+import Link from '../../components/Link/Link'
+import logo from '../../assets/logo.png'
 import NotFoundPage from '../NotFoundPage/NotFoundPage'
+import Route from '../../components/Route/Route'
+import * as styles from '../sharedStyles'
 
 
 const Arcade = () => {
-    const gamesData = useContext(GamesContext)
+    const { allGames } = useContext(GamesContext)
     const [state, dispatch] = useReducer(gameReducer, INITIAL_GAME_STATE)
 
     const [currentGamePathname, setCurrentGamePathname] = useState('')
@@ -27,7 +28,7 @@ const Arcade = () => {
     const firstUpdate = useRef(true)
 
     const validRoutes = ['/', '/add-game', '/error']
-    gamesData.forEach(game => validRoutes.push(`/games/${game.slug}`))
+    allGames.forEach(game => validRoutes.push(`/games/${game.slug}`))
 
     const gameSlugRegex = /^\/games\/(\w|-)+$/
 
@@ -44,20 +45,20 @@ const Arcade = () => {
 
     useEffect(() => {
         if (firstUpdate.current && gameSlugRegex.test(window.location.pathname)) {
-            dispatch({ type: 'GET_DATA', isLoading: true })
+            dispatch({ type: FETCH_IN_PROGRESS, isLoading: true })
 
             const getSlugFromPathname = window.location.pathname.replace('/games/', '')
-            const gameId = gamesData
+            const gameId = allGames
                 .filter(game => game.slug === getSlugFromPathname)[0]
                 ?.id
 
             if (gameId) {
                 getGame(gameId).then((gameReturned) => {
-                    dispatch({ type: 'GET_DATA_SUCCESS', payload: gameReturned, isLoading: false })
+                    dispatch({ type: GET_GAMES, payload: gameReturned, isLoading: false })
                 }).then(() => {
                     setCurrentGamePathname(window.location.pathname)
                 }).catch(reason => {
-                    dispatch({ type: 'GET_DATA_ERROR', error: reason, isLoading: false })
+                    dispatch({ type: FETCH_ERROR, error: reason, isLoading: false })
                 })
             } else {
                 return
@@ -81,7 +82,7 @@ const Arcade = () => {
     const handleClickGameSelection = (e: React.MouseEvent, game: GameData): void => {
         e.preventDefault()
 
-        dispatch({ type: 'USE_PASSED_GAME_VALUE', payload: game, isLoading: false })
+        dispatch({ type: GET_GAME, payload: game, isLoading: false })
         setCurrentGamePathname(`/games/${game.slug}`)
 
         // This is a simple way to tell our useEffect above that someone clicked
