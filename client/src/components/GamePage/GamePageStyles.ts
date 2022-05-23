@@ -34,7 +34,6 @@ const closeModalButton = css`
 `
 
 const gameMarquee = css`
-    display: block;
     width: 500px;
     margin: 0 auto 40px;
 `

@@ -1,8 +1,19 @@
-import { ChangeEvent, Fragment, MouseEvent, SyntheticEvent, useContext, useState } from 'react'
-
-import FetchException from '../../utils/custom-exceptions'
+import {
+    ChangeEvent,
+    Fragment,
+    MouseEvent,
+    SyntheticEvent,
+    useContext,
+    useReducer,
+    useState
+} from 'react'
+import { DEFAULT_MARQUEE, FETCH_IN_PROGRESS, FETCH_ERROR, GET_IMAGES } from '../../utils/constants'
+import { FetchException } from '../../utils/custom-exceptions'
 import { GameData } from '../../../../common/games.types'
 import { GamesContext } from '../../contexts/GamesContext'
+import { getImages } from '../../apis/imageSearch.api'
+import { imageSearchReducer, INITIAL_IMAGE_SEARCH_STATE } from '../../reducers/imageSearch.reducer'
+import Loading from '../Loading/Loading'
 import * as sharedStyles from '../sharedStyles'
 import * as styles from './AddGamePageStyles'
 
@@ -12,19 +23,31 @@ interface ErrorHandling {
     isFetchException: FetchException | null
     isFormTouched: boolean
 }
+interface FormControlFlow {
+    imageSelection: string
+    showImageSearch: boolean
+    title: string
+}
 
 const DEFAULT_ERROR_HANDLING: ErrorHandling = {
     existingGame: '',
     isFetchException: null,
     isFormTouched: false
 }
+const DEFAULT_FORM_CONTROL_FLOW: FormControlFlow = {
+    imageSelection: '',
+    showImageSearch: false,
+    title: ''
+}
 
 const AddGamePage = () => {
     const { allGames, createGame } = useContext(GamesContext)
+    const [state, dispatch] = useReducer(imageSearchReducer, INITIAL_IMAGE_SEARCH_STATE)
 
-    const [titleValue, setTitleValue] = useState('')
+    const [formControl, setFormControl] = useState<FormControlFlow>(DEFAULT_FORM_CONTROL_FLOW)
     const [errors, setErrors] = useState<ErrorHandling>(DEFAULT_ERROR_HANDLING)
-    const [response, setResponse] = useState<GameData | null>(null)
+    const [selectedImage, setSelectedImage] = useState<string>(DEFAULT_MARQUEE)
+    const [gameCreated, setGameCreated] = useState<GameData | null>(null)
 
     const handleSuccessMessageReload = (event: MouseEvent) => {
         event.preventDefault()
@@ -32,56 +55,98 @@ const AddGamePage = () => {
         window.location.reload()
     }
 
-    const handleOnSubmit = async (event: SyntheticEvent) => {
+    const handleShowImageSelection = (event: SyntheticEvent) => {
         event.preventDefault()
 
-        if (titleValue.trim() === '' || errors.existingGame !== '') {
-            setErrors(state => ({ ...state, isFormTouched: true }))
+        if (formControl.title.trim() === '' || errors.existingGame !== '') {
+            setErrors(errorState => ({ ...errorState, isFormTouched: true }))
             return
         }
 
-        const submitResponse = await createGame(titleValue).catch((reason: FetchException) => {
-            setErrors(state => ({ ...state, isFetchException: reason }))
+        dispatch({ type: FETCH_IN_PROGRESS, isLoading: true })
+
+        getImages(formControl.title.trim()).then((imagesReturned) => {
+            // We need to type narrow here or TS gets really upset
+            if (imagesReturned.isSuccess) {
+                dispatch({ type: GET_IMAGES, isLoading: false, payload: imagesReturned })
+            }
+        }).catch(reason => {
+            dispatch({ type: FETCH_ERROR, isLoading: false, payload: reason })
         })
 
-        if (errors.isFetchException === null && submitResponse) setResponse(submitResponse)
+        setFormControl(formState => ({ ...formState, showImageSearch: true }))
+    }
+
+    const handleOnSubmit = async (event: SyntheticEvent) => {
+        event.preventDefault()
+
+        const submitResponse = await createGame(formControl.title).catch((reason: FetchException) => {
+            setErrors(errorState => ({ ...errorState, isFetchException: reason }))
+        })
+
+        if (errors.isFetchException === null && submitResponse) setGameCreated(submitResponse)
     }
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const { value } = event.currentTarget
         const allTitles = allGames.map(game => game.title.toLowerCase())
-        const matchingTitle = allTitles.filter(title => title === event.currentTarget.value.toLowerCase().trim())[0]
+        const matchingTitle = allTitles.filter(gameTitle => gameTitle === value.toLowerCase().trim())[0]
 
         if (matchingTitle && matchingTitle.length > 0) {
-            setErrors(state => ({ ...state, existingGame: matchingTitle }))
+            setErrors(errorState => ({ ...errorState, existingGame: matchingTitle }))
         } else {
-            setErrors(state => ({ ...state, existingGame: '' }))
+            setErrors(errorState => ({ ...errorState, existingGame: '' }))
         }
 
-        setErrors(state => ({ ...state, isFormTouched: true }))
-        setTitleValue(event.currentTarget.value)
+        setErrors(errorState => ({ ...errorState, isFormTouched: true }))
+        setFormControl(formState => ({ ...formState, title: value }))
     }
 
     const displayForm = (
         <form onSubmit={handleOnSubmit}>
-            <label
-                htmlFor='addGameTitle'
-                className={errors.isFormTouched && titleValue.trim() === '' || errors.existingGame ? sharedStyles.labelError : ''}
-            >
-                Enter a title
-                <input
-                    id='addGameTitle'
-                    onChange={handleInputChange}
-                    type='text'
-                    value={titleValue}
-                />
-                {errors.isFormTouched && titleValue.trim() === '' && <p>Title is required</p>}
-                {errors.existingGame !== '' && <p>{errors.existingGame} is already in the arcade! Please enter a different title.</p>}
-            </label>
-            {
-                //
-                // Pull in image search API and search based off the title
-            }
-            <input type='submit' value='Submit' />
+            {formControl.showImageSearch === false && (
+                <Fragment>
+                    <label
+                        htmlFor='addGameTitle'
+                        className={errors.isFormTouched && formControl.title.trim() === '' || errors.existingGame ? sharedStyles.errorLabel : ''}
+                    >
+                        Enter a title
+                        <input
+                            id='addGameTitle'
+                            onChange={handleInputChange}
+                            type='text'
+                            value={formControl.title}
+                        />
+                        {errors.isFormTouched && formControl.title.trim() === '' && <p>Title is required</p>}
+                        {errors.existingGame !== '' && <p>{errors.existingGame} is already in the arcade! Please enter a different title.</p>}
+                    </label>
+                    <button className={sharedStyles.buttonPurple} onClick={handleShowImageSelection}>Next</button>
+                </Fragment>
+            )}
+
+            {formControl.showImageSearch && state.data?.isSuccess && (
+                <Fragment>
+                    <p>Almost there! Select an image for <span className={sharedStyles.highlight}>{formControl.title}</span>.
+                        If no image is selected or we cannot find a suitable marquee, we'll use the default currently selected.</p>
+                    <div className={styles.currentMarqueeSelection}>
+                        <h3>Current Selection</h3>
+                        <img src={selectedImage} alt={`${formControl.title} arcade marquee`} />
+                    </div>
+                    {state.data?.isSuccess && state.data.searchResults.items
+                        ? <ul className={sharedStyles.gameGrid}>
+                            {state.data.searchResults.items.map((image, index) => (
+                                <li key={index}>
+                                    <button onClick={() => setSelectedImage(image['link'])} className={sharedStyles.gameLink}>
+                                        <span className={sharedStyles.marquee(image['link'])}></span>
+                                    </button>
+                                    <span className={sharedStyles.gameTitle}>{`Selection ${index}`}</span>
+                                </li>
+                            ))}
+                        </ul>
+                        : <p>No images were returned - looks like default it is!</p>}
+                    <input type='submit' value='Submit' />
+                </Fragment>
+            )}
         </form>
     )
 
@@ -90,17 +155,17 @@ const AddGamePage = () => {
             <div className={styles.submitMessage}>
                 <h1 className={sharedStyles.errorText}>Status code: {errors.isFetchException.statusCode} {errors.isFetchException.error}</h1>
                 <p>
-                    Whatever that means, amirite?? Slippery Pete says, "<span>{errors.isFetchException.message}</span>."
+                    Whatever that means, amirite?? Slippery Pete says, "<span className={sharedStyles.highlight}>{errors.isFetchException.message}</span>."
                     &nbsp;Why don't you <a href='/add-game' onClick={handleSuccessMessageReload}>try again</a>, eh?
                 </p>
             </div>
         )
     }
 
-    if (errors.isFetchException === null && response) {
+    if (errors.isFetchException === null && gameCreated) {
         return (
             <div className={styles.submitMessage}>
-                <p>Congratulations! You just added <span>{response.title}</span> to the Merchant Mill Arcade! Go <a href={`/games/${response.slug}`}>
+                <p>Congratulations! You just added <span>{gameCreated.title}</span> to the Merchant Mill Arcade! Go <a href={`/games/${gameCreated.slug}`}>
                     add some scores</a> or <a href='/add-game' onClick={handleSuccessMessageReload}>create another game</a>
                 </p>
             </div>
@@ -110,7 +175,10 @@ const AddGamePage = () => {
     return (
         <Fragment>
             <h1 className={sharedStyles.heading}>Add a game</h1>
-            {response === null && displayForm}
+            {state.isLoading === true
+                ? <Loading />
+                : gameCreated === null && displayForm
+            }
         </Fragment>
     )
 }

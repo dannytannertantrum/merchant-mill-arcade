@@ -1,5 +1,29 @@
 import { css } from 'goober'
+import { DESKTOP, LARGE_MOBILE } from '../utils/breakpoints'
 
+
+const buttonPurple = css`
+    background-color: var(--button-bg-color);
+    border: 1px solid var(--borders);
+    border-radius: 4px;
+    color: var(--default-text-color);
+    cursor: pointer;
+    padding: 12px;
+    transition: background-color ease .5s;
+    width: 150px;
+    font-family: 'Press Start 2P', monospace, sans-serif;
+    font-size: 16px;
+    text-transform: uppercase;
+
+    &:hover {
+        background-color: var(--button-bg-hover);
+    }
+
+    &:active {
+        box-shadow: inset 1px 1px 7px rgba(0, 0, 0, .5), inset -1px -1px 7px rgba(0, 0, 0, .5);
+        font-size: .95em;
+    }
+`
 
 const errorImage = css`
     max-width: 400px;
@@ -24,7 +48,7 @@ const errorWrapper = css`
     }
 `
 
-const labelError = css`
+const errorLabel = css`
     color: var(--error);
 
     input[type='text'] {
@@ -42,8 +66,69 @@ const labelError = css`
     }
 `
 
+// ul
+const gameGrid = css`
+    column-gap: 30px;
+    display: grid;
+    grid-template-columns: 1fr;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    row-gap: 30px;
+
+    @media screen and (min-width: ${LARGE_MOBILE}px) {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    @media screen and (min-width: ${DESKTOP}px) {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+`
+
+// ul li a
+const gameLink = css`
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    width: 100%;
+
+    &:hover,
+    &:active {
+        background: transparent;
+        box-shadow: none;
+    }
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        transition: opacity ease .4s, background-color ease .4s;
+        z-index: 2;
+    }
+
+    &:hover::before {
+        background-color: var(--link-color-hover);
+        opacity: .2;
+    }
+`
+
+// span
+const gameTitle = css`
+    margin: 10px 0;
+    text-align: center;
+`
+
 const heading = css`
     text-align: center;
+`
+
+const highlight = css`
+    color: var(--highlight);
 `
 
 const logoWrapper = css`
@@ -52,11 +137,28 @@ const logoWrapper = css`
     max-width: 350px;
 `
 
+const marquee = (bgImage: string) => css`
+    background-image: url(${bgImage});
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    height: 100px;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+`
+
 export {
+    buttonPurple,
     errorImage,
     errorText,
     errorWrapper,
-    labelError,
+    errorLabel,
+    gameGrid,
+    gameLink,
+    gameTitle,
     heading,
-    logoWrapper
+    highlight,
+    logoWrapper,
+    marquee
 }

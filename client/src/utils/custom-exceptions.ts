@@ -1,3 +1,9 @@
+interface ResponseNotOk {
+    error: string
+    message: string
+    statusCode: number
+}
+
 class FetchException {
     constructor(
         public error: string,
@@ -6,4 +12,11 @@ class FetchException {
     ) { }
 }
 
-export default FetchException
+const returnResponseNotOk = ({ error, message, statusCode }: ResponseNotOk) => {
+    throw new FetchException(error, message, statusCode)
+}
+
+export {
+    FetchException,
+    returnResponseNotOk
+}

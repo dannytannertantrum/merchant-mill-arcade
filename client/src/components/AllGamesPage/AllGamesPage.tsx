@@ -2,7 +2,7 @@ import { css } from 'goober'
 import { Fragment, useContext } from 'react'
 
 import { DEFAULT_MARQUEE } from '../../utils/constants'
-import * as styles from './AllGamesPageStyles'
+import * as styles from '../sharedStyles'
 import Link from '../Link/Link'
 import { GamesContext } from '../../contexts/GamesContext'
 import { GameData } from '../../../../common/games.types'
