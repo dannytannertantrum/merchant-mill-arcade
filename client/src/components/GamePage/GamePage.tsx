@@ -30,7 +30,7 @@ interface GamePageProps {
         error: string
         message: string
         statusCode: number
-    }
+    } | string
     isLoading: boolean
 }
 

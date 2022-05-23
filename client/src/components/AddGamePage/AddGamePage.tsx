@@ -7,7 +7,14 @@ import {
     useReducer,
     useState
 } from 'react'
-import { DEFAULT_MARQUEE, FETCH_IN_PROGRESS, FETCH_ERROR, GET_IMAGES, CREATE_GAME } from '../../utils/constants'
+import {
+    DEFAULT_MARQUEE,
+    FETCH_IN_PROGRESS,
+    FETCH_ERROR,
+    GET_IMAGES,
+    CREATE_GAME,
+    CUSTOM_SEARCH_ERROR
+} from '../../utils/constants'
 import { GamesContext } from '../../contexts/GamesContext'
 import { getImages } from '../../apis/imageSearch.api'
 import { addGamePageReducer, INITIAL_ADD_GAME_PAGE_STATE } from '../../reducers/addGamePage.reducer'
@@ -136,13 +143,20 @@ const AddGamePage = () => {
                             ))}
                         </ul>
                         : <p>No images were returned - looks like default it is!</p>}
-                    <input type='submit' value='Submit' />
                 </Fragment>
             )}
+
+            {state.error && state.error.reason === CUSTOM_SEARCH_ERROR &&
+                <div className={styles.currentMarqueeSelection}>
+                    <p>Hmmm there seems to be a problem generating images. Looks like we'll need to go with our default marquee:</p>
+                    <img src={selectedImage} alt={`${formControl.title} arcade marquee`} />
+                </div>
+            }
+            {formControl.showImageSearch && <input type='submit' value='Submit' />}
         </form>
     )
 
-    if (state.error) {
+    if (state.error && state.error.reason !== CUSTOM_SEARCH_ERROR) {
         return <FetchError reason={state.error.reason} />
     }
 

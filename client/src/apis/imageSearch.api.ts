@@ -1,4 +1,4 @@
-import { CUSTOM_SEARCH_URL } from '../utils/constants'
+import { CUSTOM_SEARCH_ERROR, CUSTOM_SEARCH_URL } from '../utils/constants'
 import { ReplyType } from '../utils/sharedTypes'
 
 
@@ -27,7 +27,7 @@ const getImages = async (query: string): Promise<ReplyType<CustomSearchResults>>
     if (!response.ok) {
         return Promise.reject({
             isSuccess: false,
-            reason: await response.json()
+            reason: CUSTOM_SEARCH_ERROR
         })
     }
 

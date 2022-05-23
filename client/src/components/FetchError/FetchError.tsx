@@ -7,7 +7,7 @@ interface FetchErrorProps {
         error: string
         message: string
         statusCode: number
-    }
+    } | string
 }
 
 const FetchError = ({ reason }: FetchErrorProps) => {

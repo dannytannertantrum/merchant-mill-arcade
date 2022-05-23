@@ -4,7 +4,7 @@ interface ReplySuccess<T> {
 }
 interface ReplyFailure<E = Error> {
     isSuccess: false
-    reason: E
+    reason: E | string
 }
 
 type ReplyType<T, E = Error> = ReplySuccess<T> | ReplyFailure<E>
