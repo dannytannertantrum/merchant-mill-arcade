@@ -28,7 +28,7 @@ const Arcade = () => {
     const firstUpdate = useRef(true)
 
     const validRoutes = ['/', '/add-game', '/error']
-    allGames.forEach(game => validRoutes.push(`/games/${game.slug}`))
+    allGames?.forEach(game => validRoutes.push(`/games/${game.slug}`))
 
     const gameSlugRegex = /^\/games\/(\w|-)+$/
 
@@ -48,13 +48,13 @@ const Arcade = () => {
             dispatch({ type: FETCH_IN_PROGRESS, isLoading: true })
 
             const getSlugFromPathname = window.location.pathname.replace('/games/', '')
-            const gameId = allGames
-                .filter(game => game.slug === getSlugFromPathname)[0]
-                ?.id
+            const gameId = allGames?.filter(game => game.slug === getSlugFromPathname)[0]?.id
 
             if (gameId) {
-                getGame(gameId).then((gameReturned) => {
-                    dispatch({ type: GET_GAMES, payload: gameReturned, isLoading: false })
+                getGame(gameId).then(gameReturned => {
+                    if (gameReturned.isSuccess) {
+                        dispatch({ type: GET_GAME, isLoading: false, payload: gameReturned, })
+                    }
                 }).then(() => {
                     setCurrentGamePathname(window.location.pathname)
                 }).catch(reason => {
@@ -82,7 +82,7 @@ const Arcade = () => {
     const handleClickGameSelection = (e: React.MouseEvent, game: GameData): void => {
         e.preventDefault()
 
-        dispatch({ type: GET_GAME, payload: game, isLoading: false })
+        dispatch({ type: GET_GAME, isLoading: false, payload: { isSuccess: true, data: game } })
         setCurrentGamePathname(`/games/${game.slug}`)
 
         // This is a simple way to tell our useEffect above that someone clicked
@@ -111,7 +111,7 @@ const Arcade = () => {
                     <AddGamePage />
                 </Route>
                 <Route path={currentGamePathname}>
-                    <GamePage {...state} />
+                    <GamePage game={state.replyGetGame?.data} isLoading={state.isLoading} error={state.error?.reason} />
                 </Route>
             </ErrorBoundary>
         </div>

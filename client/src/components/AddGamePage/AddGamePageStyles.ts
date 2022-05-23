@@ -3,6 +3,8 @@ import { LARGE_MOBILE } from '../../utils/breakpoints'
 
 
 const currentMarqueeSelection = css`
+    border-bottom: 2px solid var(--borders);
+    margin-bottom: 30px;
     text-align: center;
 
     h3 {

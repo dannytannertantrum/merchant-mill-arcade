@@ -72,7 +72,7 @@ const gameGrid = css`
     display: grid;
     grid-template-columns: 1fr;
     list-style-type: none;
-    margin: 0;
+    margin: 0 0 30px;
     padding: 0;
     row-gap: 30px;
 

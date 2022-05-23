@@ -1,14 +1,7 @@
 import { CUSTOM_SEARCH_URL } from '../utils/constants'
+import { ReplyType } from '../utils/sharedTypes'
 
 
-interface ResponseSuccess<T> {
-    isSuccess: true
-    searchResults: T
-}
-interface ResponseFailure<E = Error> {
-    isSuccess: false
-    reason: E
-}
 interface ImageProperties {
     kind: string
     title: string
@@ -24,11 +17,13 @@ interface CustomSearchResults {
     items: ImageProperties[]
 }
 
-type ResponseType<T, E = Error> = ResponseSuccess<T> | ResponseFailure<E>
-
-const getImages = async (query: string): Promise<ResponseType<CustomSearchResults>> => {
+const getImages = async (query: string): Promise<ReplyType<CustomSearchResults>> => {
     const response = await fetch(`${CUSTOM_SEARCH_URL}&q=${query}`)
 
+    // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+    // "The Promise returned from fetch() won't reject on HTTP error status even if the response is an HTTP 404 or 500."
+    // Rather than putting multiple catches all over the place, we can place one near our dispatch
+    // And catch everything in one place
     if (!response.ok) {
         return Promise.reject({
             isSuccess: false,
@@ -36,17 +31,14 @@ const getImages = async (query: string): Promise<ResponseType<CustomSearchResult
         })
     }
 
-    const searchResults: CustomSearchResults = await response.json()
-
+    const data: CustomSearchResults = await response.json()
     return {
         isSuccess: true,
-        searchResults
+        data
     }
 }
 
 export {
     CustomSearchResults,
-    getImages,
-    ResponseSuccess,
-    ResponseFailure
+    getImages
 }

@@ -26,7 +26,11 @@ const fakeData = [
 
 interface GamePageProps {
     game?: GameData | null
-    error?: string
+    error?: Error | {
+        error: string
+        message: string
+        statusCode: number
+    }
     isLoading: boolean
 }
 
@@ -87,8 +91,8 @@ const GamePage = (gameState: GamePageProps): JSX.Element => {
             />
     )
 
-    if (!gameState.isLoading && gameState.error !== '' || gameState.error !== '') {
-        return <FetchError content={'games'} />
+    if (!gameState.isLoading && gameState.error != null || gameState.error != null) {
+        return <FetchError reason={gameState.error} />
     }
 
     if (gameState.isLoading) {

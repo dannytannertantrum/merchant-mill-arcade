@@ -16,7 +16,7 @@ const AllGamesPage = ({ handleClickGameSelection }: GamesPageProps) => {
     const { allGames } = useContext(GamesContext)
 
     const displayNav = (
-        allGames.length > 0
+        allGames && allGames.length > 0
             ? (
                 <nav>
                     <h2>Select a game</h2>
@@ -26,7 +26,7 @@ const AllGamesPage = ({ handleClickGameSelection }: GamesPageProps) => {
     )
 
     const gameList = (
-        allGames.map(game => (
+        allGames?.map(game => (
             <li key={game.id}>
                 <a href={`/games/${game.slug}`} onClick={(e) => handleClickGameSelection(e, game)} className={styles.gameLink}>
                     <Fragment>
@@ -44,7 +44,7 @@ const AllGamesPage = ({ handleClickGameSelection }: GamesPageProps) => {
     return (
         <Fragment>
             {displayNav}
-            {allGames.length > 0
+            {allGames && allGames.length > 0
                 ? <ul className={styles.gameGrid}>{gameList}</ul>
                 : <h2>No games? May I suggest adding your pal, Peter Peppers to start?</h2>
             }

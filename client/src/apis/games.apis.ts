@@ -1,9 +1,9 @@
 import { AllGamesData, GameData } from '../../../common/games.types'
 import { BASE_URL } from '../utils/constants'
-import { returnResponseNotOk } from '../utils/custom-exceptions'
+import { ReplyType } from '../utils/sharedTypes'
 
 
-const addGame = async (title: string): Promise<GameData> => {
+const addGame = async (title: string): Promise<ReplyType<GameData>> => {
     const response = await fetch(`${BASE_URL}/games`, {
         method: 'POST',
         headers: {
@@ -12,28 +12,52 @@ const addGame = async (title: string): Promise<GameData> => {
         body: JSON.stringify({ title })
     })
 
-    if (!response.ok) returnResponseNotOk(await response.json())
+    if (!response.ok) {
+        return Promise.reject({
+            isSuccess: false,
+            reason: await response.json()
+        })
+    }
 
     const data: GameData = await response.json()
-    return data
+    return {
+        isSuccess: true,
+        data
+    }
 }
 
-const getGame = async (id: string): Promise<GameData> => {
+const getGame = async (id: string): Promise<ReplyType<GameData>> => {
     const response = await fetch(`${BASE_URL}/games/${id}`)
 
-    if (!response.ok) returnResponseNotOk(await response.json())
+    if (!response.ok) {
+        return Promise.reject({
+            isSuccess: false,
+            reason: await response.json()
+        })
+    }
 
     const data: GameData = await response.json()
-    return data
+    return {
+        isSuccess: true,
+        data
+    }
 }
 
-const getGames = async (): Promise<AllGamesData> => {
+const getGames = async (): Promise<ReplyType<AllGamesData>> => {
     const response = await fetch(`${BASE_URL}/games`)
 
-    if (!response.ok) returnResponseNotOk(await response.json())
+    if (!response.ok) {
+        return Promise.reject({
+            isSuccess: false,
+            reason: await response.json()
+        })
+    }
 
     const data: AllGamesData = await response.json()
-    return data
+    return {
+        isSuccess: true,
+        data
+    }
 }
 
 export {

@@ -1,88 +1,96 @@
-import { createContext, useState, useEffect, useReducer, Fragment } from 'react'
+import { createContext, useEffect, useReducer, Fragment } from 'react'
 
 import { addGame } from '../apis/games.apis'
+import { AllGamesData } from '../../../common/games.types'
+import FetchError from '../components/FetchError/FetchError'
+import { CREATE_GAME, FETCH_ERROR, FETCH_IN_PROGRESS, GET_GAMES } from '../utils/constants'
 import { GameData } from '../../../common/games.types'
 import { gameReducer, INITIAL_GAME_STATE } from '../reducers/game.reducer'
-import { AllGamesData } from '../../../common/games.types'
 import { getGames } from '../apis/games.apis'
-import FetchError from '../components/FetchError/FetchError'
 import Link from '../components/Link/Link'
 import Loading from '../components/Loading/Loading'
 import logo from '../assets/logo.png'
+import { ReplyType } from '../utils/sharedTypes'
 import * as styles from '../components/sharedStyles'
-import { FETCH_IN_PROGRESS, GET_GAME } from '../utils/constants'
 
 
 interface GamesProviderProps {
     children: JSX.Element | JSX.Element[]
 }
-
 interface GamesContextInterface {
-    allGames: AllGamesData
-    createGame: (title: string, imageUrl?: string) => Promise<GameData>
+    allGames: AllGamesData | null
+    createGame: (title: string, imageUrl?: string) => Promise<ReplyType<GameData>>
 }
+
 const GAMES_DEFAULT_VALUE: GamesContextInterface = {
     allGames: [],
     createGame: () => Promise.resolve({
-        id: '',
-        description: null,
-        imageUrl: null,
-        isDeleted: false,
-        slug: '',
-        title: '',
-        createdAt: '',
-        updatedAt: null
+        isSuccess: true,
+        data: {
+            id: '',
+            description: null,
+            imageUrl: null,
+            isDeleted: false,
+            slug: '',
+            title: '',
+            createdAt: '',
+            updatedAt: null
+        }
     })
 }
 const GamesContext = createContext<GamesContextInterface>(GAMES_DEFAULT_VALUE)
 
 
 const GamesContextProvider = ({ children }: GamesProviderProps) => {
-    const [games, setGames] = useState(GAMES_DEFAULT_VALUE.allGames)
-    const [isLoading, setIsLoading] = useState(true)
-    const [isFetchError, setIsFetchError] = useState(false)
     const [state, dispatch] = useReducer(gameReducer, INITIAL_GAME_STATE)
 
     const gamesContext: GamesContextInterface = {
-        allGames: games,
-        createGame: async (title: string, imageUrl?: string): Promise<GameData> => {
+        allGames: state.replyGetGames && state.replyGetGames.data,
+        createGame: (title: string, imageUrl?: string): Promise<ReplyType<GameData>> => {
             dispatch({ type: FETCH_IN_PROGRESS, isLoading: true })
 
-            const response = await addGame(title)
+            addGame(title).then(gameReturned => {
+                if (gameReturned.isSuccess) {
+                    dispatch({ type: CREATE_GAME, isLoading: false, payload: gameReturned })
+                    return gameReturned
+                }
+                return gameReturned
+            }).catch(reason => {
+                dispatch({ type: FETCH_ERROR, isLoading: false, error: reason })
+            })
 
-            if (response) {
-                dispatch({ type: GET_GAME, payload: response, isLoading: false })
-                setGames([...games, response])
-            }
-
-            return response
+            return Promise.reject({
+                isSuccess: false,
+                reason: 'An unknown error occurred in creating your game'
+            })
         }
     }
 
     useEffect(() => {
-        getGames()
-            .then(response => {
-                setIsLoading(false)
-                setGames(response)
-            })
-            .catch(_reason => {
-                setIsFetchError(true)
-            })
+        dispatch({ type: FETCH_IN_PROGRESS, isLoading: true })
+
+        getGames().then(gamesReturned => {
+            if (gamesReturned.isSuccess) {
+                dispatch({ type: GET_GAMES, isLoading: false, payload: gamesReturned })
+            }
+        }).catch(reason => {
+            dispatch({ type: FETCH_ERROR, isLoading: false, error: reason })
+        })
     }, [])
 
     const display = () => {
-        if (isLoading && isFetchError || isFetchError) {
+        if (state.isLoading && state.error || state.error) {
             return (
                 <Fragment>
                     <Link href='/' className={styles.logoWrapper}>
                         <img src={logo} alt='logo - return to homepage' />
                     </Link>
-                    <FetchError content={'games'} />
+                    <FetchError reason={state.error.reason} />
                 </Fragment>
             )
         }
 
-        if (isLoading) {
+        if (state.isLoading) {
             return <Loading />
         }
 
