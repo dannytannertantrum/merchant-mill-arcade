@@ -1,17 +1,7 @@
 import { AllGamesData, GameData } from '../../../common/games.types'
-import FetchException from '../utils/custom-exceptions'
+import { BASE_URL } from '../utils/constants'
+import { returnResponseNotOk } from '../utils/custom-exceptions'
 
-
-interface ResponseNotOk {
-    error: string
-    message: string
-    statusCode: number
-}
-const returnResponseNotOk = ({ error, message, statusCode }: ResponseNotOk) => {
-    throw new FetchException(error, message, statusCode)
-}
-
-const { BASE_URL } = process.env
 
 const addGame = async (title: string): Promise<GameData> => {
     const response = await fetch(`${BASE_URL}/games`, {
