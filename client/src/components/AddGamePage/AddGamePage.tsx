@@ -47,13 +47,11 @@ const AddGamePage = () => {
 
     const handleSuccessMessageReload = (event: MouseEvent) => {
         event.preventDefault()
-
         window.location.reload()
     }
 
     const handleShowImageSelection = (event: SyntheticEvent) => {
         event.preventDefault()
-
         if (formControl.title.trim() === '' || existingGame !== '') {
             setFormControl(state => ({ ...state, isFormTouched: true }))
             return
@@ -70,18 +68,6 @@ const AddGamePage = () => {
         })
 
         setFormControl(formState => ({ ...formState, showImageSearch: true }))
-    }
-
-    const handleOnSubmit = (event: SyntheticEvent) => {
-        event.preventDefault()
-
-        createGame(formControl.title).then(gameReturned => {
-            if (gameReturned.isSuccess) {
-                dispatch({ type: CREATE_GAME, isLoading: false, payload: gameReturned })
-            }
-        }).catch(reason => {
-            dispatch({ type: FETCH_ERROR, isLoading: false, error: reason })
-        })
     }
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -101,58 +87,77 @@ const AddGamePage = () => {
         }
     }
 
+    const handleOnSubmit = (event: SyntheticEvent) => {
+        event.preventDefault()
+
+        dispatch({ type: FETCH_IN_PROGRESS, isLoading: true })
+
+        createGame(formControl.title, selectedImage).then(gameReturned => {
+            if (gameReturned.isSuccess) {
+                dispatch({ type: CREATE_GAME, isLoading: false, payload: gameReturned })
+            }
+        }).catch(reason => {
+            dispatch({ type: FETCH_ERROR, isLoading: false, error: reason })
+        })
+    }
+
     const displayForm = (
         <form onSubmit={handleOnSubmit}>
-            {formControl.showImageSearch === false && (
-                <Fragment>
-                    <label
-                        htmlFor='addGameTitle'
-                        className={formControl.isFormTouched && formControl.title.trim() === '' || existingGame !== '' ? sharedStyles.errorLabel : ''}
-                    >
-                        Enter a title
-                        <input
-                            id='addGameTitle'
-                            onChange={handleInputChange}
-                            type='text'
-                            value={formControl.title}
-                        />
 
-                        {formControl.isFormTouched && formControl.title.trim() === '' && <p>Title is required</p>}
-                        {existingGame !== '' && <p>{existingGame} is already in the arcade! Please enter a different title.</p>}
-                    </label>
-                    <button className={sharedStyles.buttonPurple} onClick={handleShowImageSelection}>Next</button>
-                </Fragment>
-            )}
+            <section>
+                <label
+                    htmlFor='addGameTitle'
+                    className={formControl.isFormTouched && formControl.title.trim() === '' || existingGame !== '' ? sharedStyles.errorLabel : ''}
+                >
+                    Title
+                    <input
+                        id='addGameTitle'
+                        onChange={handleInputChange}
+                        type='text'
+                        value={formControl.title}
+                    />
+
+                    {formControl.isFormTouched && formControl.title.trim() === '' && <p>Title is required</p>}
+                    {existingGame !== '' && <p>{existingGame} is already in the arcade! Please enter a different title.</p>}
+                </label>
+                <button type='button' className={sharedStyles.buttonPurple} onClick={handleShowImageSelection}>Search arcade marquees</button>
+            </section>
 
             {formControl.showImageSearch && state.replyGetImages?.isSuccess && (
                 <Fragment>
-                    <p>Almost there! Select an image for <span className={sharedStyles.highlight}>{formControl.title}</span>.
-                        If no image is selected or we cannot find a suitable marquee, we'll use the default currently selected.</p>
                     <div className={styles.currentMarqueeSelection}>
+                        <p>Choose an image or keep the default.</p>
                         <h3>Current Selection</h3>
                         <img src={selectedImage} alt={`${formControl.title} arcade marquee`} />
                     </div>
                     {state.replyGetImages?.isSuccess && state.replyGetImages.data.items
                         ? <ul className={sharedStyles.gameGrid}>
+                            <li className={selectedImage === DEFAULT_MARQUEE ? styles.selectedMarquee : ''}>
+                                <button type='button' onClick={() => setSelectedImage(DEFAULT_MARQUEE)} className={sharedStyles.gameLink}>
+                                    <span className={sharedStyles.marquee(DEFAULT_MARQUEE)}></span>
+                                </button>
+                            </li>
                             {state.replyGetImages.data.items.map((image, index) => (
-                                <li key={index}>
-                                    <button onClick={() => setSelectedImage(image['link'])} className={sharedStyles.gameLink}>
+                                <li key={index} className={selectedImage === image['link'] ? styles.selectedMarquee : ''}>
+                                    <button type='button' onClick={() => setSelectedImage(image['link'])} className={sharedStyles.gameLink}>
                                         <span className={sharedStyles.marquee(image['link'])}></span>
                                     </button>
                                 </li>
                             ))}
                         </ul>
-                        : <p>No images were returned - looks like default it is!</p>}
+                        : <p className={sharedStyles.highlight}>No images were returned - looks like we're going with the default above!</p>}
                 </Fragment>
             )}
 
             {state.error && state.error.reason === CUSTOM_SEARCH_ERROR &&
                 <div className={styles.currentMarqueeSelection}>
-                    <p>Hmmm there seems to be a problem generating images. Looks like we'll need to go with our default marquee:</p>
+                    <p>Hmmm there seems to be a problem connecting to Google. Looks like we'll need to go with our default marquee:</p>
                     <img src={selectedImage} alt={`${formControl.title} arcade marquee`} />
                 </div>
             }
+
             {formControl.showImageSearch && <input type='submit' value='Submit' />}
+
         </form>
     )
 
@@ -160,7 +165,7 @@ const AddGamePage = () => {
         return <FetchError reason={state.error.reason} />
     }
 
-    if (state.error === null && state.replyCreateGame?.data) {
+    if (state.error === null && state.replyCreateGame?.isSuccess) {
         const { replyCreateGame: { data: { title, slug } } } = state
         return (
             <div className={styles.submitMessage}>
@@ -172,13 +177,17 @@ const AddGamePage = () => {
     }
 
     return (
-        <Fragment>
+        <div className={styles.addGamePageWrapper}>
             <h1 className={sharedStyles.heading}>Add a game</h1>
+            <ol>
+                <li>Enter a title</li>
+                <li>Search images to find a suitable arcade marquee to associate with your game.</li>
+            </ol>
             {state.isLoading === true
                 ? <Loading />
                 : state.replyCreateGame === null && displayForm
             }
-        </Fragment>
+        </div>
     )
 }
 

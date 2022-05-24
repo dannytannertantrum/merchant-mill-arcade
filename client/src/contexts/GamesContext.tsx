@@ -3,7 +3,7 @@ import { createContext, useEffect, useReducer, Fragment } from 'react'
 import { addGame } from '../apis/games.apis'
 import { AllGamesData } from '../../../common/games.types'
 import FetchError from '../components/FetchError/FetchError'
-import { CREATE_GAME, FETCH_ERROR, FETCH_IN_PROGRESS, GET_GAMES } from '../utils/constants'
+import { FETCH_ERROR, FETCH_IN_PROGRESS, GET_GAMES } from '../utils/constants'
 import { GameData } from '../../../common/games.types'
 import { gameReducer, INITIAL_GAME_STATE } from '../reducers/game.reducer'
 import { getGames } from '../apis/games.apis'
@@ -46,23 +46,12 @@ const GamesContextProvider = ({ children }: GamesProviderProps) => {
 
     const gamesContext: GamesContextInterface = {
         allGames: state.replyGetGames && state.replyGetGames.data,
-        createGame: (title: string, imageUrl?: string): Promise<ReplyType<GameData>> => {
-            dispatch({ type: FETCH_IN_PROGRESS, isLoading: true })
+        createGame: async (title: string, imageUrl: string): Promise<ReplyType<GameData>> => {
+            // No catch blocks because we are just passing this down through context
+            // We are handling errors where we're calling createGame
+            const gameReturned = await addGame(title, imageUrl)
 
-            addGame(title).then(gameReturned => {
-                if (gameReturned.isSuccess) {
-                    dispatch({ type: CREATE_GAME, isLoading: false, payload: gameReturned })
-                    return gameReturned
-                }
-                return gameReturned
-            }).catch(reason => {
-                dispatch({ type: FETCH_ERROR, isLoading: false, error: reason })
-            })
-
-            return Promise.reject({
-                isSuccess: false,
-                reason: 'An unknown error occurred in creating your game'
-            })
+            return gameReturned
         }
     }
 

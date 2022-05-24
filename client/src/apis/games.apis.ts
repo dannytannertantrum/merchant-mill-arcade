@@ -3,13 +3,13 @@ import { BASE_URL } from '../utils/constants'
 import { ReplyType } from '../utils/sharedTypes'
 
 
-const addGame = async (title: string): Promise<ReplyType<GameData>> => {
+const addGame = async (title: string, imageUrl: string): Promise<ReplyType<GameData>> => {
     const response = await fetch(`${BASE_URL}/games`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ title })
+        body: JSON.stringify({ title, imageUrl })
     })
 
     if (!response.ok) {

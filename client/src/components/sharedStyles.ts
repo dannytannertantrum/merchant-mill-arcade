@@ -10,9 +10,7 @@ const buttonPurple = css`
     cursor: pointer;
     padding: 12px;
     transition: background-color ease .5s;
-    width: 150px;
     font-family: 'Press Start 2P', monospace, sans-serif;
-    font-size: 16px;
     text-transform: uppercase;
 
     &:hover {
@@ -21,7 +19,6 @@ const buttonPurple = css`
 
     &:active {
         box-shadow: inset 1px 1px 7px rgba(0, 0, 0, .5), inset -1px -1px 7px rgba(0, 0, 0, .5);
-        font-size: .95em;
     }
 `
 
@@ -88,6 +85,7 @@ const gameGrid = css`
 // ul li a
 const gameLink = css`
     background: transparent;
+    border: 0 none;
     display: flex;
     flex-direction: column;
     align-items: center;
