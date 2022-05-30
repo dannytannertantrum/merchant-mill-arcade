@@ -42,6 +42,10 @@ const currentMarqueeSelection = css`
     }
 `
 
+const marquee = css`
+    border: 4px solid transparent;
+`
+
 const selectedMarquee = css`
     border: 4px solid #d300ff;
 `
@@ -62,6 +66,7 @@ const submitMessage = css`
 export {
     addGamePageWrapper,
     currentMarqueeSelection,
+    marquee,
     selectedMarquee,
     submitMessage
 }

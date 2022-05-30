@@ -118,7 +118,7 @@ const AddGamePage = () => {
                     />
 
                     {formControl.isFormTouched && formControl.title.trim() === '' && <p>Title is required</p>}
-                    {existingGame !== '' && <p>{existingGame} is already in the arcade! Please enter a different title.</p>}
+                    {existingGame !== '' && <p>Title already exists</p>}
                 </label>
                 <button type='button' className={sharedStyles.buttonPurple} onClick={handleShowImageSelection}>Search arcade marquees</button>
             </section>
@@ -132,13 +132,13 @@ const AddGamePage = () => {
                     </div>
                     {state.replyGetImages?.isSuccess && state.replyGetImages.data.items
                         ? <ul className={sharedStyles.gameGrid}>
-                            <li className={selectedImage === DEFAULT_MARQUEE ? styles.selectedMarquee : ''}>
+                            <li className={selectedImage === DEFAULT_MARQUEE ? styles.selectedMarquee : styles.marquee}>
                                 <button type='button' onClick={() => setSelectedImage(DEFAULT_MARQUEE)} className={sharedStyles.gameLink}>
                                     <span className={sharedStyles.marquee(DEFAULT_MARQUEE)}></span>
                                 </button>
                             </li>
                             {state.replyGetImages.data.items.map((image, index) => (
-                                <li key={index} className={selectedImage === image['link'] ? styles.selectedMarquee : ''}>
+                                <li key={index} className={selectedImage === image['link'] ? styles.selectedMarquee : styles.marquee}>
                                     <button type='button' onClick={() => setSelectedImage(image['link'])} className={sharedStyles.gameLink}>
                                         <span className={sharedStyles.marquee(image['link'])}></span>
                                     </button>

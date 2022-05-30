@@ -58,7 +58,9 @@ const errorLabel = css`
     p {
         color: var(--error);
         font-size: 12px;
-        margin-top: 10px;
+        margin: 0;
+        position: absolute;
+        bottom: -26px;
         text-transform: none;
     }
 `
@@ -91,6 +93,7 @@ const gameLink = css`
     align-items: center;
     position: relative;
     cursor: pointer;
+    padding: 0;
     width: 100%;
 
     &:hover,
