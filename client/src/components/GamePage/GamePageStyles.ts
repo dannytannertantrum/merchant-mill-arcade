@@ -33,11 +33,6 @@ const closeModalButton = css`
     }
 `
 
-const gameMarquee = css`
-    width: 500px;
-    margin: 0 auto 40px;
-`
-
 const inputInitials = css`
     width: 60px;
 `
@@ -121,7 +116,6 @@ export {
     addScoreButton,
     closeModalButton,
     inputInitials,
-    gameMarquee,
     scoresContainer,
     scoresHeader,
     scoreModalWrapper

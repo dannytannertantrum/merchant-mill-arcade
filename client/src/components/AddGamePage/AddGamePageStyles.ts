@@ -1,5 +1,4 @@
 import { css } from 'goober'
-import { LARGE_MOBILE } from '../../utils/breakpoints'
 
 
 const addGamePageWrapper = css`
@@ -17,29 +16,8 @@ const addGamePageWrapper = css`
     }
 `
 
-const currentMarqueeSelection = css`
+const gameHeaderAddBorder = css`
     border-bottom: 2px solid var(--borders);
-    margin-bottom: 30px;
-    text-align: center;
-
-    h3 {
-        margin-bottom: 8px;
-    }
-
-    img {
-        height: 100px;
-        margin: 0 auto 30px;
-    }
-
-    p {
-        margin-bottom: 30px;
-    }
-
-    @media screen and (min-width: ${LARGE_MOBILE}px) {
-        img {
-            max-width: 400px;
-        }
-    }
 `
 
 const marquee = css`
@@ -65,8 +43,8 @@ const submitMessage = css`
 
 export {
     addGamePageWrapper,
-    currentMarqueeSelection,
+    gameHeaderAddBorder,
     marquee,
     selectedMarquee,
-    submitMessage
+    submitMessage,
 }

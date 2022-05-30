@@ -28,7 +28,7 @@ const AllGamesPage = ({ handleClickGameSelection }: GamesPageProps) => {
     const gameList = (
         allGames?.map(game => (
             <li key={game.id}>
-                <a href={`/games/${game.slug}`} onClick={(e) => handleClickGameSelection(e, game)} className={styles.gameLink}>
+                <a href={`/games/${game.slug}`} onClick={(e) => handleClickGameSelection(e, game)} className={styles.gameGridMarqueeLink}>
                     <Fragment>
                         {game.imageUrl
                             ? <span className={styles.marquee(game.imageUrl)}></span>

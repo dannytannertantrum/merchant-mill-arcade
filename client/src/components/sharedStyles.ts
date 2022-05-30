@@ -84,8 +84,36 @@ const gameGrid = css`
     }
 `
 
+// Features game title and marquee
+const gameHeader = css`
+    text-align: center;
+    padding-bottom: 40px;
+    margin: 0 auto 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h3 {
+        margin-bottom: 8px;
+    }
+
+    img {
+        border: 1px solid white;
+        min-height: 70px;
+        max-height: 100px;
+        max-width: 500px;
+        object-fit: cover;
+        width: 100%;
+    }
+
+    p {
+        margin-bottom: 30px;
+    }
+`
+
+
 // ul li a
-const gameLink = css`
+const gameGridMarqueeLink = css`
     background: transparent;
     border: 0 none;
     display: flex;
@@ -156,7 +184,8 @@ export {
     errorWrapper,
     errorLabel,
     gameGrid,
-    gameLink,
+    gameHeader,
+    gameGridMarqueeLink,
     gameTitle,
     heading,
     highlight,

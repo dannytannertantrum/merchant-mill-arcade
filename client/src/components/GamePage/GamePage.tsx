@@ -39,6 +39,7 @@ const GamePage = (gameState: GamePageProps): JSX.Element => {
     // We create a reference to the "Add Your Score" text so focus can return to it after the modal closes
     // This is good for a11y: https://reactjs.org/docs/accessibility.html#programmatically-managing-focus
     const addYourScoreRef: React.RefObject<HTMLButtonElement> = createRef()
+    const marqueeImgSrc = gameState.game?.imageUrl ? gameState.game.imageUrl : DEFAULT_MARQUEE
 
     const handleOnSubmit = (event: SyntheticEvent) => {
         event.preventDefault()
@@ -81,16 +82,6 @@ const GamePage = (gameState: GamePageProps): JSX.Element => {
         ))
     )
 
-    const displayMarquee = (
-        gameState.game?.imageUrl
-            ? <img src={gameState.game.imageUrl} className={styles.gameMarquee} alt={gameState.game?.title} />
-            : <img
-                src={DEFAULT_MARQUEE}
-                className={styles.gameMarquee}
-                alt={gameState.game?.title}
-            />
-    )
-
     if (!gameState.isLoading && gameState.error != null || gameState.error != null) {
         return <FetchError reason={gameState.error} />
     }
@@ -107,7 +98,10 @@ const GamePage = (gameState: GamePageProps): JSX.Element => {
 
     return (
         <Fragment>
-            {displayMarquee}
+            <div className={sharedStyles.gameHeader}>
+                <h3>{gameState.game?.title}</h3>
+                <img src={marqueeImgSrc} alt={gameState.game?.title} />
+            </div>
             <nav>
                 <h2>Top 5 Scores</h2>
                 <button className={styles.addScoreButton} onClick={() => setIsModalOpen(!isModalOpen)} ref={addYourScoreRef}>

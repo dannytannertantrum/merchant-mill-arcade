@@ -7,6 +7,7 @@ import {
     useReducer,
     useState
 } from 'react'
+
 import {
     DEFAULT_MARQUEE,
     FETCH_IN_PROGRESS,
@@ -101,6 +102,7 @@ const AddGamePage = () => {
         })
     }
 
+    const gameHeaderAddBorder = `${sharedStyles.gameHeader} ${styles.gameHeaderAddBorder}`
     const displayForm = (
         <form onSubmit={handleOnSubmit}>
 
@@ -125,7 +127,7 @@ const AddGamePage = () => {
 
             {formControl.showImageSearch && state.replyGetImages?.isSuccess && (
                 <Fragment>
-                    <div className={styles.currentMarqueeSelection}>
+                    <div className={gameHeaderAddBorder}>
                         <p>Choose an image or keep the default.</p>
                         <h3>Current Selection</h3>
                         <img src={selectedImage} alt={`${formControl.title} arcade marquee`} />
@@ -133,13 +135,13 @@ const AddGamePage = () => {
                     {state.replyGetImages?.isSuccess && state.replyGetImages.data.items
                         ? <ul className={sharedStyles.gameGrid}>
                             <li className={selectedImage === DEFAULT_MARQUEE ? styles.selectedMarquee : styles.marquee}>
-                                <button type='button' onClick={() => setSelectedImage(DEFAULT_MARQUEE)} className={sharedStyles.gameLink}>
+                                <button type='button' onClick={() => setSelectedImage(DEFAULT_MARQUEE)} className={sharedStyles.gameGridMarqueeLink}>
                                     <span className={sharedStyles.marquee(DEFAULT_MARQUEE)}></span>
                                 </button>
                             </li>
                             {state.replyGetImages.data.items.map((image, index) => (
                                 <li key={index} className={selectedImage === image['link'] ? styles.selectedMarquee : styles.marquee}>
-                                    <button type='button' onClick={() => setSelectedImage(image['link'])} className={sharedStyles.gameLink}>
+                                    <button type='button' onClick={() => setSelectedImage(image['link'])} className={sharedStyles.gameGridMarqueeLink}>
                                         <span className={sharedStyles.marquee(image['link'])}></span>
                                     </button>
                                 </li>
@@ -150,7 +152,7 @@ const AddGamePage = () => {
             )}
 
             {state.error && state.error.reason === CUSTOM_SEARCH_ERROR &&
-                <div className={styles.currentMarqueeSelection}>
+                <div className={sharedStyles.gameHeader}>
                     <p>Hmmm there seems to be a problem connecting to Google. Looks like we'll need to go with our default marquee:</p>
                     <img src={selectedImage} alt={`${formControl.title} arcade marquee`} />
                 </div>
