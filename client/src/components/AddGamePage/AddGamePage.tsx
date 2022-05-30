@@ -75,7 +75,7 @@ const AddGamePage = () => {
         const { value } = event.currentTarget
 
         if (allGames) {
-            const allTitles = allGames.map(game => game.title.toLowerCase())
+            const allTitles = allGames.filter(game => !game.isDeleted).map(game => game.title.toLowerCase())
             const matchingTitle = allTitles.filter(gameTitle => gameTitle === value.toLowerCase().trim())[0]
 
             if (matchingTitle && matchingTitle.length > 0) {

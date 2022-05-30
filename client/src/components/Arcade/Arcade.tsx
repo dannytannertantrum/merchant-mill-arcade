@@ -28,7 +28,7 @@ const Arcade = () => {
     const firstUpdate = useRef(true)
 
     const validRoutes = ['/', '/add-game', '/error']
-    allGames?.forEach(game => validRoutes.push(`/games/${game.slug}`))
+    allGames?.filter(game => !game.isDeleted).forEach(game => validRoutes.push(`/games/${game.slug}`))
 
     const gameSlugRegex = /^\/games\/(\w|-)+$/
 
