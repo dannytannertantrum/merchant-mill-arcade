@@ -51,6 +51,14 @@ const GamesContextProvider = ({ children }: GamesProviderProps) => {
             // We are handling errors where we're calling createGame
             const gameReturned = await addGame(title, imageUrl)
 
+            const updateAllGames = await getGames().catch(reason => {
+                dispatch({ type: FETCH_ERROR, isLoading: false, error: reason })
+            })
+
+            if (updateAllGames?.isSuccess) {
+                dispatch({ type: GET_GAMES, isLoading: false, payload: updateAllGames })
+            }
+
             return gameReturned
         }
     }

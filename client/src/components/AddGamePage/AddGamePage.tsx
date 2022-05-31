@@ -46,14 +46,20 @@ const AddGamePage = () => {
     const [existingGame, setExistingGame] = useState<string>('')
     const [selectedImage, setSelectedImage] = useState<string>(DEFAULT_MARQUEE)
 
+
     const handleSuccessMessageReload = (event: MouseEvent) => {
         event.preventDefault()
         window.location.reload()
     }
 
-    const handleShowImageSelection = (event: SyntheticEvent) => {
+
+    // FORM HANDLING
+    const defaultFormChecksFail = () => !!(formControl.title.trim() === '' || existingGame !== '')
+
+    const handleShowImageSelection = (event: SyntheticEvent | React.KeyboardEvent<HTMLElement>) => {
         event.preventDefault()
-        if (formControl.title.trim() === '' || existingGame !== '') {
+
+        if (defaultFormChecksFail()) {
             setFormControl(state => ({ ...state, isFormTouched: true }))
             return
         }
@@ -88,8 +94,21 @@ const AddGamePage = () => {
         }
     }
 
+    const handleInputKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+        if (defaultFormChecksFail()) return
+
+        if (event.code === 'Enter') {
+            handleShowImageSelection(event)
+        }
+    }
+
     const handleOnSubmit = (event: SyntheticEvent) => {
         event.preventDefault()
+
+        if (defaultFormChecksFail() || !formControl.showImageSearch) {
+            setFormControl(state => ({ ...state, isFormTouched: true }))
+            return
+        }
 
         dispatch({ type: FETCH_IN_PROGRESS, isLoading: true })
 
@@ -115,6 +134,7 @@ const AddGamePage = () => {
                     <input
                         id='addGameTitle'
                         onChange={handleInputChange}
+                        onKeyDown={handleInputKeyDown}
                         type='text'
                         value={formControl.title}
                     />
