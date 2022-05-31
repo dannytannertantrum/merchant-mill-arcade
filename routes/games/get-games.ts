@@ -9,7 +9,8 @@ const schema = { response: { 200: AllGamesSchema } }
 
 const getAllGames = async (pool: DatabasePoolType): Promise<AllGamesData | []> => {
     const result = await pool.query(sql<GameData>`
-        SELECT * FROM games;
+        SELECT * FROM games
+        ORDER BY created_at DESC;
     `)
 
     if (result.rows === []) return []
