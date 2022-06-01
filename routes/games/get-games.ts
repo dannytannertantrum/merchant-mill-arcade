@@ -10,6 +10,7 @@ const schema = { response: { 200: AllGamesSchema } }
 const getAllGames = async (pool: DatabasePoolType): Promise<AllGamesData | []> => {
     const result = await pool.query(sql<GameData>`
         SELECT * FROM games
+        WHERE is_deleted = FALSE
         ORDER BY created_at DESC;
     `)
 

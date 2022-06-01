@@ -26,7 +26,7 @@ const AllGamesPage = ({ handleClickGameSelection }: GamesPageProps) => {
     )
 
     const gameList = (
-        allGames?.filter(game => !game.isDeleted).map(game => (
+        allGames?.map(game => (
             <li key={game.id}>
                 <a href={`/games/${game.slug}`} onClick={(e) => handleClickGameSelection(e, game)} className={styles.gameGridMarqueeLink}>
                     <Fragment>
