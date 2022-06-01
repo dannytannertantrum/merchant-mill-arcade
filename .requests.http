@@ -38,8 +38,8 @@ DELETE http://localhost:7000/games/d8fafa3f-988d-4b64-88e0-ea793f54fce6
 ##############
 
 
-### Display scores
-GET http://localhost:7000/scores
+### Display scores by gameId
+GET http://localhost:7000/scores-by-game/b42d0de0-4827-4a2d-a4a8-8abf5732f60b
 
 
 ### Display single score
@@ -51,7 +51,7 @@ POST http://localhost:7000/scores
 Content-Type: application/json
 
 {
-    "game": "d8fafa3f-988d-4b64-88e0-ea793f54fce6",
+    "gameId": "d8fafa3f-988d-4b64-88e0-ea793f54fce6",
     "initials": "AB",
     "score": 3393932
 }

@@ -10,6 +10,7 @@ import addGame from './routes/games/add-game'
 import addScore from './routes/scores/add-score'
 import getGame from './routes/games/get-game'
 import getScore from './routes/scores/get-score'
+import getScoresByGameId from './routes/scores/get-scores-by-game-id'
 import getGames from './routes/games/get-games'
 import deleteGame from './routes/games/delete-game'
 import deleteScore from './routes/scores/delete-score'
@@ -65,11 +66,12 @@ server.register(dbConnector)
 
 server.register(addGame)
 server.register(addScore)
-server.register(getGame)
-server.register(getScore)
-server.register(getGames)
 server.register(deleteGame)
 server.register(deleteScore)
+server.register(getGame)
+server.register(getGames)
+server.register(getScore)
+server.register(getScoresByGameId)
 server.register(updateGame)
 server.register(updateScore)
 
