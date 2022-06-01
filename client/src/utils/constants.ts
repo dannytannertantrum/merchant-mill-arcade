@@ -11,6 +11,8 @@ const FETCH_IN_PROGRESS = 'FETCH_IN_PROGRESS'
 const GET_GAME = 'GET_GAME'
 const GET_GAMES = 'GET_GAMES'
 const GET_IMAGES = 'GET_IMAGES'
+const GET_SCORE = 'GET_SCORE'
+const GET_SCORES = 'GET_SCORES'
 
 
 export {
@@ -23,5 +25,7 @@ export {
     FETCH_IN_PROGRESS,
     GET_GAME,
     GET_GAMES,
-    GET_IMAGES
+    GET_IMAGES,
+    GET_SCORE,
+    GET_SCORES
 }

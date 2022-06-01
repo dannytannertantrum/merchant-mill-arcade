@@ -2,16 +2,12 @@ import { createContext, useEffect, useReducer, Fragment } from 'react'
 
 import { addGame } from '../apis/games.apis'
 import { AllGamesData } from '../../../common/games.types'
-import FetchError from '../components/FetchError/FetchError'
+import ContextDisplayState from '../components/ContextDisplayState/ContextDisplayState'
 import { FETCH_ERROR, FETCH_IN_PROGRESS, GET_GAMES } from '../utils/constants'
 import { GameData } from '../../../common/games.types'
 import { gameReducer, INITIAL_GAME_STATE } from '../reducers/game.reducer'
 import { getGames } from '../apis/games.apis'
-import Link from '../components/Link/Link'
-import Loading from '../components/Loading/Loading'
-import logo from '../assets/logo.png'
 import { ReplyType } from '../utils/sharedTypes'
-import * as styles from '../components/sharedStyles'
 
 
 interface GamesProviderProps {
@@ -75,28 +71,9 @@ const GamesContextProvider = ({ children }: GamesProviderProps) => {
         })
     }, [])
 
-    const display = () => {
-        if (state.isLoading && state.error || state.error) {
-            return (
-                <Fragment>
-                    <Link href='/' className={styles.logoWrapper}>
-                        <img src={logo} alt='logo - return to homepage' />
-                    </Link>
-                    <FetchError reason={state.error.reason} />
-                </Fragment>
-            )
-        }
-
-        if (state.isLoading) {
-            return <Loading />
-        }
-
-        return children
-    }
-
     return (
         <GamesContext.Provider value={gamesContext}>
-            {display()}
+            <ContextDisplayState isLoading={state.isLoading} error={state.error} children={children} />
         </GamesContext.Provider>
     )
 }
