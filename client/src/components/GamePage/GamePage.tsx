@@ -14,7 +14,6 @@ import Modal from '../Modal/Modal'
 import * as styles from './GamePageStyles'
 import * as sharedStyles from '../sharedStyles'
 import NotFoundPage from '../NotFoundPage/NotFoundPage'
-import { ScoresContext } from '../../contexts/ScoresContext'
 
 
 // When replacing with real data, do ORDER BY DESC high scores
@@ -37,10 +36,6 @@ interface GamePageProps {
 }
 
 const GamePage = (gameState: GamePageProps): JSX.Element => {
-    const { allScores } = useContext(ScoresContext)
-
-    console.log('SCORES!?', allScores)
-
     const [isModalOpen, setIsModalOpen] = useState(false)
     // We create a reference to the "Add Your Score" text so focus can return to it after the modal closes
     // This is good for a11y: https://reactjs.org/docs/accessibility.html#programmatically-managing-focus
