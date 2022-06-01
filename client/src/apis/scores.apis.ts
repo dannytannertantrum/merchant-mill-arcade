@@ -20,6 +20,25 @@ const getScore = async (id: string): Promise<ReplyType<ScoreData>> => {
     }
 }
 
+const getScoresByGameId = async (id: string): Promise<ReplyType<AllScoresData>> => {
+    const response = await fetch(`${BASE_URL}/scores-by-game/${id}`)
+
+    if (!response.ok) {
+        return Promise.reject({
+            isSuccess: false,
+            reason: await response.json()
+        })
+    }
+
+    const data: AllScoresData = await response.json()
+    return {
+        isSuccess: true,
+        data
+    }
+}
+
+
 export {
-    getScore
+    getScore,
+    getScoresByGameId
 }

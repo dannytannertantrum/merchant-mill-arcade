@@ -2,11 +2,12 @@ import {
     createRef,
     Fragment,
     SyntheticEvent,
-    useContext,
+    useEffect,
+    useReducer,
     useState
 } from 'react'
 
-import { DEFAULT_MARQUEE } from '../../utils/constants'
+import { DEFAULT_MARQUEE, FETCH_ERROR, FETCH_IN_PROGRESS, GET_SCORES } from '../../utils/constants'
 import FetchError from '../FetchError/FetchError'
 import { GameData } from '../../../../common/games.types'
 import Loading from '../Loading/Loading'
@@ -14,6 +15,8 @@ import Modal from '../Modal/Modal'
 import * as styles from './GamePageStyles'
 import * as sharedStyles from '../sharedStyles'
 import NotFoundPage from '../NotFoundPage/NotFoundPage'
+import { getScoresByGameId } from '../../apis/scores.apis'
+import { INITIAL_SCORE_STATE, scoreReducer } from '../../reducers/score.reducer'
 
 
 // When replacing with real data, do ORDER BY DESC high scores
@@ -37,10 +40,27 @@ interface GamePageProps {
 
 const GamePage = (gameState: GamePageProps): JSX.Element => {
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const [state, dispatch] = useReducer(scoreReducer, INITIAL_SCORE_STATE)
+
     // We create a reference to the "Add Your Score" text so focus can return to it after the modal closes
     // This is good for a11y: https://reactjs.org/docs/accessibility.html#programmatically-managing-focus
     const addYourScoreRef: React.RefObject<HTMLButtonElement> = createRef()
     const marqueeImgSrc = gameState.game?.imageUrl ? gameState.game.imageUrl : DEFAULT_MARQUEE
+
+
+    useEffect(() => {
+        if (gameState.game) {
+            dispatch({ type: FETCH_IN_PROGRESS, isLoading: true })
+
+            getScoresByGameId(gameState.game.id).then((scoresReturned) => {
+                if (scoresReturned.isSuccess) {
+                    dispatch({ type: GET_SCORES, isLoading: false, payload: scoresReturned })
+                }
+            }).catch(reason => {
+                dispatch({ type: FETCH_ERROR, isLoading: false, error: reason })
+            })
+        }
+    }, [])
 
     const handleOnSubmit = (event: SyntheticEvent) => {
         event.preventDefault()
