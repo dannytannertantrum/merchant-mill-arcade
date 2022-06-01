@@ -41,7 +41,7 @@ describe('COMMONG QUERIES', () => {
     }
     const score: ScoreData = {
         id: uuidv4(),
-        game: game.id,
+        gameId: game.id,
         initials: 'GLC',
         score: 1283794222,
         isDeleted: false,

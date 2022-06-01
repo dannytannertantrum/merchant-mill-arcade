@@ -12,13 +12,13 @@ const schema = { response: { 200: ScoreSchema } }
 
 const insertScore = async (
     pool: DatabasePoolType,
-    { id, game, initials, isDeleted, score, createdAt }: Omit<ScoreData, 'updatedAt'>
+    { id, gameId, initials, isDeleted, score, createdAt }: Omit<ScoreData, 'updatedAt'>
 ): Promise<void> => {
     await pool.query(sql<ScoreData>`
         INSERT INTO
-            scores (id, game, initials, is_deleted, score, created_at)
+            scores (id, game_id, initials, is_deleted, score, created_at)
         VALUES
-            (${id}, ${game}, ${initials}, ${isDeleted}, ${score}, ${createdAt}::timestamptz);
+            (${id}, ${gameId}, ${initials}, ${isDeleted}, ${score}, ${createdAt}::timestamptz);
     `)
 }
 
@@ -27,7 +27,7 @@ export default async (server: FastifyInstance): Promise<void> => {
         '/scores',
         { schema },
         async (request, reply) => {
-            const { game } = request.body
+            const { gameId } = request.body
             const id = request.body.id || uuidv4()
             let { initials, score } = request.body
 
@@ -45,7 +45,7 @@ export default async (server: FastifyInstance): Promise<void> => {
                     initials: scrubbedInitials,
                     isDeleted,
                     score,
-                    game,
+                    gameId,
                     createdAt
                 }
 

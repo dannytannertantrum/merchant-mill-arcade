@@ -32,7 +32,7 @@ describe('POST /scores', () => {
     }
     const score = {
         id: uuidv4(),
-        game: game.id,
+        gameId: game.id,
         initials: 'GLC',
         score: 9327583
     }
@@ -63,7 +63,7 @@ describe('POST /scores', () => {
 
             expect(status).toEqual(201)
             expect(body.id).toEqual(score.id)
-            expect(body.game).toEqual(score.game)
+            expect(body.gameId).toEqual(score.gameId)
             expect(body.isDeleted).toEqual(false)
             expect(body.initials).toEqual(score.initials)
             expect(body.score).toEqual(score.score)
@@ -167,7 +167,7 @@ describe('POST /scores', () => {
         */
 
         it('throws an API error when no game is attached', async () => {
-            const noGameAttached = overrideValues<ScoreRequestBodyWithGame>(score, { game: undefined })
+            const noGameAttached = overrideValues<ScoreRequestBodyWithGame>(score, { gameId: undefined })
 
             const { body, status } = await supertest(server.server).post('/scores').send(noGameAttached)
 
@@ -178,7 +178,7 @@ describe('POST /scores', () => {
         })
 
         it('throws an API error when sending an invalid uuid for game', async () => {
-            const invalidGameUuid = overrideValues<ScoreRequestBodyWithGame>(score, { game: 'not-valid' })
+            const invalidGameUuid = overrideValues<ScoreRequestBodyWithGame>(score, { gameId: 'not-valid' })
 
             const { body, status } = await supertest(server.server).post('/scores').send(invalidGameUuid)
 

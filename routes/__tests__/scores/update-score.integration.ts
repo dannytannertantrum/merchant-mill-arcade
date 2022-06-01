@@ -32,7 +32,7 @@ describe('PUT /scores/id', () => {
     }
     const score: ScoreData = {
         id: uuidv4(),
-        game: game.id,
+        gameId: game.id,
         initials: 'GLC',
         score: 9327583,
         isDeleted: false,

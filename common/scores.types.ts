@@ -3,7 +3,7 @@ import { Static, Type } from '@sinclair/typebox'
 const AllScoresSchema = Type.Array(
     Type.Object({
         id: Type.String(),
-        game: Type.String(),
+        gameId: Type.String(),
         initials: Type.String(),
         isDeleted: Type.Boolean(),
         score: Type.Integer(),
@@ -13,7 +13,7 @@ const AllScoresSchema = Type.Array(
 )
 const ScoreSchema = Type.Object({
     id: Type.String(),
-    game: Type.String(),
+    gameId: Type.String(),
     isDeleted: Type.Boolean(),
     initials: Type.String(),
     score: Type.Integer(),
@@ -28,7 +28,7 @@ interface ScoreRequestBody {
 }
 
 interface ScoreRequestBodyWithGame extends ScoreRequestBody {
-    game: string
+    gameId: string
 }
 
 type ScoreData = Static<typeof ScoreSchema>

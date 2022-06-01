@@ -36,7 +36,7 @@ describe('DELETE /scores/id', () => {
         }
         let score: ScoreData = {
             id: uuidv4(),
-            game: game.id,
+            gameId: game.id,
             isDeleted: false,
             initials: 'GLC',
             score: 190922,

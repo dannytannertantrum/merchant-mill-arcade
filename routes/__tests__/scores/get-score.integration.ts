@@ -35,7 +35,7 @@ describe('/GET /scores/id', () => {
         }
         let score: ScoreData = {
             id: uuidv4(),
-            game: game.id,
+            gameId: game.id,
             isDeleted: false,
             initials: 'GLC',
             score: 190922,
@@ -60,7 +60,7 @@ describe('/GET /scores/id', () => {
 
             expect(status).toEqual(200)
             expect(body.id).toEqual(score.id)
-            expect(body.game).toEqual(score.game)
+            expect(body.gameId).toEqual(score.gameId)
             expect(body.isDeleted).toEqual(score.isDeleted)
             expect(body.initials).toEqual(score.initials)
             expect(body.score).toEqual(score.score)

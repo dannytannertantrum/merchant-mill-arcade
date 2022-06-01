@@ -68,7 +68,7 @@ async function seedAllData() {
         for (let i = 0; i < scoreData.length; i++) {
             await slonik.query(sql`
                 INSERT INTO
-                    scores (id, game, initials, is_deleted, score, created_at, updated_at)
+                    scores (id, game_id, initials, is_deleted, score, created_at, updated_at)
                 VALUES (
                     ${scoreData[i][0]},
                     ${scoreData[i][1]},
