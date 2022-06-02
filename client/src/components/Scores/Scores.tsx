@@ -102,6 +102,13 @@ const Scores = ({ game }: ScoresProps) => {
         addYourScoreRef && addYourScoreRef.current?.focus()
     }
 
+    const handleAddScoreClicked = (event: SyntheticEvent) => {
+        event.preventDefault()
+
+        setFormControl(DEFAULT_FORM_CONTROL_FLOW)
+        setIsModalOpen(!isModalOpen)
+    }
+
     const addScoreModal = (
         <div className={styles.scoreModalWrapper}>
             <div>
@@ -168,7 +175,7 @@ const Scores = ({ game }: ScoresProps) => {
         <Fragment>
             <nav>
                 <h2>Top 5 Scores</h2>
-                <button className={styles.addScoreButton} onClick={() => setIsModalOpen(!isModalOpen)} ref={addYourScoreRef}>
+                <button className={styles.addScoreButton} onClick={handleAddScoreClicked} ref={addYourScoreRef}>
                     + Add your score
                 </button>
             </nav>
