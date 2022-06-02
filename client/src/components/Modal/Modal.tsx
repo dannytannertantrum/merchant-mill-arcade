@@ -6,9 +6,11 @@ interface ModalProps {
     children: JSX.Element
 }
 
+const el = document.createElement('div')
+const modalRoot = document.getElementById('modal-root')
+
+
 const Modal = ({ children }: ModalProps) => {
-    const el = document.createElement('div')
-    const modalRoot = document.getElementById('modal-root')
 
     useEffect(() => {
         // The portal element is inserted in the DOM tree after

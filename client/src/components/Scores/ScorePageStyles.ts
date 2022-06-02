@@ -34,7 +34,8 @@ const closeModalButton = css`
 `
 
 const inputInitials = css`
-    width: 60px;
+    width: 100px;
+    text-transform: uppercase !important;
 `
 
 // ul

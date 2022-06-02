@@ -1,4 +1,5 @@
 import {
+    CREATE_SCORE,
     FETCH_ERROR,
     FETCH_IN_PROGRESS,
     GET_SCORE,
@@ -9,12 +10,14 @@ import { BaseActionType, ReplySuccess } from '../utils/sharedTypes'
 
 
 type ScoreAction =
+    | { type: 'CREATE_SCORE'; isLoading: boolean; payload: ReplySuccess<ScoreData> }
     | { type: 'GET_SCORE'; isLoading: boolean; payload: ReplySuccess<ScoreData> }
     | { type: 'GET_SCORES'; isLoading: boolean; payload: ReplySuccess<AllScoresData> }
 
 const INITIAL_SCORE_STATE = {
     error: null,
     isLoading: true,
+    replyCreateScore: null,
     replyGetScore: null,
     replyGetScores: null
 }
@@ -26,6 +29,9 @@ const scoreReducer = (state: typeof INITIAL_SCORE_STATE, action: BaseActionType 
 
         case FETCH_IN_PROGRESS:
             return { ...state, isLoading: true }
+
+        case CREATE_SCORE:
+            return { ...state, isLoading: false, replyCreateScore: action.payload }
 
         case GET_SCORE:
             return { ...state, isLoading: false, replyGetScore: action.payload }

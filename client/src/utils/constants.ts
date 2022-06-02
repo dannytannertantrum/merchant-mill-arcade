@@ -6,6 +6,7 @@ const CUSTOM_SEARCH_URL = `https://www.googleapis.com/customsearch/v1?key=${CUST
 const DEFAULT_MARQUEE = 'https://cdn.shopify.com/s/files/1/1125/0582/products/Mame_Arcade_Marquee_Pacman_maze_1200x1200.png'
 
 const CREATE_GAME = 'CREATE_GAME'
+const CREATE_SCORE = 'CREATE_SCORE'
 const FETCH_ERROR = 'FETCH_ERROR'
 const FETCH_IN_PROGRESS = 'FETCH_IN_PROGRESS'
 const GET_GAME = 'GET_GAME'
@@ -18,6 +19,7 @@ const GET_SCORES = 'GET_SCORES'
 export {
     BASE_URL,
     CREATE_GAME,
+    CREATE_SCORE,
     CUSTOM_SEARCH_ERROR,
     CUSTOM_SEARCH_URL,
     DEFAULT_MARQUEE,
