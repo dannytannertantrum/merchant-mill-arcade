@@ -59,7 +59,10 @@ describe('/GET /scores-by-game-id/id', () => {
         let score4 = overrideValues<ScoreData>(score1Lowest, { id: uuidv4(), score: 40000000 })
         let score5 = overrideValues<ScoreData>(score1Lowest, { id: uuidv4(), score: 50000000 })
         let score6 = overrideValues<ScoreData>(score1Lowest, { id: uuidv4(), score: 60000000 })
-        let score7Highest = overrideValues<ScoreData>(score1Lowest, { id: uuidv4(), score: 70000000 })
+        // We used character varying for score and not a number for better performance, so when sorting,
+        // it needs to be cast as an INT - this will test to make sure casting is working
+        // If it wasn't, our tests would fail because the order would sort incorrectly because 2 > 10 in strings
+        let score7Highest = overrideValues<ScoreData>(score1Lowest, { id: uuidv4(), score: 1000000000 })
 
         beforeEach(async () => {
             // Create games first because of the forieign key constraint

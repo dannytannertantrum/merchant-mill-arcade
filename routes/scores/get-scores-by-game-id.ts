@@ -23,7 +23,7 @@ const getScoresByGameId = async (pool: DatabasePoolType, gameId: string): Promis
         WHERE
             s.game_id = ${gameId} AND
             s.is_deleted = FALSE
-        ORDER BY s.score DESC
+        ORDER BY s.score::INT DESC
         LIMIT 5;
     `)
 
