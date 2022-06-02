@@ -1,5 +1,5 @@
 import { css } from 'goober'
-import { DESKTOP, LARGE_MOBILE } from '../utils/breakpoints'
+import { DESKTOP, LARGE_MOBILE, TABLET } from '../utils/breakpoints'
 
 
 const buttonPurple = css`
@@ -100,14 +100,21 @@ const gameHeader = css`
     img {
         border: 1px solid white;
         min-height: 70px;
-        max-height: 100px;
-        max-width: 500px;
+        max-height: 75px;
+        max-width: 350px;
         object-fit: cover;
         width: 100%;
     }
 
     p {
         margin-bottom: 30px;
+    }
+
+    @media screen and (min-width: ${TABLET}px) {
+        img {
+            max-height: 100px;
+            max-width: 500px;
+        }
     }
 `
 
@@ -163,7 +170,11 @@ const highlight = css`
 const logoWrapper = css`
     display: block;
     margin: 0 auto 20px;
-    max-width: 350px;
+    max-width: 250px;
+
+    @media screen and (min-width: ${TABLET}px) {
+        max-width: 350px;
+    }
 `
 
 const marquee = (bgImage: string) => css`
