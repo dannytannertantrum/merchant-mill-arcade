@@ -10,6 +10,7 @@ import {
 
 import { addScore } from '../../apis/scores.apis'
 import { CREATE_SCORE, FETCH_ERROR, FETCH_IN_PROGRESS, GET_SCORES } from '../../utils/constants'
+import EditScore from '../EditScore/EditScore'
 import { GameData } from '../../../../common/games.types'
 import Loading from '../Loading/Loading'
 import Modal from '../Modal/Modal'
@@ -24,6 +25,7 @@ interface ScoresProps {
 }
 interface FormControlFlow {
     areFormInitialsTouched: boolean
+    editingScore: boolean
     isFormScoreTouched: boolean
     initials: string
     score: string
@@ -31,6 +33,7 @@ interface FormControlFlow {
 
 const DEFAULT_FORM_CONTROL_FLOW: FormControlFlow = {
     areFormInitialsTouched: false,
+    editingScore: false,
     isFormScoreTouched: false,
     initials: '',
     score: ''
@@ -45,6 +48,23 @@ const Scores = ({ game }: ScoresProps) => {
     // We create a reference to the "Add Your Score" text so focus can return to it after the modal closes
     // This is good for a11y: https://reactjs.org/docs/accessibility.html#programmatically-managing-focus
     const addYourScoreRef: React.RefObject<HTMLButtonElement> = createRef()
+
+    /*
+        1. Refactor modal into its own <EditScore /> Component - DONE
+            - get it working standalone - commit - DONE
+            - pass in isEditing boolean - DONE
+                - if true, then pass in formControl state - DONE
+                - if not, pass in default formControl - DONE
+        2. Add pencil emoji
+            - ensure a11y
+        3. Clicking on pencil opens modal
+            - All fields should be pre-populated
+            - Add "cancel" button
+            - Same form checks should apply with proper errors
+            - If nothing changed, do not fire off an update request
+        4. Add "update" api call
+        5. Add "update" reducer state
+    */
 
 
     useEffect(() => {
@@ -109,50 +129,6 @@ const Scores = ({ game }: ScoresProps) => {
         setIsModalOpen(!isModalOpen)
     }
 
-    const addScoreModal = (
-        <div className={styles.scoreModalWrapper}>
-            <div>
-                <button onClick={handleModalToggle} className={styles.closeModalButton} aria-label='Close modal'>
-                    X
-                </button>
-                <h1 className={sharedStyles.heading}>Add your score</h1>
-                <form onSubmit={handleOnSubmit}>
-                    <label
-                        className={formControl.areFormInitialsTouched && formControl.initials.trim() === '' ? sharedStyles.errorLabel : ''}
-                        htmlFor='addInitials'
-                    >
-                        Enter your initials
-                        <input
-                            className={styles.inputInitials}
-                            id='addInitials'
-                            maxLength={3}
-                            onChange={(event) => handleInputChange(event, 'initials')}
-                            type='text'
-                            value={formControl.initials}
-                        />
-
-                        {formControl.areFormInitialsTouched && formControl.initials.trim() === '' && <p>Initials are required</p>}
-                    </label>
-                    <label
-                        className={formControl.isFormScoreTouched && formControl.score.trim() === '' ? sharedStyles.errorLabel : ''}
-                        htmlFor='addScore'
-                    >
-                        Enter your score
-                        <input
-                            id='addScore'
-                            onChange={(event) => handleInputChange(event)}
-                            type='number'
-                            value={formControl.score}
-                        />
-
-                        {formControl.isFormScoreTouched && formControl.score.trim() === '' && <p>Score is required</p>}
-                    </label>
-                    <input type='submit' value='Submit' />
-                </form>
-            </div>
-        </div>
-    )
-
     const addScoreMessage = (
         <p>Well HOT DOG! Even if your score sucks, you'll be a weiner! ...Because there's like, no scores here, man. Get to playin'!</p>
     )
@@ -191,9 +167,21 @@ const Scores = ({ game }: ScoresProps) => {
                     </ul>
                 ) : addScoreMessage
             }
-            {isModalOpen && <Modal>{addScoreModal}</Modal>}
+            {isModalOpen &&
+                <Modal>
+                    <EditScore
+                        formControl={formControl}
+                        handleInputChange={handleInputChange}
+                        handleModalToggle={handleModalToggle}
+                        handleOnSubmit={handleOnSubmit}
+                    />
+                </Modal>
+            }
         </Fragment>
     )
 }
 
-export default Scores
+export {
+    Scores as default,
+    FormControlFlow
+}
