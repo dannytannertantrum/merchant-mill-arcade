@@ -17,6 +17,18 @@ const addScoreButton = css`
     }
 `
 
+const initialsAndEdit = css`
+    button {
+        background: transparent;
+        border: 0 none;
+        display: inline-block;
+        cursor: pointer;
+        margin: 0 0 0 10px;
+        padding: 0;
+        vertical-align: top;
+    }
+`
+
 // ul
 const scoresContainer = css`
     display: grid;
@@ -49,6 +61,7 @@ const scoresHeader = css`
 
 export {
     addScoreButton,
+    initialsAndEdit,
     scoresContainer,
     scoresHeader
 }

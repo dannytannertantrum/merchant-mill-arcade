@@ -1,6 +1,20 @@
 import { css } from 'goober'
-import { LARGE_MOBILE } from '../../utils/breakpoints'
+import { LARGE_MOBILE, TABLET } from '../../utils/breakpoints'
 
+
+const cancelDeleteButton = css`
+    background: transparent;
+    border: 0 none;
+    color: var(--link-color);
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    transition: color ease-in-out .2s;
+
+    &:hover {
+        color: var(--link-color-hover);
+    }
+`
 
 const closeModalButton = css`
     background: transparent;
@@ -15,6 +29,48 @@ const closeModalButton = css`
 
     @media screen and (min-width: ${LARGE_MOBILE}px) {
         font-size: 24px;
+    }
+`
+
+const deleteButton = css`
+    background: transparent;
+    border: 0 none;
+    color: #cf0000;
+    cursor: pointer;
+    padding: 0;
+    margin: 0 0 20px;
+
+    &:hover {
+        text-decoration: underline;
+    }
+
+    @media screen and (min-width: ${LARGE_MOBILE}px) {
+        margin: 0;
+    }
+`
+
+const deleteConfirmation = css`
+    margin-top: 20px;
+`
+
+const editSubmitButtonsWrapper = css`
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    input[type="submit"] {
+        margin-bottom: 20px;
+    }
+
+    @media screen and (min-width: ${LARGE_MOBILE}px) {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row;
+        align-items: center;
+
+        input[type="submit"] {
+            margin-bottom: 0;
+        }
     }
 `
 
@@ -51,6 +107,7 @@ const scoreModalWrapper = css`
 
     h1, label {
         font-size: 12px;
+        text-align: left;
     }
 
     @media screen and (min-width: ${LARGE_MOBILE}px) {
@@ -66,10 +123,37 @@ const scoreModalWrapper = css`
             font-size: 16px;
         }
     }
+
+    @media screen and (min-width: ${TABLET}px) {
+        h1 {
+            text-align: center;
+        }
+    }
+`
+
+const showDeleteButton = css`
+    background: transparent;
+    border: 0 none;
+    color: #cf0000;
+    cursor: pointer;
+    padding: 0;
+
+    &:hover {
+        text-decoration: underline;
+    }
+
+    @media screen and (min-width: ${LARGE_MOBILE}px) {
+        margin: 0 0 0 20px;
+    }
 `
 
 export {
+    cancelDeleteButton,
     closeModalButton,
+    deleteButton,
+    deleteConfirmation,
+    editSubmitButtonsWrapper,
     inputInitials,
-    scoreModalWrapper
+    scoreModalWrapper,
+    showDeleteButton
 }
