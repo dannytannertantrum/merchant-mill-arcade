@@ -61,7 +61,7 @@ describe('DELETE /scores/id', () => {
             const updatedScore = await getScoreById(server.slonik.pool, score.id)
 
             expect(deletedScore.status).toEqual(200)
-            expect(deletedScore.text).toContain(`Score ${score.score} with id ${score.id} has been removed`)
+            expect(deletedScore.body.isDeleted).toBe(true)
             expect(updatedScore?.isDeleted).toBe(true)
             expect(updatedScore?.updatedAt).not.toBeNull()
         })
