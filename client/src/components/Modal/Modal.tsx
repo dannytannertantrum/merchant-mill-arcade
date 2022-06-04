@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 
 
@@ -11,6 +11,7 @@ const modalRoot = document.getElementById('modal-root')
 
 
 const Modal = ({ children }: ModalProps) => {
+    const [mounted, setMounted] = useState(false)
 
     useEffect(() => {
         // The portal element is inserted in the DOM tree after
@@ -23,10 +24,16 @@ const Modal = ({ children }: ModalProps) => {
         // is inserted in the DOM tree.
         modalRoot?.appendChild(el)
 
+        setMounted(true)
+
         return () => {
             modalRoot?.removeChild(el)
         }
     }, [])
+
+    if (!mounted) {
+        return null
+    }
 
     return (
         createPortal(children, el)
