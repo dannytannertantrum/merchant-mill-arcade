@@ -3,11 +3,11 @@ import * as styles from '../sharedStyles'
 
 
 interface FetchErrorProps {
-    reason: Error | {
+    reason: {
         error: string
         message: string
         statusCode: number
-    } | string
+    } | Error | string
 }
 
 const FetchError = ({ reason }: FetchErrorProps) => {
@@ -22,7 +22,11 @@ const FetchError = ({ reason }: FetchErrorProps) => {
         window.location.reload()
     }
 
-    console.warn(`Error fetching: ${reason}`)
+    if (typeof reason !== 'string') {
+        console.warn(`Error fetching: ${JSON.stringify(reason)})`)
+    } else {
+        console.warn(`Error fetching: ${reason}`)
+    }
 
     return (
         <div className={styles.errorWrapper}>
