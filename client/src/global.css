@@ -47,8 +47,10 @@ label,
 ol li,
 ul li,
 p {
+    font-family: inherit;
     font-size: 12px;
     line-height: 1.5;
+    text-transform: inherit;
 }
 
 a {
@@ -101,7 +103,6 @@ input[type='submit'] {
     cursor: pointer;
     padding: 12px;
     transition: background-color ease .5s;
-    width: 150px;
 }
 
 input[type='submit']:hover {
