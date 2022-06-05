@@ -1,6 +1,7 @@
-import React, { Fragment, Suspense } from 'react'
+import React, { Fragment, Suspense, useState } from 'react'
 
 import { DEFAULT_MARQUEE } from '../../utils/constants'
+import EditGame from '../EditGame/EditGame'
 import FetchError from '../FetchError/FetchError'
 import { GameData } from '../../../../common/games.types'
 import Loading from '../Loading/Loading'
@@ -25,6 +26,7 @@ interface GamePageProps {
 }
 
 const GamePage = (gameState: GamePageProps): JSX.Element => {
+    const [showEditGame, setShowEditGame] = useState(false)
     const marqueeImgSrc = gameState.game?.imageUrl ? gameState.game.imageUrl : DEFAULT_MARQUEE
 
     if (!gameState.isLoading && gameState.error != null || gameState.error != null) {
@@ -44,12 +46,26 @@ const GamePage = (gameState: GamePageProps): JSX.Element => {
     return (
         <Fragment>
             <div className={sharedStyles.gameHeader}>
-                <h3>{gameState.game?.title}</h3>
+                <div>
+                    <h3>{gameState.game?.title}</h3>
+                    <button className={sharedStyles.buttonAsLink} onClick={() => setShowEditGame(!showEditGame)}>
+                        {showEditGame
+                            ? 'Cancel edit'
+                            : 'Edit'
+                        }
+                    </button>
+                </div>
                 <img src={marqueeImgSrc} alt={gameState.game?.title} />
             </div>
-            <Suspense fallback={<Loading />}>
-                <Scores game={gameState.game} />
-            </Suspense>
+            {showEditGame
+                ? (
+                    <EditGame />
+                ) : (
+                    <Suspense fallback={<Loading />}>
+                        <Scores game={gameState.game} />
+                    </Suspense>
+                )
+            }
         </Fragment>
     )
 }

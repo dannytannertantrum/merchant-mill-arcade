@@ -2,6 +2,23 @@ import { css } from 'goober'
 import { DESKTOP, LARGE_MOBILE, TABLET } from '../utils/breakpoints'
 
 
+const buttonAsLink = css`
+    background: transparent;
+    border: 0 none;
+    color: var(--link-color);
+    cursor: pointer;
+    font-family: 'Press Start 2P', monospace, sans-serif;
+    margin: 0 0 14px;
+    padding: 0;
+    transition: color ease-in-out .2s;
+    text-transform: uppercase;
+
+    &:hover {
+        color: var(--link-color-hover);
+    }
+`
+
+
 const buttonPurple = css`
     background-color: var(--button-bg-color);
     border: 1px solid var(--borders);
@@ -92,6 +109,18 @@ const gameHeader = css`
     display: flex;
     flex-direction: column;
     align-items: center;
+    max-width: 500px;
+
+    >div {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        width: 100%;
+
+        h3 {
+            margin-right: 10px;
+        }
+    }
 
     h3 {
         margin-bottom: 8px;
@@ -101,7 +130,6 @@ const gameHeader = css`
         border: 1px solid white;
         min-height: 70px;
         max-height: 75px;
-        max-width: 350px;
         object-fit: cover;
         width: 100%;
     }
@@ -189,6 +217,7 @@ const marquee = (bgImage: string) => css`
 `
 
 export {
+    buttonAsLink,
     buttonPurple,
     errorImage,
     errorText,

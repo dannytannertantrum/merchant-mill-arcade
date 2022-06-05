@@ -18,6 +18,7 @@ import Loading from '../Loading/Loading'
 import Modal from '../Modal/Modal'
 import { ScoreData } from '../../../../common/scores.types'
 import * as styles from './ScorePageStyles'
+import * as sharedStyles from '../sharedStyles'
 
 
 interface ScoresProps {
@@ -230,7 +231,7 @@ const Scores = ({ game }: ScoresProps) => {
         <Fragment>
             <nav>
                 <h2>Top 5 Scores</h2>
-                <button className={styles.addScoreButton} onClick={handleAddScoreClicked} ref={addYourScoreRef}>
+                <button className={sharedStyles.buttonAsLink} onClick={handleAddScoreClicked} ref={addYourScoreRef}>
                     + Add your score
                 </button>
             </nav>

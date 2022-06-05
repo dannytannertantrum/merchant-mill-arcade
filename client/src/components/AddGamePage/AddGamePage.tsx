@@ -148,7 +148,7 @@ const AddGamePage = () => {
             {formControl.showImageSearch && state.replyGetImages?.isSuccess && (
                 <Fragment>
                     <div className={gameHeaderAddBorder}>
-                        <p>Choose an image or keep the default.</p>
+                        <p>Select an image below or keep the default.</p>
                         <h3>Current Selection</h3>
                         <img src={selectedImage} alt={`${formControl.title} arcade marquee`} />
                     </div>

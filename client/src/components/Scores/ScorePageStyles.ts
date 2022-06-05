@@ -2,21 +2,6 @@ import { css } from 'goober'
 import { LARGE_MOBILE } from '../../utils/breakpoints'
 
 
-const addScoreButton = css`
-    background: transparent;
-    border: 0 none;
-    color: var(--link-color);
-    cursor: pointer;
-    font-family: 'Press Start 2P', monospace, sans-serif;
-    margin: 0 0 14px;
-    transition: color ease-in-out .2s;
-    text-transform: uppercase;
-
-    &:hover {
-        color: var(--link-color-hover);
-    }
-`
-
 const initialsAndEdit = css`
     button {
         background: transparent;
@@ -60,7 +45,6 @@ const scoresHeader = css`
 `
 
 export {
-    addScoreButton,
     initialsAndEdit,
     scoresContainer,
     scoresHeader
