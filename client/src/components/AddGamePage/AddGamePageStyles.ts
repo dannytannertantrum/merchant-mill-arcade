@@ -8,16 +8,11 @@ const addGamePageWrapper = css`
     form {
         margin-top: 30px;
     }
-
-    section {
-        border-bottom: 2px solid var(--borders);
-        margin-bottom: 30px;
-        padding-bottom: 30px;
-    }
 `
 
 const gameHeaderAddBorder = css`
     border-bottom: 2px solid var(--borders);
+    max-width: 800px;
 `
 
 const marquee = css`

@@ -23,7 +23,7 @@ import Loading from '../Loading/Loading'
 
 
 interface EditGameProps {
-    makeApiRequest: (event: SyntheticEvent) => void
+    makeApiRequest: (event: SyntheticEvent, title: string, selectedImage: string) => void
     title?: string
     gameId?: string
     imageUrl?: string | null
@@ -60,7 +60,7 @@ const EditGame = ({
 
     const defaultFormChecksFail = () => !!(formControl.title.trim() === '' || existingGame !== '')
 
-    const handleOnSubmit = (event: SyntheticEvent) => {
+    const handleOnSubmit = (event: SyntheticEvent, title: string) => {
         event.preventDefault()
 
         if (defaultFormChecksFail() || !formControl.showImageSearch) {
@@ -68,7 +68,7 @@ const EditGame = ({
             return
         }
 
-        makeApiRequest(event)
+        makeApiRequest(event, title, selectedImage)
     }
 
     const handleShowImageSelection = (event: React.SyntheticEvent | React.KeyboardEvent<HTMLElement>) => {
@@ -122,7 +122,7 @@ const EditGame = ({
     }
 
     return (
-        <form onSubmit={handleOnSubmit}>
+        <form onSubmit={(event: SyntheticEvent) => handleOnSubmit(event, formControl.title)}>
 
             <section className={sharedStyles.editTitleSection}>
                 <label
