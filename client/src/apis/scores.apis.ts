@@ -1,22 +1,7 @@
 import { AllScoresData, ScoreData } from '../../../common/scores.types'
 import { BASE_URL } from '../utils/constants'
+import handleReply from './sharedReply'
 import { ReplyType } from '../utils/sharedTypes'
-
-
-const handleReply = async <T>(response: Response): Promise<ReplyType<T>> => {
-    if (!response.ok) {
-        return Promise.reject({
-            isSuccess: false,
-            reason: await response.json()
-        })
-    }
-
-    const data: T = await response.json()
-    return {
-        isSuccess: true,
-        data
-    }
-}
 
 
 const addScore = async (gameId: string, initials: string, score: number): Promise<ReplyType<ScoreData>> => {
