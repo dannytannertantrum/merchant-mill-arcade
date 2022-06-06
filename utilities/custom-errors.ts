@@ -1,5 +1,4 @@
 interface HttpStatuses {
-    OK: 200
     BadRequest: 400
     NotFound: 404
     InternalServerError: 500
@@ -7,7 +6,6 @@ interface HttpStatuses {
 }
 
 const httpStatuses: HttpStatuses = {
-    OK: 200,
     BadRequest: 400,
     NotFound: 404,
     InternalServerError: 500,
@@ -54,19 +52,19 @@ class ValidationError extends Error {
     }
 }
 
-const handleApiError = (message: string) => {
+const handleApiError = (message: string): never => {
     throw new APIError(message)
 }
 
-const handleDuplicateEntryError = (message: string) => {
+const handleDuplicateEntryError = (message: string): never => {
     throw new OnConflictError(message)
 }
 
-const handleNotFoundError = (message: string) => {
+const handleNotFoundError = (message: string): never => {
     throw new NotFoundError(message)
 }
 
-const handleValidationError = (message: string) => {
+const handleValidationError = (message: string): never => {
     throw new ValidationError(message)
 }
 
