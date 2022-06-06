@@ -24,7 +24,7 @@ import * as sharedStyles from '../sharedStyles'
 interface ScoresProps {
     game?: GameData | null
 }
-interface FormControlFlow {
+interface ScoreFormControlFlow {
     areFormInitialsTouched: boolean
     editingScore: boolean
     gameId: string
@@ -39,7 +39,7 @@ interface ScoreNotChanged {
     score: string
 }
 
-const DEFAULT_FORM_CONTROL_FLOW: FormControlFlow = {
+const DEFAULT_FORM_CONTROL_FLOW: ScoreFormControlFlow = {
     areFormInitialsTouched: false,
     editingScore: false,
     gameId: '',
@@ -58,7 +58,7 @@ const Scores = ({ game }: ScoresProps) => {
     const [state, dispatch] = useReducer(scoreReducer, INITIAL_SCORE_STATE)
 
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const [formControl, setFormControl] = useState<FormControlFlow>(DEFAULT_FORM_CONTROL_FLOW)
+    const [formControl, setFormControl] = useState<ScoreFormControlFlow>(DEFAULT_FORM_CONTROL_FLOW)
     const [scoreUnchanged, setScoreUnchanged] = useState<ScoreNotChanged>(SCORE_NOT_CHANGED_DEFAULT)
 
     // We create a reference to the "Add Your Score" text and edit buttons so focus can return to it after the modal closes
@@ -137,7 +137,7 @@ const Scores = ({ game }: ScoresProps) => {
         }
     }
 
-    const handleOnSubmitEdit = (event: SyntheticEvent,) => {
+    const handleOnSubmitEdit = (event: SyntheticEvent) => {
         event.preventDefault()
 
         if (defaultFormChecksFail()) return
@@ -266,5 +266,5 @@ const Scores = ({ game }: ScoresProps) => {
 
 export {
     Scores as default,
-    FormControlFlow
+    ScoreFormControlFlow
 }

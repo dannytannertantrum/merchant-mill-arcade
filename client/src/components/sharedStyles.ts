@@ -18,7 +18,6 @@ const buttonAsLink = css`
     }
 `
 
-
 const buttonPurple = css`
     background-color: var(--button-bg-color);
     border: 1px solid var(--borders);
@@ -37,6 +36,12 @@ const buttonPurple = css`
     &:active {
         box-shadow: inset 1px 1px 7px rgba(0, 0, 0, .5), inset -1px -1px 7px rgba(0, 0, 0, .5);
     }
+`
+
+const editTitleSection = css`
+    border-bottom: 2px solid var(--borders);
+    margin-bottom: 30px;
+    padding-bottom: 30px;
 `
 
 const errorImage = css`
@@ -219,6 +224,7 @@ const marquee = (bgImage: string) => css`
 export {
     buttonAsLink,
     buttonPurple,
+    editTitleSection,
     errorImage,
     errorText,
     errorWrapper,

@@ -1,12 +1,12 @@
 import { ChangeEvent, Fragment, SyntheticEvent, useState } from 'react'
 
-import { FormControlFlow } from '../Scores/Scores'
+import { ScoreFormControlFlow } from '../Scores/Scores'
 import * as sharedStyles from '../sharedStyles'
 import * as styles from './EditScoreStyles'
 
 
 interface EditScoreProps {
-    formControl: FormControlFlow
+    formControl: ScoreFormControlFlow
     handleInputChange: (event: ChangeEvent<HTMLInputElement>, typeChanged?: 'initials') => void
     handleCloseModalToggle: (event: SyntheticEvent, index: number) => void
     handleDelete: (event: SyntheticEvent, scoreId: string) => void
