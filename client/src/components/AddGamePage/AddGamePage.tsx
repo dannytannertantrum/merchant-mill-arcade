@@ -12,7 +12,8 @@ import {
     CUSTOM_SEARCH_ERROR
 } from '../../utils/constants'
 import { GamesContext } from '../../contexts/GamesContext'
-import { addGamePageReducer, INITIAL_ADD_GAME_PAGE_STATE } from '../../reducers/addGamePage.reducer'
+// import { addGamePageReducer, INITIAL_ADD_GAME_PAGE_STATE } from '../../reducers/addGamePage.reducer'
+import { gameReducer, INITIAL_GAME_STATE } from '../../reducers/game.reducer'
 import Loading from '../Loading/Loading'
 import * as sharedStyles from '../sharedStyles'
 import * as styles from './AddGamePageStyles'
@@ -22,7 +23,7 @@ import EditGame from '../EditGame/EditGame'
 
 const AddGamePage = () => {
     const { createGame } = useContext(GamesContext)
-    const [state, dispatch] = useReducer(addGamePageReducer, INITIAL_ADD_GAME_PAGE_STATE)
+    const [state, dispatch] = useReducer(gameReducer, INITIAL_GAME_STATE)
 
 
     const handleSuccessMessageReload = (event: MouseEvent) => {

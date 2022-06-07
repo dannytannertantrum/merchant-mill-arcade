@@ -7,7 +7,7 @@ import {
     useState
 } from 'react'
 
-import { addGamePageReducer, INITIAL_ADD_GAME_PAGE_STATE } from '../../reducers/addGamePage.reducer'
+import { imageSearchReducer, INITIAL_IMAGE_SEARCH_STATE } from '../../reducers/imageSearch.reducer'
 import {
     CUSTOM_SEARCH_ERROR,
     DEFAULT_MARQUEE,
@@ -23,7 +23,7 @@ import Loading from '../Loading/Loading'
 
 
 interface EditGameProps {
-    makeApiRequest: (event: SyntheticEvent, title: string, selectedImage: string) => void
+    makeApiRequest: (event: SyntheticEvent, title: string, selectedImage: string, gameId?: string) => void
     title?: string
     gameId?: string
     imageUrl?: string | null
@@ -49,7 +49,7 @@ const EditGame = ({
     title
 }: EditGameProps) => {
     const { allGames } = useContext(GamesContext)
-    const [state, dispatch] = useReducer(addGamePageReducer, INITIAL_ADD_GAME_PAGE_STATE)
+    const [state, dispatch] = useReducer(imageSearchReducer, INITIAL_IMAGE_SEARCH_STATE)
 
     const [existingGame, setExistingGame] = useState<string>('')
     const [selectedImage, setSelectedImage] = useState<string>(DEFAULT_MARQUEE)
@@ -68,7 +68,11 @@ const EditGame = ({
             return
         }
 
-        makeApiRequest(event, title, selectedImage)
+        if (gameId) {
+            makeApiRequest(event, title, selectedImage, gameId)
+        } else {
+            makeApiRequest(event, title, selectedImage)
+        }
     }
 
     const handleShowImageSelection = (event: React.SyntheticEvent | React.KeyboardEvent<HTMLElement>) => {

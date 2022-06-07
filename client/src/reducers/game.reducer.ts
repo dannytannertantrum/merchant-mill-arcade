@@ -16,7 +16,7 @@ type GameAction =
 
 const INITIAL_GAME_STATE = {
     error: null,
-    isLoading: true,
+    isLoading: false,
     replyCreateGame: null,
     replyGetGame: null,
     replyGetGames: null

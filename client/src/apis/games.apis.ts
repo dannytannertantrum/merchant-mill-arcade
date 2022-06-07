@@ -32,7 +32,7 @@ const getGames = async (): Promise<ReplyType<AllGamesData>> => {
 }
 
 const updateGame = async (id: string, title: string, imageUrl: string): Promise<ReplyType<GameData>> => {
-    const response = await fetch(`${BASE_URL}/game/${id}`, {
+    const response = await fetch(`${BASE_URL}/games/${id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'

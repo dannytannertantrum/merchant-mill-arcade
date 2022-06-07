@@ -18,7 +18,7 @@ type ScoreAction =
 
 const INITIAL_SCORE_STATE = {
     error: null,
-    isLoading: true,
+    isLoading: false,
     replyCreateScore: null,
     replyDeleteScore: null,
     replyGetScores: null,
