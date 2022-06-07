@@ -14,6 +14,7 @@ const GET_GAME = 'GET_GAME'
 const GET_GAMES = 'GET_GAMES'
 const GET_IMAGES = 'GET_IMAGES'
 const GET_SCORES = 'GET_SCORES'
+const UPDATE_GAME = 'UPDATE_GAME'
 const UPDATE_SCORE = 'UPDATE_SCORE'
 
 
@@ -31,5 +32,6 @@ export {
     GET_GAMES,
     GET_IMAGES,
     GET_SCORES,
+    UPDATE_GAME,
     UPDATE_SCORE
 }

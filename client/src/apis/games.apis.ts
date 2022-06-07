@@ -31,7 +31,7 @@ const getGames = async (): Promise<ReplyType<AllGamesData>> => {
     return reply
 }
 
-const updateGame = async (id: string, title: string, imageUrl: string): Promise<ReplyType<GameData>> => {
+const editGame = async (id: string, title: string, imageUrl: string): Promise<ReplyType<GameData>> => {
     const response = await fetch(`${BASE_URL}/games/${id}`, {
         method: 'PUT',
         headers: {
@@ -48,5 +48,5 @@ export {
     addGame,
     getGame,
     getGames,
-    updateGame
+    editGame
 }

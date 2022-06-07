@@ -3,7 +3,8 @@ import {
     FETCH_ERROR,
     FETCH_IN_PROGRESS,
     GET_GAME,
-    GET_GAMES
+    GET_GAMES,
+    UPDATE_GAME
 } from '../utils/constants'
 import { AllGamesData, GameData } from '../../../common/games.types'
 import { BaseActionType, ReplySuccess } from '../utils/sharedTypes';
@@ -13,13 +14,15 @@ type GameAction =
     | { type: 'CREATE_GAME'; isLoading: boolean; payload: ReplySuccess<GameData> }
     | { type: 'GET_GAME'; isLoading: boolean; payload: ReplySuccess<GameData> }
     | { type: 'GET_GAMES'; isLoading: boolean; payload: ReplySuccess<AllGamesData> }
+    | { type: 'UPDATE_GAME'; isLoading: boolean; payload: ReplySuccess<GameData> }
 
 const INITIAL_GAME_STATE = {
     error: null,
     isLoading: false,
     replyCreateGame: null,
     replyGetGame: null,
-    replyGetGames: null
+    replyGetGames: null,
+    replyUpdateGame: null
 }
 
 const gameReducer = (state: typeof INITIAL_GAME_STATE, action: BaseActionType | GameAction) => {
@@ -38,6 +41,9 @@ const gameReducer = (state: typeof INITIAL_GAME_STATE, action: BaseActionType | 
 
         case GET_GAMES:
             return { ...state, isLoading: false, replyGetGames: action.payload }
+
+        case UPDATE_GAME:
+            return { ...state, isLoading: false, replyUpdateGame: action.payload }
 
         default:
             throw new Error(`Unknown action type: ${action}`)

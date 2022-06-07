@@ -1,6 +1,6 @@
-import { createContext, useEffect, useReducer, Fragment } from 'react'
+import { createContext, useEffect, useReducer } from 'react'
 
-import { addGame } from '../apis/games.apis'
+import { addGame, editGame } from '../apis/games.apis'
 import { AllGamesData } from '../../../common/games.types'
 import ContextDisplayState from '../components/ContextDisplayState/ContextDisplayState'
 import { FETCH_ERROR, FETCH_IN_PROGRESS, GET_GAMES } from '../utils/constants'
@@ -16,22 +16,28 @@ interface GamesProviderProps {
 interface GamesContextInterface {
     allGames: AllGamesData | null
     createGame: (title: string, imageUrl?: string) => Promise<ReplyType<GameData>>
+    updateGame: (id: string, title: string, imageUrl?: string) => Promise<ReplyType<GameData>>
 }
 
+const gameData = {
+    id: '',
+    description: null,
+    imageUrl: null,
+    isDeleted: false,
+    slug: '',
+    title: '',
+    createdAt: '',
+    updatedAt: null
+}
 const GAMES_DEFAULT_VALUE: GamesContextInterface = {
     allGames: [],
     createGame: () => Promise.resolve({
         isSuccess: true,
-        data: {
-            id: '',
-            description: null,
-            imageUrl: null,
-            isDeleted: false,
-            slug: '',
-            title: '',
-            createdAt: '',
-            updatedAt: null
-        }
+        data: gameData
+    }),
+    updateGame: () => Promise.resolve({
+        isSuccess: true,
+        data: gameData
     })
 }
 const GamesContext = createContext<GamesContextInterface>(GAMES_DEFAULT_VALUE)
@@ -52,6 +58,27 @@ const GamesContextProvider = ({ children }: GamesProviderProps) => {
             })
 
             if (updateAllGames?.isSuccess) {
+                dispatch({ type: GET_GAMES, isLoading: false, payload: updateAllGames })
+            }
+
+            return gameReturned
+        },
+        updateGame: async (id: string, title: string, imageUrl: string): Promise<ReplyType<GameData>> => {
+            const gameReturned = await editGame(id, title, imageUrl)
+
+            const slug = gameReturned.isSuccess && gameReturned.data.slug
+            const isSlugMatch = gamesContext.allGames?.filter(game => game.slug === slug)
+
+            const updateAllGames = await getGames().catch(reason => {
+                dispatch({ type: FETCH_ERROR, isLoading: false, error: reason })
+            })
+
+            if (updateAllGames?.isSuccess) {
+                // If a user updated the title of the game, we need to redirect them to the correct page
+                if (isSlugMatch?.length === 0) {
+                    window.location.replace(`/games/${slug}`)
+                }
+
                 dispatch({ type: GET_GAMES, isLoading: false, payload: updateAllGames })
             }
 

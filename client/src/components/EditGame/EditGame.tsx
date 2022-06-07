@@ -3,6 +3,7 @@ import {
     Fragment,
     SyntheticEvent,
     useContext,
+    useEffect,
     useReducer,
     useState
 } from 'react'
@@ -56,6 +57,13 @@ const EditGame = ({
     const [formControl, setFormControl] = useState<GameFormControlFlow>(DEFAULT_FORM_CONTROL_FLOW)
 
     const gameHeaderAddBorder = `${sharedStyles.gameHeader} ${styles.gameHeaderAddBorder}`
+
+
+    useEffect(() => {
+        if (typeof title === 'string') {
+            setFormControl(state => ({ ...state, title, imageSelection: imageUrl ?? '' }))
+        }
+    }, [])
 
 
     const defaultFormChecksFail = () => !!(formControl.title.trim() === '' || existingGame !== '')
