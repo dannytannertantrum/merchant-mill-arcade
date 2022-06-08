@@ -9,12 +9,13 @@ import React, {
     useState
 } from 'react'
 
-import { DEFAULT_MARQUEE, FETCH_ERROR, FETCH_IN_PROGRESS, UPDATE_GAME } from '../../utils/constants'
+import { DEFAULT_MARQUEE, FETCH_ERROR, FETCH_IN_PROGRESS, GET_GAME, UPDATE_GAME } from '../../utils/constants'
 import EditGame from '../EditGame/EditGame'
 import FetchError from '../FetchError/FetchError'
 import { GameData } from '../../../../common/games.types'
 import { gameReducer, INITIAL_GAME_STATE } from '../../reducers/game.reducer'
 import { GamesContext } from '../../contexts/GamesContext'
+import { getGame } from '../../apis/games.apis'
 import Loading from '../Loading/Loading'
 import NotFoundPage from '../NotFoundPage/NotFoundPage'
 import * as sharedStyles from '../sharedStyles'
@@ -35,22 +36,30 @@ const GamePage = ({ game }: GamePageProps): JSX.Element => {
     const { updateGame } = useContext(GamesContext)
     const [state, dispatch] = useReducer(gameReducer, INITIAL_GAME_STATE)
     const [showEditGame, setShowEditGame] = useState(false)
-    const [marquee, setMarquee] = useState(game?.imageUrl ?? DEFAULT_MARQUEE)
 
 
     useEffect(() => {
-        if (state.replyUpdateGame) {
-            setMarquee(state.replyUpdateGame?.data.imageUrl ?? DEFAULT_MARQUEE)
-            setShowEditGame(!showEditGame)
+        if (game) {
+            dispatch({ type: FETCH_IN_PROGRESS, isLoading: true })
+
+            getGame(game.id).then((gameReturned) => {
+                if (gameReturned.isSuccess) {
+                    dispatch({ type: GET_GAME, isLoading: false, payload: gameReturned })
+                }
+            }).catch(reason => {
+                dispatch({ type: FETCH_ERROR, isLoading: false, error: reason })
+            })
         }
+
+        setShowEditGame(false)
     }, [state.replyUpdateGame])
 
 
     const makeApiRequestUpdateGame = (event: SyntheticEvent, title: string, selectedImage: string, gameId: string) => {
         event.preventDefault()
 
-        // Prevent unnecessary API call if user did not change the score
-        if (title === game?.title && selectedImage === game?.imageUrl) {
+        // Prevent unnecessary API call if user did not change anything
+        if (title === state.replyGetGame?.data.title && selectedImage === state.replyGetGame?.data.imageUrl) {
             setShowEditGame(false)
             return
         }
@@ -74,17 +83,19 @@ const GamePage = ({ game }: GamePageProps): JSX.Element => {
         return <Loading />
     }
 
-    if (!game) {
+    if (!state.replyGetGame?.isSuccess) {
         return (
             <NotFoundPage message="Hmmm...we had trouble finding that game." />
         )
     }
 
+    const { replyGetGame: { data: { id, imageUrl, title } } } = state
+
     return (
         <Fragment>
             <div className={sharedStyles.gameHeader}>
                 <div>
-                    <h3>{game.title}</h3>
+                    <h3>{title}</h3>
                     <button className={sharedStyles.buttonAsLink} onClick={() => setShowEditGame(!showEditGame)}>
                         {showEditGame
                             ? 'Cancel edit'
@@ -93,26 +104,26 @@ const GamePage = ({ game }: GamePageProps): JSX.Element => {
                     </button>
                 </div>
                 <img
-                    src={marquee}
-                    alt={game.title}
+                    src={imageUrl ?? DEFAULT_MARQUEE}
+                    alt={title}
                 />
             </div>
             {showEditGame
                 ? (
                     <Fragment>
                         <p className={css`text-align: center; margin-bottom: 40px;`}>
-                            You are making edits to <span className={sharedStyles.highlight}>{game.title}</span>
+                            You are making edits to <span className={sharedStyles.highlight}>{title}</span>
                         </p>
                         <EditGame
+                            gameId={id}
+                            imageUrl={imageUrl}
                             makeApiRequest={makeApiRequestUpdateGame}
-                            gameId={game.id}
-                            imageUrl={game.imageUrl}
-                            title={game.title}
+                            title={title}
                         />
                     </Fragment>
                 ) : (
                     <Suspense fallback={<Loading />}>
-                        <Scores game={game} />
+                        <Scores game={state.replyGetGame.data} />
                     </Suspense>
                 )
             }

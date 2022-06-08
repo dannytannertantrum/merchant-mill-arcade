@@ -60,6 +60,7 @@ const EditGame = ({
 
 
     useEffect(() => {
+        // Check to see if we're editing - title will be undefined if used on AddGamePage
         if (typeof title === 'string') {
             setFormControl(state => ({ ...state, title, imageSelection: imageUrl ?? '' }))
         }
@@ -111,7 +112,7 @@ const EditGame = ({
             const allTitles = allGames.map(game => game.title.toLowerCase())
             const matchingTitle = allTitles.filter(gameTitle => gameTitle === value.toLowerCase().trim())[0]
 
-            if (matchingTitle && matchingTitle.length > 0) {
+            if (matchingTitle && matchingTitle.length > 0 && matchingTitle !== title?.trim().toLowerCase()) {
                 setExistingGame(matchingTitle)
             } else {
                 setExistingGame('')
