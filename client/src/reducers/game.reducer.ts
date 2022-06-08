@@ -21,11 +21,8 @@ type GameAction =
 const INITIAL_GAME_STATE = {
     error: null,
     isLoading: false,
-    replyCreateGame: null,
-    replyDeleteGame: null,
-    replyGetGame: null,
-    replyGetGames: null,
-    replyUpdateGame: null
+    replyGame: null,
+    replyAllGames: null,
 }
 
 const gameReducer = (state: typeof INITIAL_GAME_STATE, action: BaseActionType | GameAction) => {
@@ -37,19 +34,13 @@ const gameReducer = (state: typeof INITIAL_GAME_STATE, action: BaseActionType | 
             return { ...state, isLoading: true }
 
         case CREATE_GAME:
-            return { ...state, isLoading: false, replyCreateGame: action.payload }
-
         case DELETE_GAME:
-            return { ...state, isLoading: false, replyDeleteGame: action.payload }
-
         case GET_GAME:
-            return { ...state, isLoading: false, replyGetGame: action.payload }
+        case UPDATE_GAME:
+            return { ...state, isLoading: false, replyGame: action.payload }
 
         case GET_GAMES:
-            return { ...state, isLoading: false, replyGetGames: action.payload }
-
-        case UPDATE_GAME:
-            return { ...state, isLoading: false, replyUpdateGame: action.payload }
+            return { ...state, isLoading: false, replyAllGames: action.payload }
 
         default:
             throw new Error(`Unknown action type: ${action}`)

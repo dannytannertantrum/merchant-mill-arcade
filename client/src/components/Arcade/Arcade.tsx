@@ -106,6 +106,12 @@ const Arcade = () => {
         return <FetchError reason={state.error.reason} />
     }
 
+    const displayGameRoute = state.replyGame && state.replyGame.isSuccess && (
+        <Route path={currentGamePathname}>
+            <GamePage game={state.replyGame.data} />
+        </Route>
+    )
+
     return (
         <div className={css`margin: 0 20px;`}>
             <Link href='/' className={styles.logoWrapper}>
@@ -124,9 +130,7 @@ const Arcade = () => {
                 <Route path='/add-game'>
                     <AddGamePage />
                 </Route>
-                <Route path={currentGamePathname}>
-                    <GamePage game={state.replyGetGame?.data} />
-                </Route>
+                {displayGameRoute}
             </ErrorBoundary>
         </div>
     )

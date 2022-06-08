@@ -48,8 +48,8 @@ const AddGamePage = () => {
         return <FetchError reason={state.error.reason} />
     }
 
-    if (state.error === null && state.replyCreateGame?.isSuccess) {
-        const { replyCreateGame: { data: { title, slug } } } = state
+    if (state.error === null && state.replyGame?.isSuccess) {
+        const { replyGame: { data: { title, slug } } } = state
         return (
             <div className={styles.submitMessage}>
                 <p>Congratulations! You just added <span>{title}</span> to the Merchant Mill Arcade! Go <a href={`/games/${slug}`}>
@@ -68,7 +68,7 @@ const AddGamePage = () => {
             </ol>
             {state.isLoading === true
                 ? <Loading />
-                : state.replyCreateGame === null && <EditGame isEditingExistingGame={false} makeApiRequest={handleOnSubmit} />
+                : state.replyGame === null && <EditGame isEditingExistingGame={false} makeApiRequest={handleOnSubmit} />
             }
         </div>
     )

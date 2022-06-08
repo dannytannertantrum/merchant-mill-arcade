@@ -19,10 +19,8 @@ type ScoreAction =
 const INITIAL_SCORE_STATE = {
     error: null,
     isLoading: false,
-    replyCreateScore: null,
-    replyDeleteScore: null,
-    replyGetScores: null,
-    replyUpdateScore: null
+    replyScore: null,
+    replyAllScores: null
 }
 
 const scoreReducer = (state: typeof INITIAL_SCORE_STATE, action: BaseActionType | ScoreAction) => {
@@ -34,16 +32,12 @@ const scoreReducer = (state: typeof INITIAL_SCORE_STATE, action: BaseActionType 
             return { ...state, isLoading: true }
 
         case CREATE_SCORE:
-            return { ...state, isLoading: false, replyCreateScore: action.payload }
-
         case DELETE_SCORE:
-            return { ...state, isLoading: false, replyDeleteScore: action.payload }
+        case UPDATE_SCORE:
+            return { ...state, isLoading: false, replyScore: action.payload }
 
         case GET_SCORES:
-            return { ...state, isLoading: false, replyGetScores: action.payload }
-
-        case UPDATE_SCORE:
-            return { ...state, isLoading: false, replyUpdateScore: action.payload }
+            return { ...state, isLoading: false, replyAllScores: action.payload }
 
         default:
             throw new Error(`Unknown action type: ${action}`)

@@ -62,7 +62,7 @@ const GamesContextProvider = ({ children }: GamesProviderProps) => {
     }
 
     const gamesContext: GamesContextInterface = {
-        allGames: state.replyGetGames && state.replyGetGames.data,
+        allGames: state.replyAllGames && state.replyAllGames.data,
         // No catch blocks because we are just passing this down through context
         // We are handling errors where we're calling these functions
         createGame: async (title: string, imageUrl: string): Promise<ReplyType<GameData>> => {

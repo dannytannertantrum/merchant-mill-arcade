@@ -79,7 +79,7 @@ const Scores = ({ game }: ScoresProps) => {
                 dispatch({ type: FETCH_ERROR, isLoading: false, error: reason })
             })
         }
-    }, [state.replyCreateScore, state.replyDeleteScore, state.replyUpdateScore])
+    }, [state.replyScore])
 
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>, typeChanged?: 'initials') => {
@@ -200,7 +200,7 @@ const Scores = ({ game }: ScoresProps) => {
     )
 
     const scoreList = (
-        state.replyGetScores?.data.map((scoreData, index) => (
+        state.replyAllScores?.data.map((scoreData, index) => (
             <Fragment key={scoreData.id}>
                 <li>{index + 1}</li>
                 <li>{scoreData.score}</li>
@@ -240,7 +240,7 @@ const Scores = ({ game }: ScoresProps) => {
                 <h3>Score</h3>
                 <h3>Initials</h3>
             </div>
-            {state.replyGetScores && state.replyGetScores.data.length > 0
+            {state.replyAllScores && state.replyAllScores.data.length > 0
                 ? (
                     <ul className={styles.scoresContainer}>
                         {scoreList}

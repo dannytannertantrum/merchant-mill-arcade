@@ -28,7 +28,7 @@ const Scores = React.lazy(() => ScoresPromise)
 
 
 interface GamePageProps {
-    game?: GameData
+    game: GameData
 }
 
 
@@ -50,9 +50,7 @@ const GamePage = ({ game }: GamePageProps): JSX.Element => {
                 dispatch({ type: FETCH_ERROR, isLoading: false, error: reason })
             })
         }
-
-        setShowEditGame(false)
-    }, [state.replyDeleteGame, state.replyUpdateGame])
+    }, [])
 
 
     const makeApiRequestDeleteGame = (event: SyntheticEvent, id: string) => {
@@ -71,7 +69,7 @@ const GamePage = ({ game }: GamePageProps): JSX.Element => {
         event.preventDefault()
 
         // Prevent unnecessary API call if user did not change anything
-        if (title === state.replyGetGame?.data.title && selectedImage === state.replyGetGame?.data.imageUrl) {
+        if (title === state.replyGame?.data.title && selectedImage === state.replyGame?.data.imageUrl) {
             setShowEditGame(false)
             return
         }
@@ -85,6 +83,8 @@ const GamePage = ({ game }: GamePageProps): JSX.Element => {
         }).catch(reason => {
             dispatch({ type: FETCH_ERROR, isLoading: false, error: reason })
         })
+
+        setShowEditGame(false)
     }
 
     if (state.error) {
@@ -95,13 +95,13 @@ const GamePage = ({ game }: GamePageProps): JSX.Element => {
         return <Loading />
     }
 
-    if (!state.replyGetGame?.isSuccess) {
+    if (!state.replyGame?.isSuccess) {
         return (
             <NotFoundPage message="Hmmm...we had trouble finding that game." />
         )
     }
 
-    const { replyGetGame: { data: { id, imageUrl, title } } } = state
+    const { replyGame: { data: { id, imageUrl, title } } } = state
 
     return (
         <Fragment>
@@ -137,7 +137,7 @@ const GamePage = ({ game }: GamePageProps): JSX.Element => {
                     </Fragment>
                 ) : (
                     <Suspense fallback={<Loading />}>
-                        <Scores game={state.replyGetGame.data} />
+                        <Scores game={state.replyGame.data} />
                     </Suspense>
                 )
             }
