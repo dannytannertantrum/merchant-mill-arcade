@@ -75,27 +75,8 @@ const editTitleSection = css`
     padding-bottom: 30px;
 `
 
-const errorImage = css`
-    max-width: 400px;
-    margin-bottom: 30px;
-`
-
 const errorText = css`
     color: var(--error);
-`
-
-const errorWrapper = css`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    max-width: 600px;
-    margin: 0 auto;
-    text-align: center;
-
-    a {
-        cursor: pointer;
-    }
 `
 
 const errorLabel = css`
@@ -231,6 +212,25 @@ const highlight = css`
     color: var(--highlight);
 `
 
+const landingPageImage = css`
+    max-width: 400px;
+    margin-bottom: 30px;
+`
+
+const landingPageWrapper = css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+
+    a {
+        cursor: pointer;
+    }
+`
+
 const logoWrapper = css`
     display: block;
     margin: 0 auto 20px;
@@ -258,9 +258,7 @@ export {
     cancelDeleteButton,
     deleteButton,
     editTitleSection,
-    errorImage,
     errorText,
-    errorWrapper,
     errorLabel,
     gameGrid,
     gameHeader,
@@ -268,6 +266,8 @@ export {
     gameTitle,
     heading,
     highlight,
+    landingPageImage,
+    landingPageWrapper,
     logoWrapper,
     marquee
 }

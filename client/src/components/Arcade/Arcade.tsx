@@ -3,6 +3,7 @@ import { css } from 'goober'
 
 import AddGamePage from '../../components/AddGamePage/AddGamePage'
 import AllGamesPage from '../../components/AllGamesPage/AllGamesPage'
+import DeleteGameSuccessPage from '../DeleteSuccessPage/DeleteSuccessPage'
 import ErrorBoundary from '../../components/ErrorBoundary/ErrorBoundary'
 import ErrorPage from '../../components/ErrorPage/ErrorPage'
 import FetchError from '../FetchError/FetchError'
@@ -29,7 +30,7 @@ const Arcade = () => {
 
     const firstUpdate = useRef(true)
 
-    const validRoutes = ['/', '/add-game', '/error']
+    const validRoutes = ['/', '/add-game', '/delete-success', '/error']
     allGames?.forEach(game => validRoutes.push(`/games/${game.slug}`))
 
     const gameSlugRegex = /^\/games\/(\w|-)+$/
@@ -113,6 +114,9 @@ const Arcade = () => {
             <ErrorBoundary>
                 <Route path='/error'>
                     <ErrorPage />
+                </Route>
+                <Route path='/delete-success'>
+                    <DeleteGameSuccessPage />
                 </Route>
                 <Route path='/'>
                     <AllGamesPage handleClickGameSelection={handleClickGameSelection} />

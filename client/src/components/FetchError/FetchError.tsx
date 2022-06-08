@@ -1,5 +1,5 @@
 import React from 'react'
-import * as styles from '../sharedStyles'
+import * as sharedStyles from '../sharedStyles'
 
 
 interface FetchErrorProps {
@@ -29,11 +29,11 @@ const FetchError = ({ reason }: FetchErrorProps) => {
     }
 
     return (
-        <div className={styles.errorWrapper}>
+        <div className={sharedStyles.landingPageWrapper}>
             <h1>Thanks a lot; you broke the arcade!</h1>
             <img
                 alt='George Costanza playing Frogger in the street'
-                className={styles.errorImage}
+                className={sharedStyles.landingPageImage}
                 src='https://media1.giphy.com/media/Zi4gonZjDY6go/giphy.gif'
             />
             <p>
