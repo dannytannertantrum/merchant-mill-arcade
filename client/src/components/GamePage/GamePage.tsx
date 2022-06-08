@@ -33,7 +33,7 @@ interface GamePageProps {
 
 
 const GamePage = ({ game }: GamePageProps): JSX.Element => {
-    const { updateGame } = useContext(GamesContext)
+    const { deleteGame, updateGame } = useContext(GamesContext)
     const [state, dispatch] = useReducer(gameReducer, INITIAL_GAME_STATE)
     const [showEditGame, setShowEditGame] = useState(false)
 
@@ -52,8 +52,20 @@ const GamePage = ({ game }: GamePageProps): JSX.Element => {
         }
 
         setShowEditGame(false)
-    }, [state.replyUpdateGame])
+    }, [state.replyDeleteGame, state.replyUpdateGame])
 
+
+    const makeApiRequestDeleteGame = (event: SyntheticEvent, id: string) => {
+        dispatch({ type: FETCH_IN_PROGRESS, isLoading: true })
+
+        deleteGame(id).then(gameReturned => {
+            if (gameReturned.isSuccess) {
+                dispatch({ type: UPDATE_GAME, isLoading: false, payload: gameReturned })
+            }
+        }).catch(reason => {
+            dispatch({ type: FETCH_ERROR, isLoading: false, error: reason })
+        })
+    }
 
     const makeApiRequestUpdateGame = (event: SyntheticEvent, title: string, selectedImage: string, gameId: string) => {
         event.preventDefault()
@@ -116,7 +128,9 @@ const GamePage = ({ game }: GamePageProps): JSX.Element => {
                         </p>
                         <EditGame
                             gameId={id}
+                            makeApiRequestDeleteGame={makeApiRequestDeleteGame}
                             imageUrl={imageUrl}
+                            isEditingExistingGame={true}
                             makeApiRequest={makeApiRequestUpdateGame}
                             title={title}
                         />

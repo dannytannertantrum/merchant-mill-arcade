@@ -1,6 +1,6 @@
 import { createContext, useEffect, useReducer } from 'react'
 
-import { addGame, editGame } from '../apis/games.apis'
+import { addGame, editGame, removeGame } from '../apis/games.apis'
 import { AllGamesData } from '../../../common/games.types'
 import ContextDisplayState from '../components/ContextDisplayState/ContextDisplayState'
 import { FETCH_ERROR, FETCH_IN_PROGRESS, GET_GAMES } from '../utils/constants'
@@ -16,6 +16,7 @@ interface GamesProviderProps {
 interface GamesContextInterface {
     allGames: AllGamesData | null
     createGame: (title: string, imageUrl?: string) => Promise<ReplyType<GameData>>
+    deleteGame: (id: string) => Promise<ReplyType<GameData>>
     updateGame: (id: string, title: string, imageUrl?: string) => Promise<ReplyType<GameData>>
 }
 
@@ -35,6 +36,10 @@ const GAMES_DEFAULT_VALUE: GamesContextInterface = {
         isSuccess: true,
         data: gameData
     }),
+    deleteGame: () => Promise.resolve({
+        isSuccess: true,
+        data: gameData
+    }),
     updateGame: () => Promise.resolve({
         isSuccess: true,
         data: gameData
@@ -46,19 +51,34 @@ const GamesContext = createContext<GamesContextInterface>(GAMES_DEFAULT_VALUE)
 const GamesContextProvider = ({ children }: GamesProviderProps) => {
     const [state, dispatch] = useReducer(gameReducer, INITIAL_GAME_STATE)
 
+    const standardDataRefresh = async () => {
+        const updateAllGames = await getGames().catch(reason => {
+            dispatch({ type: FETCH_ERROR, isLoading: false, error: reason })
+        })
+
+        if (updateAllGames?.isSuccess) {
+            dispatch({ type: GET_GAMES, isLoading: false, payload: updateAllGames })
+        }
+    }
+
     const gamesContext: GamesContextInterface = {
         allGames: state.replyGetGames && state.replyGetGames.data,
+        // No catch blocks because we are just passing this down through context
+        // We are handling errors where we're calling these functions
         createGame: async (title: string, imageUrl: string): Promise<ReplyType<GameData>> => {
-            // No catch blocks because we are just passing this down through context
-            // We are handling errors where we're calling createGame
             const gameReturned = await addGame(title, imageUrl)
 
-            const updateAllGames = await getGames().catch(reason => {
-                dispatch({ type: FETCH_ERROR, isLoading: false, error: reason })
-            })
+            await standardDataRefresh()
 
-            if (updateAllGames?.isSuccess) {
-                dispatch({ type: GET_GAMES, isLoading: false, payload: updateAllGames })
+            return gameReturned
+        },
+        deleteGame: async (id: string): Promise<ReplyType<GameData>> => {
+            const gameReturned = await removeGame(id)
+
+            await standardDataRefresh()
+
+            if (gameReturned.isSuccess) {
+                window.location.replace(`/delete-success?${gameReturned.data.title}`)
             }
 
             return gameReturned

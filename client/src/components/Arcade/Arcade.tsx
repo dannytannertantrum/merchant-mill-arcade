@@ -3,7 +3,7 @@ import { css } from 'goober'
 
 import AddGamePage from '../../components/AddGamePage/AddGamePage'
 import AllGamesPage from '../../components/AllGamesPage/AllGamesPage'
-import DeleteGameSuccessPage from '../DeleteSuccessPage/DeleteSuccessPage'
+import DeleteGameSuccessPage from '../DeleteGameSuccessPage/DeleteGameSuccessPage'
 import ErrorBoundary from '../../components/ErrorBoundary/ErrorBoundary'
 import ErrorPage from '../../components/ErrorPage/ErrorPage'
 import FetchError from '../FetchError/FetchError'

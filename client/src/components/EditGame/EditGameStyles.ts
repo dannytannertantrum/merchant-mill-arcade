@@ -6,11 +6,8 @@ const deleteWrapper = css`
     max-width: 800px;
     text-align: right;
 
-    button {
-        background: transparent;
-        border: 0 none;
-        color: #cf0000;
-        cursor: pointer;
+    button[data-ref*="cancel"] {
+        margin-left: 50px;
     }
 `
 

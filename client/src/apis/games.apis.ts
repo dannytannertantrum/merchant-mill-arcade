@@ -17,6 +17,19 @@ const addGame = async (title: string, imageUrl: string): Promise<ReplyType<GameD
     return reply
 }
 
+const editGame = async (id: string, title: string, imageUrl: string): Promise<ReplyType<GameData>> => {
+    const response = await fetch(`${BASE_URL}/games/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id, title, imageUrl })
+    })
+
+    const reply = await handleReply<GameData>(response)
+    return reply
+}
+
 const getGame = async (id: string): Promise<ReplyType<GameData>> => {
     const response = await fetch(`${BASE_URL}/games/${id}`)
 
@@ -31,13 +44,9 @@ const getGames = async (): Promise<ReplyType<AllGamesData>> => {
     return reply
 }
 
-const editGame = async (id: string, title: string, imageUrl: string): Promise<ReplyType<GameData>> => {
+const removeGame = async (id: string): Promise<ReplyType<GameData>> => {
     const response = await fetch(`${BASE_URL}/games/${id}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ id, title, imageUrl })
+        method: 'DELETE'
     })
 
     const reply = await handleReply<GameData>(response)
@@ -46,6 +55,7 @@ const editGame = async (id: string, title: string, imageUrl: string): Promise<Re
 
 export {
     addGame,
+    removeGame,
     getGame,
     getGames,
     editGame

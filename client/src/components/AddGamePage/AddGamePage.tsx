@@ -68,7 +68,7 @@ const AddGamePage = () => {
             </ol>
             {state.isLoading === true
                 ? <Loading />
-                : state.replyCreateGame === null && <EditGame makeApiRequest={handleOnSubmit} />
+                : state.replyCreateGame === null && <EditGame isEditingExistingGame={false} makeApiRequest={handleOnSubmit} />
             }
         </div>
     )

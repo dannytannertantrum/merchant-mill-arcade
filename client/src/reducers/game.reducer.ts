@@ -1,5 +1,6 @@
 import {
     CREATE_GAME,
+    DELETE_GAME,
     FETCH_ERROR,
     FETCH_IN_PROGRESS,
     GET_GAME,
@@ -12,6 +13,7 @@ import { BaseActionType, ReplySuccess } from '../utils/sharedTypes';
 
 type GameAction =
     | { type: 'CREATE_GAME'; isLoading: boolean; payload: ReplySuccess<GameData> }
+    | { type: 'DELETE_GAME'; isLoading: boolean; payload: ReplySuccess<GameData> }
     | { type: 'GET_GAME'; isLoading: boolean; payload: ReplySuccess<GameData> }
     | { type: 'GET_GAMES'; isLoading: boolean; payload: ReplySuccess<AllGamesData> }
     | { type: 'UPDATE_GAME'; isLoading: boolean; payload: ReplySuccess<GameData> }
@@ -20,6 +22,7 @@ const INITIAL_GAME_STATE = {
     error: null,
     isLoading: false,
     replyCreateGame: null,
+    replyDeleteGame: null,
     replyGetGame: null,
     replyGetGames: null,
     replyUpdateGame: null
@@ -35,6 +38,9 @@ const gameReducer = (state: typeof INITIAL_GAME_STATE, action: BaseActionType | 
 
         case CREATE_GAME:
             return { ...state, isLoading: false, replyCreateGame: action.payload }
+
+        case DELETE_GAME:
+            return { ...state, isLoading: false, replyDeleteGame: action.payload }
 
         case GET_GAME:
             return { ...state, isLoading: false, replyGetGame: action.payload }
