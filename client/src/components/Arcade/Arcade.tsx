@@ -5,6 +5,7 @@ import AddGamePage from '../../components/AddGamePage/AddGamePage'
 import AllGamesPage from '../../components/AllGamesPage/AllGamesPage'
 import ErrorBoundary from '../../components/ErrorBoundary/ErrorBoundary'
 import ErrorPage from '../../components/ErrorPage/ErrorPage'
+import FetchError from '../FetchError/FetchError'
 import { FETCH_ERROR, FETCH_IN_PROGRESS, GET_GAME } from '../../utils/constants'
 import GamePage from '../../components/GamePage/GamePage'
 import { GamesContext } from '../../contexts/GamesContext'
@@ -12,6 +13,7 @@ import { GameData } from '../../../../common/games.types'
 import { gameReducer, INITIAL_GAME_STATE } from '../../reducers/game.reducer'
 import { getGame } from '../../apis/games.apis'
 import Link from '../../components/Link/Link'
+import Loading from '../Loading/Loading'
 import logo from '../../assets/logo.png'
 import NotFoundPage from '../NotFoundPage/NotFoundPage'
 import Route from '../../components/Route/Route'
@@ -95,6 +97,14 @@ const Arcade = () => {
         return <NotFoundPage />
     }
 
+    if (state.isLoading) {
+        return <Loading />
+    }
+
+    if (state.error) {
+        return <FetchError reason={state.error.reason} />
+    }
+
     return (
         <div className={css`margin: 0 20px;`}>
             <Link href='/' className={styles.logoWrapper}>
@@ -111,7 +121,7 @@ const Arcade = () => {
                     <AddGamePage />
                 </Route>
                 <Route path={currentGamePathname}>
-                    <GamePage game={state.replyGetGame?.data} isLoading={state.isLoading} error={state.error?.reason} />
+                    <GamePage game={state.replyGetGame?.data} />
                 </Route>
             </ErrorBoundary>
         </div>

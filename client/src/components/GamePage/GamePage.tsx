@@ -28,20 +28,14 @@ const Scores = React.lazy(() => ScoresPromise)
 
 interface GamePageProps {
     game?: GameData
-    error?: Error | {
-        error: string
-        message: string
-        statusCode: number
-    } | string
-    isLoading: boolean
 }
 
 
-const GamePage = (gameState: GamePageProps): JSX.Element => {
+const GamePage = ({ game }: GamePageProps): JSX.Element => {
     const { updateGame } = useContext(GamesContext)
     const [state, dispatch] = useReducer(gameReducer, INITIAL_GAME_STATE)
     const [showEditGame, setShowEditGame] = useState(false)
-    const [marquee, setMarquee] = useState(gameState.game?.imageUrl ?? DEFAULT_MARQUEE)
+    const [marquee, setMarquee] = useState(game?.imageUrl ?? DEFAULT_MARQUEE)
 
 
     useEffect(() => {
@@ -56,7 +50,7 @@ const GamePage = (gameState: GamePageProps): JSX.Element => {
         event.preventDefault()
 
         // Prevent unnecessary API call if user did not change the score
-        if (title === gameState.game?.title && selectedImage === gameState.game?.imageUrl) {
+        if (title === game?.title && selectedImage === game?.imageUrl) {
             setShowEditGame(false)
             return
         }
@@ -72,16 +66,15 @@ const GamePage = (gameState: GamePageProps): JSX.Element => {
         })
     }
 
-    if (gameState.error != null || state.error) {
-        if (gameState.error) return <FetchError reason={gameState.error} />
+    if (state.error) {
         if (state.error) return <FetchError reason={state.error.reason} />
     }
 
-    if (gameState.isLoading || state.isLoading) {
+    if (state.isLoading) {
         return <Loading />
     }
 
-    if (!gameState.game) {
+    if (!game) {
         return (
             <NotFoundPage message="Hmmm...we had trouble finding that game." />
         )
@@ -91,7 +84,7 @@ const GamePage = (gameState: GamePageProps): JSX.Element => {
         <Fragment>
             <div className={sharedStyles.gameHeader}>
                 <div>
-                    <h3>{gameState.game.title}</h3>
+                    <h3>{game.title}</h3>
                     <button className={sharedStyles.buttonAsLink} onClick={() => setShowEditGame(!showEditGame)}>
                         {showEditGame
                             ? 'Cancel edit'
@@ -101,25 +94,25 @@ const GamePage = (gameState: GamePageProps): JSX.Element => {
                 </div>
                 <img
                     src={marquee}
-                    alt={gameState.game.title}
+                    alt={game.title}
                 />
             </div>
             {showEditGame
                 ? (
                     <Fragment>
                         <p className={css`text-align: center; margin-bottom: 40px;`}>
-                            You are making edits to <span className={sharedStyles.highlight}>{gameState.game.title}</span>
+                            You are making edits to <span className={sharedStyles.highlight}>{game.title}</span>
                         </p>
                         <EditGame
                             makeApiRequest={makeApiRequestUpdateGame}
-                            gameId={gameState.game.id}
-                            imageUrl={gameState.game.imageUrl}
-                            title={gameState.game.title}
+                            gameId={game.id}
+                            imageUrl={game.imageUrl}
+                            title={game.title}
                         />
                     </Fragment>
                 ) : (
                     <Suspense fallback={<Loading />}>
-                        <Scores game={gameState.game} />
+                        <Scores game={game} />
                     </Suspense>
                 )
             }
