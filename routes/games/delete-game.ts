@@ -1,32 +1,31 @@
 import { FastifyInstance } from 'fastify'
 import { DatabasePoolType, sql } from 'slonik'
 
-import { GameData } from '../../common/games.types'
-import { SoftDeleteSchema } from '../shared.types'
+import { GameData, GameSchema } from '../../common/games.types'
 import { handleApiError, handleNotFoundError } from '../../utilities/custom-errors'
 
 
-const schema = { response: { 200: SoftDeleteSchema } }
+const schema = { response: { 200: GameSchema } }
 
 const softDeleteGame = async (
     pool: DatabasePoolType,
     id: string,
     updatedAt: string
-): Promise<Pick<GameData, 'title' | 'id'> | null> => {
+): Promise<GameData | null> => {
     const result = await pool.maybeOne(sql<GameData>`
         UPDATE games
         SET
             is_deleted = TRUE,
             updated_at = ${updatedAt}::timestamptz
         WHERE id = ${id}
-        RETURNING title, id;
+        RETURNING *;
     `)
 
     return result
 }
 
 export default async (server: FastifyInstance): Promise<void> => {
-    server.delete<{ Params: Pick<GameData, 'id'>, Reply: string | Error }>(
+    server.delete<{ Params: Pick<GameData, 'id'>, Reply: GameData | Error }>(
         '/games/:id',
         { schema },
         async (request, reply) => {
@@ -38,7 +37,7 @@ export default async (server: FastifyInstance): Promise<void> => {
             )
 
             gameToDelete
-                ? reply.send(`The game "${gameToDelete.title}" with id ${id} has been removed from the Merchant Mill Arcade!`)
+                ? reply.send(gameToDelete)
                 : reply.code(404).send(handleNotFoundError(`NOT FOUND ERROR OnSend /DELETE game with id ${id}. Game not found.`))
         }
     )

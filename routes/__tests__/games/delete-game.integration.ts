@@ -46,7 +46,7 @@ describe('DELETE /games/id', () => {
             const updatedGame = await getGameById(server.slonik.pool, game.id)
 
             expect(deleteResult.status).toEqual(200)
-            expect(deleteResult.text).toContain(`The game "${game.title}" with id ${game.id} has been removed`)
+            expect(deleteResult.body.isDeleted).toBe(true)
             expect(updatedGame?.isDeleted).toBe(true)
             expect(updatedGame?.updatedAt).not.toBeNull()
         })
