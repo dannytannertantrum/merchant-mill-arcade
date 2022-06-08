@@ -24,7 +24,7 @@ const closeModalButton = css`
     font-size: 16px;
     font-family: inherit;
     position: absolute;
-    top: 15px;
+    top: 10px;
     right: 10px;
 
     @media screen and (min-width: ${LARGE_MOBILE}px) {
