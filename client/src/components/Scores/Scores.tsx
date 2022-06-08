@@ -8,7 +8,7 @@ import {
     useState
 } from 'react'
 
-import { addScore, deleteScore, getScoresByGameId, updateScore } from '../../apis/scores.apis'
+import { addScore, deleteScore, editScore, getScoresByGameId } from '../../apis/scores.apis'
 import { CREATE_SCORE, DELETE_SCORE, FETCH_ERROR, FETCH_IN_PROGRESS, GET_SCORES, UPDATE_SCORE } from '../../utils/constants'
 import EditScore from '../EditScore/EditScore'
 import FetchError from '../FetchError/FetchError'
@@ -152,7 +152,7 @@ const Scores = ({ game }: ScoresProps) => {
 
         dispatch({ type: FETCH_IN_PROGRESS, isLoading: true })
 
-        updateScore(formControl.scoreId, formControl.initials, convertedScore).then(updatedScore => {
+        editScore(formControl.scoreId, formControl.initials, convertedScore).then(updatedScore => {
             if (updatedScore.isSuccess) {
                 dispatch({ type: UPDATE_SCORE, isLoading: false, payload: updatedScore })
             }

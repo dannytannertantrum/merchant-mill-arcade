@@ -26,14 +26,7 @@ const deleteScore = async (scoreId: string): Promise<ReplyType<ScoreData>> => {
     return reply
 }
 
-const getScoresByGameId = async (id: string): Promise<ReplyType<AllScoresData>> => {
-    const response = await fetch(`${BASE_URL}/scores-by-game/${id}`)
-
-    const reply = await handleReply<AllScoresData>(response)
-    return reply
-}
-
-const updateScore = async (id: string, initials: string, score: number): Promise<ReplyType<ScoreData>> => {
+const editScore = async (id: string, initials: string, score: number): Promise<ReplyType<ScoreData>> => {
     const response = await fetch(`${BASE_URL}/scores/${id}`, {
         method: 'PUT',
         headers: {
@@ -46,10 +39,17 @@ const updateScore = async (id: string, initials: string, score: number): Promise
     return reply
 }
 
+const getScoresByGameId = async (id: string): Promise<ReplyType<AllScoresData>> => {
+    const response = await fetch(`${BASE_URL}/scores-by-game/${id}`)
+
+    const reply = await handleReply<AllScoresData>(response)
+    return reply
+}
+
 
 export {
     addScore,
     deleteScore,
-    getScoresByGameId,
-    updateScore
+    editScore,
+    getScoresByGameId
 }

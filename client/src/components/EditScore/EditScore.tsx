@@ -31,7 +31,7 @@ const EditScore = ({
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
 
 
-    const handleDeleteClicked = (event: SyntheticEvent) => {
+    const handleCancelDeleteClicked = (event: SyntheticEvent) => {
         // We need this to prevent the button from trying to submit the form
         event.preventDefault()
 
@@ -49,7 +49,7 @@ const EditScore = ({
             ? (
                 <div className={styles.editSubmitButtonsWrapper}>
                     <input type='submit' value='Update Score' />
-                    <button className={styles.showDeleteButton} onClick={(event) => handleDeleteClicked(event)}>Delete Score</button>
+                    <button className={sharedStyles.deleteButton} onClick={(event) => handleCancelDeleteClicked(event)}>Delete Score</button>
                 </div>
             ) : <input type='submit' value='Submit' />
     )
@@ -103,12 +103,12 @@ const EditScore = ({
                         </p>
                         <div className={styles.editSubmitButtonsWrapper}>
                             <button
-                                className={styles.deleteButton}
+                                className={sharedStyles.deleteButton}
                                 onClick={(event) => handleDelete(event, formControl.scoreId)}
                             >
                                 Yes, Delete
                             </button>
-                            <button className={styles.cancelDeleteButton} onClick={(event) => handleDeleteClicked(event)}>Cancel</button>
+                            <button className={sharedStyles.cancelDeleteButton} onClick={(event) => handleCancelDeleteClicked(event)}>Cancel</button>
                         </div>
                     </Fragment>
                 }

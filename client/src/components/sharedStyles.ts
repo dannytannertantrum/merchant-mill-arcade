@@ -38,6 +38,37 @@ const buttonPurple = css`
     }
 `
 
+const cancelDeleteButton = css`
+    background: transparent;
+    border: 0 none;
+    color: var(--link-color);
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    transition: color ease-in-out .2s;
+
+    &:hover {
+        color: var(--link-color-hover);
+    }
+`
+
+const deleteButton = css`
+    background: transparent;
+    border: 0 none;
+    color: #cf0000;
+    cursor: pointer;
+    padding: 0;
+    margin: 0 0 20px;
+
+    &:hover {
+        text-decoration: underline;
+    }
+
+    @media screen and (min-width: ${LARGE_MOBILE}px) {
+        margin: 0;
+    }
+`
+
 const editTitleSection = css`
     border-bottom: 2px solid var(--borders);
     margin-bottom: 30px;
@@ -224,6 +255,8 @@ const marquee = (bgImage: string) => css`
 export {
     buttonAsLink,
     buttonPurple,
+    cancelDeleteButton,
+    deleteButton,
     editTitleSection,
     errorImage,
     errorText,
