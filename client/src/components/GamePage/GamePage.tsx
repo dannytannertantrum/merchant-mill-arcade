@@ -39,17 +39,15 @@ const GamePage = ({ game }: GamePageProps): JSX.Element => {
 
 
     useEffect(() => {
-        if (game) {
-            dispatch({ type: FETCH_IN_PROGRESS, isLoading: true })
+        dispatch({ type: FETCH_IN_PROGRESS, isLoading: true })
 
-            getGame(game.id).then((gameReturned) => {
-                if (gameReturned.isSuccess) {
-                    dispatch({ type: GET_GAME, isLoading: false, payload: gameReturned })
-                }
-            }).catch(reason => {
-                dispatch({ type: FETCH_ERROR, isLoading: false, error: reason })
-            })
-        }
+        getGame(game.id).then((gameReturned) => {
+            if (gameReturned.isSuccess) {
+                dispatch({ type: GET_GAME, isLoading: false, payload: gameReturned })
+            }
+        }).catch(reason => {
+            dispatch({ type: FETCH_ERROR, isLoading: false, error: reason })
+        })
     }, [])
 
 
