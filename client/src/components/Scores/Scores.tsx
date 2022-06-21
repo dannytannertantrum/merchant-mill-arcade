@@ -22,7 +22,7 @@ import * as sharedStyles from '../sharedStyles'
 
 
 interface ScoresProps {
-    game?: GameData | null
+    game: GameData
 }
 interface ScoreFormControlFlow {
     areFormInitialsTouched: boolean
@@ -68,17 +68,16 @@ const Scores = ({ game }: ScoresProps) => {
 
 
     useEffect(() => {
-        if (game) {
-            dispatch({ type: FETCH_IN_PROGRESS, isLoading: true })
+        dispatch({ type: FETCH_IN_PROGRESS, isLoading: true })
 
-            getScoresByGameId(game.id).then((scoresReturned) => {
-                if (scoresReturned.isSuccess) {
-                    dispatch({ type: GET_SCORES, isLoading: false, payload: scoresReturned })
-                }
-            }).catch(reason => {
-                dispatch({ type: FETCH_ERROR, isLoading: false, error: reason })
-            })
-        }
+        getScoresByGameId(game.id).then((scoresReturned) => {
+            if (scoresReturned.isSuccess) {
+                dispatch({ type: GET_SCORES, isLoading: false, payload: scoresReturned })
+            }
+        }).catch(reason => {
+            dispatch({ type: FETCH_ERROR, isLoading: false, error: reason })
+        })
+
     }, [state.replyScore])
 
 
