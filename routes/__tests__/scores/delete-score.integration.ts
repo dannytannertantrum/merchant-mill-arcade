@@ -75,7 +75,7 @@ describe('DELETE /scores/id', () => {
 
             expect(mockHandleNotFoundError).toHaveBeenCalled()
             expect(status).toBe(404)
-            expect(body.message).toMatch(/ERROR OnSend \/DELETE score/)
+            expect(body.message).toMatch(/OnSend \/DELETE score/)
         })
     })
 })

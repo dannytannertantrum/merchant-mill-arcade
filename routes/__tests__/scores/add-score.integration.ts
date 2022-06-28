@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { Disposable, disposeAll } from '../test-utilities/disposables'
 import { GameData } from '../../../common/games.types'
 import { gameFactory } from '../test-utilities/factories/game-factory'
-import { mockHandleApiError, mockHandleValidationError } from '../__mocks__/customErrorMocks'
+import { mockHandleError, mockHandleValidationError } from '../__mocks__/customErrorMocks'
 import { overrideValues } from '../../../utilities/overrides'
 import { ScoreRequestBodyWithGame } from '../../../common/scores.types'
 import server from '../../../app'
@@ -99,7 +99,7 @@ describe('POST /scores', () => {
             expect(mockHandleValidationError).toHaveBeenCalled()
             expect(status).toEqual(400)
             expect(body.error).toEqual('Bad Request')
-            expect(body.message).toMatch(/VALIDATION ERROR ADDING SCORE/)
+            expect(body.message).toMatch(/Please enter 1-3 letters/)
         })
 
         it('throws a validation error when score is not a number', async () => {
@@ -111,7 +111,7 @@ describe('POST /scores', () => {
             expect(mockHandleValidationError).toHaveBeenCalled()
             expect(status).toEqual(400)
             expect(body.error).toEqual('Bad Request')
-            expect(body.message).toMatch(/VALIDATION ERROR ADDING SCORE/)
+            expect(body.message).toMatch(/Please enter 1-3 letters/)
         })
 
         it('throws a validation error when score is less than zero', async () => {
@@ -122,7 +122,7 @@ describe('POST /scores', () => {
             expect(mockHandleValidationError).toHaveBeenCalled()
             expect(status).toEqual(400)
             expect(body.error).toEqual('Bad Request')
-            expect(body.message).toMatch(/VALIDATION ERROR ADDING SCORE/)
+            expect(body.message).toMatch(/Please enter 1-3 letters/)
         })
 
         it('throws a validation error when initials are undefined', async () => {
@@ -133,7 +133,7 @@ describe('POST /scores', () => {
             expect(mockHandleValidationError).toHaveBeenCalled()
             expect(status).toEqual(400)
             expect(body.error).toEqual('Bad Request')
-            expect(body.message).toMatch(/VALIDATION ERROR ADDING SCORE/)
+            expect(body.message).toMatch(/Please enter 1-3 letters/)
         })
 
         it('throws a validation error when initials are an empty string', async () => {
@@ -144,7 +144,7 @@ describe('POST /scores', () => {
             expect(mockHandleValidationError).toHaveBeenCalled()
             expect(status).toEqual(400)
             expect(body.error).toEqual('Bad Request')
-            expect(body.message).toMatch(/VALIDATION ERROR ADDING SCORE/)
+            expect(body.message).toMatch(/Please enter 1-3 letters/)
         })
 
         it('throws an API error when initials are longer than 3 characters', async () => {
@@ -154,10 +154,9 @@ describe('POST /scores', () => {
 
             // We might expect a validation error here, but we can let the database handle it
             // There's a constraint on more than 3 letters - good to test DB is handling errors as well!
-            expect(mockHandleApiError).toHaveBeenCalled()
+            expect(mockHandleError).toHaveBeenCalled()
             expect(status).toEqual(500)
             expect(body.error).toEqual('Internal Server Error')
-            expect(body.message).toMatch(/ERROR ADDING SCORE/)
         })
 
         /*
@@ -171,10 +170,9 @@ describe('POST /scores', () => {
 
             const { body, status } = await supertest(server.server).post('/scores').send(noGameAttached)
 
-            expect(mockHandleApiError).toHaveBeenCalled()
+            expect(mockHandleError).toHaveBeenCalled()
             expect(status).toEqual(500)
             expect(body.error).toEqual('Internal Server Error')
-            expect(body.message).toMatch(/ERROR ADDING SCORE/)
         })
 
         it('throws an API error when sending an invalid uuid for game', async () => {
@@ -182,10 +180,9 @@ describe('POST /scores', () => {
 
             const { body, status } = await supertest(server.server).post('/scores').send(invalidGameUuid)
 
-            expect(mockHandleApiError).toHaveBeenCalled()
+            expect(mockHandleError).toHaveBeenCalled()
             expect(status).toEqual(500)
             expect(body.error).toEqual('Internal Server Error')
-            expect(body.message).toMatch(/ERROR ADDING SCORE/)
         })
 
         it('throws an API error when sending an invaid uuid for score', async () => {
@@ -193,10 +190,9 @@ describe('POST /scores', () => {
 
             const { body, status } = await supertest(server.server).post('/scores').send(invalidScoreUuid)
 
-            expect(mockHandleApiError).toHaveBeenCalled()
+            expect(mockHandleError).toHaveBeenCalled()
             expect(status).toEqual(500)
             expect(body.error).toEqual('Internal Server Error')
-            expect(body.message).toMatch(/ERROR ADDING SCORE/)
         })
     })
 })

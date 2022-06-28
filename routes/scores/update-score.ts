@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify'
 import { DatabasePoolType, sql } from 'slonik'
 
-import { handleApiError, handleNotFoundError, handleValidationError } from '../../utilities/custom-errors'
+import { handleError, handleNotFoundError, handleValidationError } from '../../utilities/custom-errors'
 import { ScoreSchema, ScoreData, ScoreRequestBody } from '../../common/scores.types'
 import { getScoreById } from '../common-queries'
 import { textInputCleanUpWhitespace } from '../../utilities/string-helpers'
@@ -32,48 +32,49 @@ export default async (server: FastifyInstance): Promise<void> => {
         '/scores/:id',
         { schema },
         async (request, reply) => {
-            const { id } = request.params
-            let { initials, score } = request.body
-            let updatedAt: string | null
+            try {
+                const { id } = request.params
+                let { initials, score } = request.body
+                let updatedAt: string | null
 
-            let scrubbedInitials = textInputCleanUpWhitespace(initials)
-            let sanitizedScore = sanitizeScore(score)
+                let scrubbedInitials = textInputCleanUpWhitespace(initials)
+                let sanitizedScore = sanitizeScore(score)
 
-            if (scrubbedInitials === undefined || scrubbedInitials === '' || sanitizedScore === undefined) {
-                handleValidationError('VALIDATION ERROR UPDATING SCORE: Please enter 1-3 letters for initials and/or a score above 0!')
-            } else {
-                const oldScore = await getScoreById(server.slonik.pool, id).catch(reason =>
-                    handleApiError(`API ERROR GETTING SCORE IN UPDATE SCORE: ${reason}`)
-                )
-
-                // We don't want to change updatedAt if the user essentially goes to edit
-                // But then saves a score with the same exact values as before
-                if (
-                    scrubbedInitials.toLowerCase() === oldScore?.initials.toLowerCase()
-                    && sanitizedScore === Number(oldScore?.score)
-                    && oldScore?.updatedAt != null
-                ) {
-                    updatedAt = new Date(oldScore?.updatedAt).toISOString()
+                if (scrubbedInitials === undefined || scrubbedInitials === '' || sanitizedScore === undefined) {
+                    handleValidationError('Please enter 1-3 letters for initials and/or a score above 0!')
                 } else {
-                    updatedAt = new Date().toISOString()
-                }
+                    const oldScore = await getScoreById(server.slonik.pool, id)
 
-                if (oldScore !== null) {
-                    const scoreToUpdate = {
-                        ...oldScore,
-                        initials: scrubbedInitials,
-                        score: sanitizedScore,
-                        updatedAt
+                    // We don't want to change updatedAt if the user essentially goes to edit
+                    // But then saves a score with the same exact values as before
+                    if (
+                        scrubbedInitials.toLowerCase() === oldScore?.initials.toLowerCase()
+                        && sanitizedScore === Number(oldScore?.score)
+                        && oldScore?.updatedAt != null
+                    ) {
+                        updatedAt = new Date(oldScore?.updatedAt).toISOString()
+                    } else {
+                        updatedAt = new Date().toISOString()
                     }
 
-                    await upsertScore(server.slonik.pool, scoreToUpdate).catch(reason =>
-                        handleApiError(`API ERROR UPDATING SCORE: ${reason}`)
-                    )
+                    if (oldScore !== null) {
+                        const scoreToUpdate = {
+                            ...oldScore,
+                            initials: scrubbedInitials,
+                            score: sanitizedScore,
+                            updatedAt
+                        }
 
-                    reply.send(scoreToUpdate)
-                } else {
-                    reply.code(404).send(handleNotFoundError('NOT FOUND ERROR OnSend /PUT score: Score not found.'))
+                        await upsertScore(server.slonik.pool, scoreToUpdate)
+
+                        reply.send(scoreToUpdate)
+                    } else {
+                        handleNotFoundError('OnSend /PUT score: Score not found.')
+                    }
                 }
+
+            } catch (reason) {
+                handleError('ERROR UPDATING SCORE: ', reason, reply)
             }
         }
     )

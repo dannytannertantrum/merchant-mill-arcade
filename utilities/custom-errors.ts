@@ -15,15 +15,6 @@ const httpStatuses: HttpStatuses = {
     Conflict: 409
 }
 
-class APIError extends Error {
-    constructor(
-        public message: string,
-        public name = 'Internal server error',
-        public statusCode = httpStatuses.InternalServerError
-    ) {
-        super()
-    }
-}
 
 class NotFoundError extends Error {
     constructor(
@@ -55,9 +46,6 @@ class ValidationError extends Error {
     }
 }
 
-const handleApiError = (message: string): never => {
-    throw new APIError(message)
-}
 
 const handleError = (message: string, reason: unknown, reply: FastifyReply): void => {
     console.error(message, reason)
@@ -78,7 +66,6 @@ const handleValidationError = (message: string): never => {
 }
 
 export {
-    handleApiError,
     handleError,
     handleDuplicateEntryError,
     handleNotFoundError,

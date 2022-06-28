@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { Disposable, disposeAll } from '../test-utilities/disposables'
 import { GameData } from '../../../common/games.types'
 import { gameFactory } from '../test-utilities/factories/game-factory'
-import { mockHandleApiError, mockHandleNotFoundError, mockHandleValidationError } from '../__mocks__/customErrorMocks'
+import { mockHandleError, mockHandleNotFoundError, mockHandleValidationError } from '../__mocks__/customErrorMocks'
 import { overrideValues } from '../../../utilities/overrides'
 import { scoreFactory } from '../test-utilities/factories/score-factory'
 import { ScoreData, ScoreRequestBodyWithGame } from '../../../common/scores.types'
@@ -129,7 +129,7 @@ describe('PUT /scores/id', () => {
             expect(mockHandleValidationError).toHaveBeenCalled()
             expect(status).toEqual(400)
             expect(body.error).toEqual('Bad Request')
-            expect(body.message).toMatch(/VALIDATION ERROR UPDATING SCORE/)
+            expect(body.message).toMatch(/Please enter 1-3 letters/)
         })
 
         it('throws a validation error when score is not a number', async () => {
@@ -142,7 +142,7 @@ describe('PUT /scores/id', () => {
             expect(mockHandleValidationError).toHaveBeenCalled()
             expect(status).toEqual(400)
             expect(body.error).toEqual('Bad Request')
-            expect(body.message).toMatch(/VALIDATION ERROR UPDATING SCORE/)
+            expect(body.message).toMatch(/Please enter 1-3 letters/)
         })
 
         it('throws a validation error when score is less than zero', async () => {
@@ -153,7 +153,7 @@ describe('PUT /scores/id', () => {
             expect(mockHandleValidationError).toHaveBeenCalled()
             expect(status).toEqual(400)
             expect(body.error).toEqual('Bad Request')
-            expect(body.message).toMatch(/VALIDATION ERROR UPDATING SCORE/)
+            expect(body.message).toMatch(/Please enter 1-3 letters/)
         })
 
         it('throws a validation error when initials are undefined', async () => {
@@ -164,7 +164,7 @@ describe('PUT /scores/id', () => {
             expect(mockHandleValidationError).toHaveBeenCalled()
             expect(status).toEqual(400)
             expect(body.error).toEqual('Bad Request')
-            expect(body.message).toMatch(/VALIDATION ERROR UPDATING SCORE/)
+            expect(body.message).toMatch(/Please enter 1-3 letters/)
         })
 
         it('throws a validation error when initials are an empty string', async () => {
@@ -175,7 +175,7 @@ describe('PUT /scores/id', () => {
             expect(mockHandleValidationError).toHaveBeenCalled()
             expect(status).toEqual(400)
             expect(body.error).toEqual('Bad Request')
-            expect(body.message).toMatch(/VALIDATION ERROR UPDATING SCORE/)
+            expect(body.message).toMatch(/Please enter 1-3 letters/)
         })
 
         it('throws an API error when initials are longer than 3 characters', async () => {
@@ -185,10 +185,9 @@ describe('PUT /scores/id', () => {
 
             // We might expect a validation error here, but we can let the database handle it
             // There's a constraint on more than 3 letters - good to test DB is handling errors as well!
-            expect(mockHandleApiError).toHaveBeenCalled()
+            expect(mockHandleError).toHaveBeenCalled()
             expect(status).toEqual(500)
             expect(body.error).toEqual('Internal Server Error')
-            expect(body.message).toMatch(/ERROR GETTING SCORE IN UPDATE SCORE/)
         })
 
         it('throws a not found error when score cannot be found in database', async () => {
@@ -199,7 +198,7 @@ describe('PUT /scores/id', () => {
             expect(mockHandleNotFoundError).toHaveBeenCalled()
             expect(status).toEqual(404)
             expect(body.error).toEqual('Not Found')
-            expect(body.message).toEqual('NOT FOUND ERROR OnSend /PUT score: Score not found.')
+            expect(body.message).toEqual('OnSend /PUT score: Score not found.')
         })
     })
 })

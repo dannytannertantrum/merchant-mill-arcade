@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { Disposable, disposeAll } from '../test-utilities/disposables'
 import { GameData } from '../../../common/games.types'
 import { gameFactory } from '../test-utilities/factories/game-factory'
-import { mockHandleApiError } from '../__mocks__/customErrorMocks'
+import { mockHandleError } from '../__mocks__/customErrorMocks'
 import { overrideValues } from '../../../utilities/overrides'
 import { ScoreData } from '../../../common/scores.types'
 import { scoreFactory } from '../test-utilities/factories/score-factory'
@@ -116,11 +116,10 @@ describe('/GET /scores-by-game-id/id', () => {
         it('should throw an API error if uuid is invalid', async () => {
             const invalidUuid = 'not-a-uuid'
 
-            const { body, status } = await supertest(server.server).get(`/scores-by-game/${invalidUuid}`)
+            const { status } = await supertest(server.server).get(`/scores-by-game/${invalidUuid}`)
 
-            expect(mockHandleApiError).toHaveBeenCalled()
+            expect(mockHandleError).toHaveBeenCalled()
             expect(status).toEqual(500)
-            expect(body.message).toMatch(/API ERROR GETTING SCORES FOR GAME ID/)
         })
     })
 })

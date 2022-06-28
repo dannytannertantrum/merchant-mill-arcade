@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify'
 
-import { handleApiError, handleNotFoundError } from '../../utilities/custom-errors'
+import { handleError, handleNotFoundError } from '../../utilities/custom-errors'
 import { ScoreSchema, ScoreData } from '../../common/scores.types'
 import { getScoreById } from '../common-queries'
 
@@ -12,14 +12,19 @@ export default async (server: FastifyInstance): Promise<void> => {
         '/scores/:id',
         { schema },
         async (request, reply) => {
-            const { id } = request.params
+            try {
 
-            const score = await getScoreById(server.slonik.pool, id).catch(reason =>
-                handleApiError(`API ERROR GETTING SCORE: ${reason}`)
-            )
+                const { id } = request.params
 
-            score
-                ? reply.send(score)
-                : reply.code(404).send(handleNotFoundError('NOT FOUND ERROR OnSend /GET score: Score not found.'))
-        })
+                const score = await getScoreById(server.slonik.pool, id)
+
+                score
+                    ? reply.send(score)
+                    : handleNotFoundError('OnSend /GET score: Score not found.')
+
+            } catch (reason) {
+                handleError('ERROR GETTING SCORE: ', reason, reply)
+            }
+        }
+    )
 }

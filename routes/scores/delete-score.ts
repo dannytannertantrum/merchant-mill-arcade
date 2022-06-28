@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify'
 import { DatabasePoolType, sql } from 'slonik'
 
-import { handleApiError, handleNotFoundError } from '../../utilities/custom-errors'
+import { handleError, handleNotFoundError } from '../../utilities/custom-errors'
 import { ScoreData, ScoreSchema } from '../../common/scores.types'
 
 
@@ -29,16 +29,20 @@ export default async (server: FastifyInstance): Promise<void> => {
         '/scores/:id',
         { schema },
         async (request, reply) => {
-            const { id } = request.params
-            const updatedAt = new Date().toISOString()
+            try {
 
-            const scoreToDelete = await softDeleteScore(server.slonik.pool, id, updatedAt).catch(reason =>
-                handleApiError(`API ERROR DELETING SCORE: ${reason}`)
-            )
+                const { id } = request.params
+                const updatedAt = new Date().toISOString()
 
-            scoreToDelete
-                ? reply.send(scoreToDelete)
-                : reply.code(404).send(handleNotFoundError(`NOT FOUND ERROR OnSend /DELETE score with id ${id}. Score not found.`))
+                const scoreToDelete = await softDeleteScore(server.slonik.pool, id, updatedAt)
+
+                scoreToDelete
+                    ? reply.send(scoreToDelete)
+                    : handleNotFoundError(`OnSend /DELETE score with id ${id}. Score not found.`)
+
+            } catch (reason) {
+                handleError('ERROR DELETING SCORE: ', reason, reply)
+            }
         }
     )
 }

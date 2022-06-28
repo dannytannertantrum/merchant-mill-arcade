@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { Disposable, disposeAll } from '../test-utilities/disposables'
 import { GameData } from '../../../common/games.types'
 import { gameFactory } from '../test-utilities/factories/game-factory'
-import { mockHandleApiError, mockHandleNotFoundError } from '../__mocks__/customErrorMocks'
+import { mockHandleError, mockHandleNotFoundError } from '../__mocks__/customErrorMocks'
 import { ScoreData } from '../../../common/scores.types'
 import { scoreFactory } from '../test-utilities/factories/score-factory'
 import server from '../../../app'
@@ -73,11 +73,10 @@ describe('/GET /scores/id', () => {
         it('throws an API error if uuid is invalid', async () => {
             const invalidUuid = 'not-a-valid-uuid'
 
-            const { body, status } = await supertest(server.server).get(`/scores/${invalidUuid}`)
+            const { status } = await supertest(server.server).get(`/scores/${invalidUuid}`)
 
-            expect(mockHandleApiError).toHaveBeenCalled()
+            expect(mockHandleError).toHaveBeenCalled()
             expect(status).toEqual(500)
-            expect(body.message).toMatch(/API ERROR GETTING SCORE/)
         })
 
         it('throw a not found error if score not found', async () => {
@@ -87,7 +86,7 @@ describe('/GET /scores/id', () => {
 
             expect(mockHandleNotFoundError).toHaveBeenCalled()
             expect(status).toEqual(404)
-            expect(body.message).toEqual('NOT FOUND ERROR OnSend /GET score: Score not found.')
+            expect(body.message).toEqual('OnSend /GET score: Score not found.')
         })
     })
 })
