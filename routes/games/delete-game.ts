@@ -2,7 +2,7 @@ import { FastifyInstance } from 'fastify'
 import { DatabasePoolType, sql } from 'slonik'
 
 import { GameData, GameSchema } from '../../common/games.types'
-import { handleApiError, handleNotFoundError } from '../../utilities/custom-errors'
+import { handleError, handleNotFoundError } from '../../utilities/custom-errors'
 
 
 const schema = { response: { 200: GameSchema } }
@@ -29,16 +29,20 @@ export default async (server: FastifyInstance): Promise<void> => {
         '/games/:id',
         { schema },
         async (request, reply) => {
-            const { id } = request.params
-            const updatedAt = new Date().toISOString()
+            try {
 
-            const gameToDelete = await softDeleteGame(server.slonik.pool, id, updatedAt).catch(reason =>
-                handleApiError(`API ERROR DELETING GAME: ${reason}`)
-            )
+                const { id } = request.params
+                const updatedAt = new Date().toISOString()
 
-            gameToDelete
-                ? reply.send(gameToDelete)
-                : reply.code(404).send(handleNotFoundError(`NOT FOUND ERROR OnSend /DELETE game with id ${id}. Game not found.`))
+                const gameToDelete = await softDeleteGame(server.slonik.pool, id, updatedAt)
+
+                gameToDelete
+                    ? reply.send(gameToDelete)
+                    : handleNotFoundError(`OnSend /DELETE game with id ${id}. Game not found.`)
+
+            } catch (reason) {
+                handleError('ERROR DELETING GAME: ', reason, reply)
+            }
         }
     )
 }

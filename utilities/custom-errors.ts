@@ -1,3 +1,6 @@
+import { FastifyReply } from 'fastify'
+
+
 interface HttpStatuses {
     BadRequest: 400
     NotFound: 404
@@ -15,7 +18,7 @@ const httpStatuses: HttpStatuses = {
 class APIError extends Error {
     constructor(
         public message: string,
-        public errorType = 'Internal server error',
+        public name = 'Internal server error',
         public statusCode = httpStatuses.InternalServerError
     ) {
         super()
@@ -25,7 +28,7 @@ class APIError extends Error {
 class NotFoundError extends Error {
     constructor(
         public message: string,
-        public errorType = 'Not found error',
+        public name = 'Not found error',
         public statusCode = httpStatuses.NotFound
     ) {
         super()
@@ -35,7 +38,7 @@ class NotFoundError extends Error {
 class OnConflictError extends Error {
     constructor(
         public message: string,
-        public errorType = 'Conflict error',
+        public name = 'Conflict error',
         public statusCode = httpStatuses.Conflict
     ) {
         super()
@@ -45,7 +48,7 @@ class OnConflictError extends Error {
 class ValidationError extends Error {
     constructor(
         public message: string,
-        public errorType = 'Validation error',
+        public name = 'Validation error',
         public statusCode = httpStatuses.BadRequest
     ) {
         super()
@@ -54,6 +57,12 @@ class ValidationError extends Error {
 
 const handleApiError = (message: string): never => {
     throw new APIError(message)
+}
+
+const handleError = (message: string, reason: unknown, reply: FastifyReply): void => {
+    console.error(message, reason)
+
+    reply.send(reason)
 }
 
 const handleDuplicateEntryError = (message: string): never => {
@@ -70,6 +79,7 @@ const handleValidationError = (message: string): never => {
 
 export {
     handleApiError,
+    handleError,
     handleDuplicateEntryError,
     handleNotFoundError,
     handleValidationError

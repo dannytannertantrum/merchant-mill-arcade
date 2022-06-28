@@ -2,7 +2,7 @@ import { FastifyInstance } from 'fastify'
 
 import { GameData, GameSchema } from '../../common/games.types'
 import { getGameById } from '../common-queries'
-import { handleApiError, handleNotFoundError } from '../../utilities/custom-errors'
+import { handleError, handleNotFoundError } from '../../utilities/custom-errors'
 
 
 const schema = { response: { 200: GameSchema } }
@@ -12,15 +12,19 @@ export default async (server: FastifyInstance): Promise<void> => {
         '/games/:id',
         { schema },
         async (request, reply) => {
-            const { id } = request.params
+            try {
 
-            const game = await getGameById(server.slonik.pool, id).catch(reason =>
-                handleApiError(`API ERROR GETTING GAME: ${reason}`)
-            )
+                const { id } = request.params
 
-            game
-                ? reply.send(game)
-                : reply.code(404).send(handleNotFoundError(`NOT FOUND ERROR OnSend /GET game: Game not found.`))
+                const game = await getGameById(server.slonik.pool, id)
+
+                game
+                    ? reply.send(game)
+                    : handleNotFoundError(`OnSend /GET game: Game not found.`)
+
+            } catch (reason) {
+                handleError('ERROR GETTING GAME: ', reason, reply)
+            }
         }
     )
 }

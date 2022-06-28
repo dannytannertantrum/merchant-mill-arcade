@@ -1,6 +1,5 @@
 import { DatabasePoolType, sql } from 'slonik'
 
-import { handleApiError } from '../utilities/custom-errors'
 import { GameData } from '../common//games.types'
 import { ScoreData } from '../common//scores.types'
 
@@ -55,16 +54,14 @@ const queryForActiveGame = async ({ pool, title, id }: ActiveGameCheck): Promise
     title = title.toLowerCase()
 
     if (id) {
-        game = await getGameById(pool, id).catch(reason =>
-            handleApiError(`API ERROR: The following error occurred when searching for an active game by id: ${reason}`)
-        )
+        game = await getGameById(pool, id)
     }
 
     const titleQuery = await pool.query(sql<GameData>`
         SELECT title, is_deleted
         FROM games
         WHERE LOWER(title) = ${title};
-    `).catch(reason => handleApiError(`API ERROR: The following error occurred when searching for an active game by title: ${reason}`))
+    `)
 
     const titleIsActive = titleQuery.rows.some(game => game.isDeleted === false)
 

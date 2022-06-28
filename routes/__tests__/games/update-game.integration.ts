@@ -6,7 +6,7 @@ import { Disposable, disposeAll } from '../test-utilities/disposables'
 import { GameData } from '../../../common/games.types'
 import { gameFactory } from '../test-utilities/factories/game-factory'
 import {
-    mockHandleApiError,
+    mockHandleError,
     mockHandleDuplicateEntryError,
     mockHandleValidationError
 } from '../__mocks__/customErrorMocks'
@@ -185,10 +185,9 @@ describe('PUT /games', () => {
 
             const { body, status } = await supertest(server.server).put(`/games/${gameWithInvalidUuid.id}`).send(gameWithInvalidUuid)
 
-            expect(mockHandleApiError).toHaveBeenCalled()
+            expect(mockHandleError).toHaveBeenCalled()
             expect(status).toEqual(500)
             expect(body.error).toEqual('Internal Server Error')
-            expect(body.message).toMatch(/API ERROR CHECKING QUERY FOR NO CHANGES/)
         })
 
         it('throws a conflict error when trying to add a game with a matching title', async () => {
@@ -199,7 +198,7 @@ describe('PUT /games', () => {
             expect(mockHandleDuplicateEntryError).toHaveBeenCalled()
             expect(status).toEqual(409)
             expect(body.error).toEqual('Conflict')
-            expect(body.message).toMatch(/CONFLICT ERROR/)
+            expect(body.message).toMatch(/That game already exists/)
         })
 
         it('throws a validation error trying to update with an empty title', async () => {
@@ -210,7 +209,7 @@ describe('PUT /games', () => {
             expect(mockHandleValidationError).toHaveBeenCalled()
             expect(status).toEqual(400)
             expect(body.error).toEqual('Bad Request')
-            expect(body.message).toMatch(/VALIDATION ERROR/)
+            expect(body.message).toMatch(/Title is required/)
         })
 
         it('throws a not found error when trying to update a game with a valid uuid that does not exist in the db', async () => {
@@ -220,7 +219,7 @@ describe('PUT /games', () => {
 
             expect(status).toEqual(404)
             expect(body.error).toEqual('Not Found')
-            expect(body.message).toEqual('NOT FOUND ERROR OnSend /PUT game: Game not found.')
+            expect(body.message).toEqual('OnSend /PUT game: Game not found.')
         })
     })
 })

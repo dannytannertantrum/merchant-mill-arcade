@@ -6,7 +6,7 @@ import { Disposable, disposeAll } from '../test-utilities/disposables'
 import { GameData } from '../../../common/games.types'
 import { gameFactory } from '../test-utilities/factories/game-factory'
 import {
-    mockHandleApiError,
+    mockHandleError,
     mockHandleDuplicateEntryError,
     mockHandleValidationError
 } from '../__mocks__/customErrorMocks'
@@ -162,11 +162,10 @@ describe('POST /games', () => {
 
             const { body, status } = await supertest(server.server).post('/games').send(gameWithInvalidUuid)
 
-            expect(mockHandleApiError).toHaveBeenCalled()
+            // It errors out checking for a duplicate game which is why we see this being called
+            expect(mockHandleError).toHaveBeenCalled()
             expect(status).toEqual(500)
             expect(body.error).toEqual('Internal Server Error')
-            // It errors out checking for a duplicate game which is why we see this message
-            expect(body.message).toMatch(/API ERROR CHECKING FOR DUPLICATE GAME/)
         })
 
         // It would be crazy if we add a game with a uuid that already exists
@@ -176,10 +175,9 @@ describe('POST /games', () => {
 
             const { body, status } = await supertest(server.server).post('/games').send(gameWithDuplicateUuid)
 
-            expect(mockHandleApiError).toHaveBeenCalled()
+            expect(mockHandleError).toHaveBeenCalled()
             expect(status).toEqual(500)
             expect(body.error).toEqual('Internal Server Error')
-            expect(body.message).toMatch(/API ERROR ADDING GAME/)
         })
 
         it('throws a conflict error when trying to add a game with a matching title', async () => {
@@ -190,7 +188,7 @@ describe('POST /games', () => {
             expect(mockHandleDuplicateEntryError).toHaveBeenCalled()
             expect(status).toEqual(409)
             expect(body.error).toEqual('Conflict')
-            expect(body.message).toMatch(/CONFLICT ERROR/)
+            expect(body.message).toMatch(/That game already exists/)
         })
 
         it('throws a validation error when no title is sent in the JSON request body', async () => {
@@ -201,7 +199,7 @@ describe('POST /games', () => {
             expect(mockHandleValidationError).toHaveBeenCalled()
             expect(status).toEqual(400)
             expect(body.error).toEqual('Bad Request')
-            expect(body.message).toMatch(/VALIDATION ERROR ADDING GAME/)
+            expect(body.message).toMatch(/Title is required/)
         })
 
         it('throws a validation error when title is an empty string', async () => {
@@ -214,7 +212,7 @@ describe('POST /games', () => {
             expect(mockHandleValidationError).toHaveBeenCalled()
             expect(status).toEqual(400)
             expect(body.error).toEqual('Bad Request')
-            expect(body.message).toMatch(/VALIDATION ERROR ADDING GAME/)
+            expect(body.message).toMatch(/Title is required/)
         })
     })
 })

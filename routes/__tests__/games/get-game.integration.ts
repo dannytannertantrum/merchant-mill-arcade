@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { Disposable, disposeAll } from '../test-utilities/disposables'
 import { GameData } from '../../../common/games.types'
 import { gameFactory } from '../test-utilities/factories/game-factory'
-import { mockHandleApiError, mockHandleNotFoundError } from '../__mocks__/customErrorMocks'
+import { mockHandleError, mockHandleNotFoundError } from '../__mocks__/customErrorMocks'
 import server from '../../../app'
 
 
@@ -59,11 +59,10 @@ describe('GET /games/id', () => {
         it('throws an API error if uuid is invalid', async () => {
             const invalidUuid = 'not-a-uuid'
 
-            const { body, status } = await supertest(server.server).get(`/games/${invalidUuid}`)
+            const { status } = await supertest(server.server).get(`/games/${invalidUuid}`)
 
-            expect(mockHandleApiError).toHaveBeenCalled()
+            expect(mockHandleError).toHaveBeenCalled()
             expect(status).toEqual(500)
-            expect(body.message).toMatch(/API ERROR GETTING GAME/)
         })
 
         it('throws a not found error if game not found', async () => {
@@ -73,7 +72,7 @@ describe('GET /games/id', () => {
 
             expect(mockHandleNotFoundError).toHaveBeenCalled()
             expect(status).toEqual(404)
-            expect(body.message).toEqual('NOT FOUND ERROR OnSend /GET game: Game not found.')
+            expect(body.message).toEqual('OnSend /GET game: Game not found.')
         })
     })
 })

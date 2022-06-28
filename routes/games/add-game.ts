@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { GameData, GameRequestBody, GameSchema } from '../../common/games.types'
 import { queryForActiveGame } from '../common-queries'
 import { constructSlug, textInputCleanUpWhitespace } from '../../utilities/string-helpers'
-import { handleApiError, handleValidationError, handleDuplicateEntryError } from '../../utilities/custom-errors'
+import { handleValidationError, handleDuplicateEntryError, handleError } from '../../utilities/custom-errors'
 
 
 const schema = { response: { 200: GameSchema } }
@@ -27,47 +27,47 @@ export default async (server: FastifyInstance): Promise<void> => {
         '/games',
         { schema },
         async (request, reply) => {
-            let { description, imageUrl, title } = request.body
-            const id = request.body.id || uuidv4()
+            try {
 
-            let [
-                scrubbedDescription,
-                scrubbedImageUrl,
-                scrubbedTitle
-            ] = [description, imageUrl, title].map(val => textInputCleanUpWhitespace(val))
+                let { description, imageUrl, title } = request.body
+                const id = request.body.id || uuidv4()
 
-            if (scrubbedTitle === undefined || scrubbedTitle === '') {
-                handleValidationError('VALIDATION ERROR ADDING GAME: Title is required for adding a game!')
-            } else {
-                const ActiveGameCheck = await queryForActiveGame({
-                    pool: server.slonik.pool, title: scrubbedTitle, id
-                }).catch(reason =>
-                    handleApiError(`API ERROR CHECKING FOR DUPLICATE GAME: ${reason}`)
-                )
+                let [
+                    scrubbedDescription,
+                    scrubbedImageUrl,
+                    scrubbedTitle
+                ] = [description, imageUrl, title].map(val => textInputCleanUpWhitespace(val))
 
-                if (ActiveGameCheck?.isActive) {
-                    handleDuplicateEntryError('CONFLICT ERROR: That game already exists in the Merchant Mill Arcade!')
+                if (scrubbedTitle === undefined || scrubbedTitle === '') {
+                    handleValidationError('Title is required for adding a game!')
+                } else {
+                    const ActiveGameCheck = await queryForActiveGame({ pool: server.slonik.pool, title: scrubbedTitle, id })
+
+                    if (ActiveGameCheck?.isActive) {
+                        handleDuplicateEntryError('That game already exists in the Merchant Mill Arcade!')
+                    }
+
+                    const isDeleted = false
+                    const slug = constructSlug(scrubbedTitle)
+                    const createdAt = new Date().toISOString()
+
+                    const gameToAdd = {
+                        id,
+                        description: scrubbedDescription === undefined ? null : scrubbedDescription,
+                        imageUrl: scrubbedImageUrl === undefined ? null : scrubbedImageUrl,
+                        isDeleted,
+                        slug,
+                        title: scrubbedTitle,
+                        createdAt
+                    }
+
+                    await insertGame(server.slonik.pool, gameToAdd)
+
+                    reply.code(201).send(gameToAdd)
                 }
 
-                const isDeleted = false
-                const slug = constructSlug(scrubbedTitle)
-                const createdAt = new Date().toISOString()
-
-                const gameToAdd = {
-                    id,
-                    description: scrubbedDescription === undefined ? null : scrubbedDescription,
-                    imageUrl: scrubbedImageUrl === undefined ? null : scrubbedImageUrl,
-                    isDeleted,
-                    slug,
-                    title: scrubbedTitle,
-                    createdAt
-                }
-
-                await insertGame(server.slonik.pool, gameToAdd).catch(reason =>
-                    handleApiError(`API ERROR ADDING GAME: ${reason}`)
-                )
-
-                reply.code(201).send(gameToAdd)
+            } catch (reason) {
+                handleError('ERROR ADDING GAME: ', reason, reply)
             }
         }
     )

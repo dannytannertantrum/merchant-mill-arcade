@@ -2,7 +2,7 @@ import { FastifyInstance } from 'fastify'
 import { DatabasePoolType, sql } from 'slonik'
 
 import { AllGamesSchema, GameData, AllGamesData } from '../../common/games.types'
-import { handleApiError } from '../../utilities/custom-errors'
+import { handleError } from '../../utilities/custom-errors'
 
 
 const schema = { response: { 200: AllGamesSchema } }
@@ -29,11 +29,15 @@ export default async (server: FastifyInstance): Promise<void> => {
         '/games',
         { schema },
         async (_request, reply) => {
-            const games = await getAllGames(server.slonik.pool).catch(reason =>
-                handleApiError(`API ERROR GETTING GAMES: ${reason}`)
-            )
+            try {
 
-            reply.send(games)
+                const games = await getAllGames(server.slonik.pool)
+
+                reply.send(games)
+
+            } catch (reason) {
+                handleError('API ERROR GETTING GAMES: ', reason, reply)
+            }
         }
     )
 }

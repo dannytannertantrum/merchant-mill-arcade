@@ -60,7 +60,7 @@ describe('DELETE /games/id', () => {
 
             expect(mockHandleNotFoundError).toHaveBeenCalled()
             expect(status).toBe(404)
-            expect(body.message).toMatch(/NOT FOUND ERROR OnSend \/DELETE game/)
+            expect(body.message).toMatch(/OnSend \/DELETE game/)
         })
     })
 })

@@ -18,8 +18,8 @@
     "seed": "node -r dotenv/config database/seed.js",
     "seed-test": "NODE_ENV=TEST node -r dotenv/config database/seed.js",
     "start-client": "cd client && npm start",
-    "test": "NODE_ENV=TEST jest",
-    "test-watch": "NODE_ENV=TEST jest --watch",
+    "test": "NODE_ENV=TEST jest --silent",
+    "test-watch": "NODE_ENV=TEST jest --watch --silent",
     "typecheck": "npx tsc",
     "typecheck-watch": "npx tsc --watch"
   },
