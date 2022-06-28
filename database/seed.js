@@ -7,9 +7,7 @@ const gamesCSV = path.join(__dirname, './seedDataGames.csv')
 const scoresCSV = path.join(__dirname, './seedDataScores.csv')
 
 const extractCSVData = async (filePath) => {
-    const data = await readFile(filePath, { encoding: 'utf-8' }).catch(reason => {
-        throw new Error(`ERROR EXTRACTING CSV DATA: ${reason}`)
-    })
+    const data = await readFile(filePath, { encoding: 'utf-8' })
 
     // We can ignore the first line, which is simply the header
     const rawData = data.split(/\r?\n/).splice(1)
