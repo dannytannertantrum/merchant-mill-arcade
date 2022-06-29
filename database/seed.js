@@ -28,7 +28,7 @@ const extractCSVData = async (filePath) => {
     return formattedForInsert
 }
 
-const CONNECTION_STRING = process.env.NODE_ENV === 'TEST'
+const CONNECTION_STRING = process.env.NODE_ENV_TEST === 'TEST'
     ? process.env.TEST_POSTGRES_CONNECTION_STRING
     : process.env.POSTGRES_CONNECTION_STRING
 

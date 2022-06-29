@@ -9,6 +9,8 @@ npm-debug.log*
 # built directory for server and dist for client - ignore compliled output
 built/
 dist
+.next
+.swc/
 
 # Ignore Parcel cache
 .parcel-cache
