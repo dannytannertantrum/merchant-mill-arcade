@@ -7,7 +7,8 @@ const nextConfig = {
     },
     images: {
         disableStaticImages: true,
-    }
+    },
+    basePath: '/arcade'
 }
 
 export default nextConfig
