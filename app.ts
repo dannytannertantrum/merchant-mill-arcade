@@ -35,7 +35,7 @@ const server = fastify<Server, IncomingMessage, ServerResponse>({
 
 server.register(fastifyCors, {
     origin: process.env.NODE_ENV === 'development'
-        ? 'http://localhost:1234'
+        ? 'http://localhost:3000'
         : 'https://merchantmillarcade.com'
 })
 
