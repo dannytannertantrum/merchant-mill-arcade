@@ -11,6 +11,7 @@ built/
 dist
 .next
 .swc/
+.config.js
 
 # Ignore Parcel cache
 .parcel-cache

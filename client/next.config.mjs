@@ -1,3 +1,5 @@
+import config from './.config'
+
 /**
  * @type {import('next').NextConfig}
  */
@@ -5,8 +7,8 @@ const nextConfig = {
     basePath: '/arcade',
     env: {
         BASE_URL: 'http://localhost:7000',
-        CUSTOM_SEARCH_API_KEY: 'AIzaSyALU8i7lMGxQQJSmGdoI4i9-eBZD5KvA3g',
-        CUSTOM_SEARCH_ENGINE_ID: '8f37cbcb9fb441e31'
+        CUSTOM_SEARCH_API_KEY: config.custom_search_api_key,
+        CUSTOM_SEARCH_ENGINE_ID: config.custom_search_engine_id
     },
     images: {
         disableStaticImages: true,
