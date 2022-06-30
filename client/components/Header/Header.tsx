@@ -2,7 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Fragment } from 'react'
 
-import * as styles from '../sharedStyles'
+import * as styles from '../../sharedStyles'
 
 
 function Header() {

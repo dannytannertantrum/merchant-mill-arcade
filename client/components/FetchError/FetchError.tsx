@@ -1,5 +1,5 @@
 import React from 'react'
-import * as sharedStyles from '../sharedStyles'
+import * as sharedStyles from '../../sharedStyles'
 
 
 interface FetchErrorProps {

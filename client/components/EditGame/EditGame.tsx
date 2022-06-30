@@ -17,7 +17,7 @@ import {
     GET_IMAGES
 } from '../../utils/constants'
 import { getImages } from '../../api/imageSearch.api'
-import * as sharedStyles from '../sharedStyles'
+import * as sharedStyles from '../../sharedStyles'
 import * as styles from './EditGameStyles'
 import Loading from '../Loading/Loading'
 import { getGames } from '../../api/games.apis'
@@ -55,7 +55,7 @@ const EditGame = ({
 }: EditGameProps) => {
     const [state, dispatch] = useReducer(imageSearchReducer, INITIAL_IMAGE_SEARCH_STATE)
 
-    const [allGames, setAllGames] = useState<AllGamesData>(null)
+    const [allGames, setAllGames] = useState<AllGamesData>([])
     const [existingGame, setExistingGame] = useState<string>('')
     const [formControl, setFormControl] = useState<GameFormControlFlow>(DEFAULT_FORM_CONTROL_FLOW)
     const [selectedImage, setSelectedImage] = useState<string>(DEFAULT_MARQUEE)
