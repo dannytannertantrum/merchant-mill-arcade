@@ -12,7 +12,7 @@ const nextConfig = {
     },
     images: {
         disableStaticImages: true,
-        domains: ['c.tenor.com'],
+        domains: ['c.tenor.com', 'media1.giphy.com'],
     },
     typescript: {
         ignoreBuildErrors: false

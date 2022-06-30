@@ -1,4 +1,6 @@
+import Image from 'next/image'
 import React from 'react'
+
 import * as sharedStyles from '../../sharedStyles'
 
 
@@ -31,11 +33,14 @@ const FetchError = ({ reason }: FetchErrorProps) => {
     return (
         <div className={sharedStyles.landingPageWrapper}>
             <h1>Thanks a lot; you broke the arcade!</h1>
-            <img
+            <Image
                 alt='George Costanza playing Frogger in the street'
                 className={sharedStyles.landingPageImage}
                 src='https://media1.giphy.com/media/Zi4gonZjDY6go/giphy.gif'
+                width={329}
+                height={249}
             />
+            <br />
             <p>
                 But seriously, something went wrong. Please try <a href='/' onClick={handleLinkReload}>
                     reloading the page</a> or come back later.

@@ -2,6 +2,7 @@ import type { AppProps } from 'next/app'
 import { css } from 'goober'
 import Head from 'next/head'
 
+import ErrorBoundary from '../components/ErrorBoundary/ErrorBoundary'
 import Header from '../components/Header/Header'
 import '../global.css'
 
@@ -15,8 +16,10 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                 <meta name='theme-color' content='#000000' />
                 <title>Merchant Mill Arcade</title>
             </Head>
-            <Header />
-            <Component {...pageProps} />
+            <ErrorBoundary>
+                <Header />
+                <Component {...pageProps} />
+            </ErrorBoundary>
         </div>
     )
 }
