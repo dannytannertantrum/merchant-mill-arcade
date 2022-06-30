@@ -4,7 +4,7 @@ import { createPool } from 'slonik'
 import { createFieldNameTransformationInterceptor } from 'slonik-interceptor-field-name-transformation'
 
 
-const CONNECTION_STRING = process.env.NODE_ENV === 'TEST'
+const CONNECTION_STRING = process.env.NODE_ENV_TEST === 'TEST'
     ? process.env.TEST_POSTGRES_CONNECTION_STRING
     : process.env.POSTGRES_CONNECTION_STRING
 
