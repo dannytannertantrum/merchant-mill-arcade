@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import {
     MouseEvent,
     SyntheticEvent,
@@ -64,6 +65,9 @@ function AddGamePage() {
 
     return (
         <div className={styles.addGamePageWrapper}>
+            <Head>
+                <title>Add a Game | Merchant Mill Arcade</title>
+            </Head>
             <h1 className={sharedStyles.heading}>Add a game</h1>
             <ol>
                 <li>Enter a title</li>
