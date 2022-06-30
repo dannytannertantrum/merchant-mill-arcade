@@ -1,4 +1,5 @@
-import logo from '../../assets/logo.png'
+import Image from 'next/image'
+
 import * as sharedStyles from '../sharedStyles'
 
 
@@ -10,17 +11,15 @@ const NotFoundPage = ({ message }: NotFoundPageProps) => {
 
     return (
         <div className={sharedStyles.landingPageWrapper}>
-            {!message && (
-                <a href='/' className={sharedStyles.logoWrapper}>
-                    <img src={logo} alt='logo - return to homepage' />
-                </a>
-            )}
             <h1>Frour-04</h1>
-            <img
+            <Image
                 alt='Steve Brule confused'
                 className={sharedStyles.landingPageImage}
                 src='https://c.tenor.com/me1Yk0jRlHoAAAAC/huh-confused.gif'
+                width={498}
+                height={364}
             />
+            <br />
             <p>
                 {message ? message : 'Page not found.'} Check the URL or head <a href='/'>
                     back to the arcade</a>, ya dingus!

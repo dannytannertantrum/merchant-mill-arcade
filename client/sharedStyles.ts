@@ -200,6 +200,7 @@ const gameGridMarqueeLink = css`
 
 // span
 const gameTitle = css`
+    display: block;
     margin: 10px 0;
     text-align: center;
 `

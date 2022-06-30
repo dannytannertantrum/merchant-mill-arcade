@@ -1,7 +1,7 @@
 import { ChangeEvent, Fragment, SyntheticEvent, useState } from 'react'
 
 import { ScoreFormControlFlow } from '../Scores/Scores'
-import * as sharedStyles from '../sharedStyles'
+import * as sharedStyles from '../../sharedStyles'
 import * as styles from './EditScoreStyles'
 
 

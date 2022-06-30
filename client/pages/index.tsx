@@ -28,15 +28,15 @@ const AllGamesPage: NextPage<Props> = ({ allGames }) => {
 	const gameList = (
 		allGames?.map(game => (
 			<li key={game.id}>
-				<a href={`/games/${game.slug}`} className={styles.gameGridMarqueeLink}>
-					<Fragment>
+				<Link href={`/games/${game.slug}`} className={styles.gameGridMarqueeLink}>
+					<a>
 						{game.imageUrl
 							? <span className={styles.marquee(game.imageUrl)}></span>
 							: <span className={styles.marquee(DEFAULT_MARQUEE)}></span>
 						}
 						<span className={styles.gameTitle}>{game.title}</span>
-					</Fragment>
-				</a>
+					</a>
+				</Link>
 			</li>
 		))
 	)

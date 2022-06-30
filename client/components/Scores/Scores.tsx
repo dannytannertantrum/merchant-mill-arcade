@@ -8,17 +8,17 @@ import {
     useState
 } from 'react'
 
-import { addScore, deleteScore, editScore, getScoresByGameId } from '../../apis/scores.apis'
+import { addScore, deleteScore, editScore, getScoresByGameId } from '../../api/scores.apis'
 import { CREATE_SCORE, DELETE_SCORE, FETCH_ERROR, FETCH_IN_PROGRESS, GET_SCORES, UPDATE_SCORE } from '../../utils/constants'
 import EditScore from '../EditScore/EditScore'
 import FetchError from '../FetchError/FetchError'
-import { GameData } from '../../../../common/games.types'
-import { INITIAL_SCORE_STATE, scoreReducer } from '../../reducers/score.reducer'
+import { GameData } from '../../../common/games.types'
+import { INITIAL_SCORE_STATE, scoreReducer } from '../../src/reducers/score.reducer'
 import Loading from '../Loading/Loading'
 import Modal from '../Modal/Modal'
-import { ScoreData } from '../../../../common/scores.types'
+import { ScoreData } from '../../../common/scores.types'
 import * as styles from './ScorePageStyles'
-import * as sharedStyles from '../sharedStyles'
+import * as sharedStyles from '../../sharedStyles'
 
 
 interface ScoresProps {
@@ -265,5 +265,5 @@ const Scores = ({ game }: ScoresProps) => {
 
 export {
     Scores as default,
-    ScoreFormControlFlow
+    type ScoreFormControlFlow
 }
