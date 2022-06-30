@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -12,6 +13,9 @@ const InteralServerErrorPage = ({ message }: NotFoundPageProps) => {
 
     return (
         <div className={sharedStyles.landingPageWrapper}>
+            <Head>
+                <title>500 | Merchant Mill Arcade</title>
+            </Head>
             <h1>Thanks a lot; you broke the arcade!</h1>
             <Image
                 alt='George Costanza playing Frogger in the street'

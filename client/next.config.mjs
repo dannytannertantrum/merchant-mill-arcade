@@ -4,7 +4,6 @@ import config from './.config.mjs'
  * @type {import('next').NextConfig}
  */
 const nextConfig = {
-    basePath: '/arcade',
     env: {
         BASE_URL: 'http://localhost:7000',
         CUSTOM_SEARCH_API_KEY: config.custom_search_api_key,

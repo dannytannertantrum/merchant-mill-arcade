@@ -7,7 +7,7 @@ const Loading = () => {
     return (
         <div className={styles.loadingWrapper}>
             <Image
-                src='/arcade/images/MrHotDog.png'
+                src='/images/MrHotDog.png'
                 alt='Mr. Hot Dog from Burger Time'
                 width={126}
                 height={126}

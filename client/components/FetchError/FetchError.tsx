@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import Image from 'next/image'
 import React from 'react'
 
@@ -33,6 +34,9 @@ const FetchError = ({ reason }: FetchErrorProps) => {
     return (
         <div className={sharedStyles.landingPageWrapper}>
             <h1>Thanks a lot; you broke the arcade!</h1>
+            <Head>
+                <title>Error | Merchant Mill Arcade</title>
+            </Head>
             <Image
                 alt='George Costanza playing Frogger in the street'
                 className={sharedStyles.landingPageImage}

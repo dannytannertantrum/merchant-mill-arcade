@@ -11,7 +11,7 @@ function DeleteGameSuccessPage({ title }: { title: string }) {
             <Image
                 alt='Joe Davola from Seinfeld'
                 className={sharedStyles.landingPageImage}
-                src='/arcade/images/davola.jpg'
+                src='/images/davola.jpg'
                 width={273}
                 height={204}
             />

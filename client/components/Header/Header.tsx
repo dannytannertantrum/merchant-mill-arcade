@@ -10,7 +10,7 @@ function Header() {
         <Fragment>
             <Link href='/'>
                 <a className={styles.logoWrapper}>
-                    <Image src='/arcade/images/logo.png' width={350} height={197} alt='logo' />
+                    <Image src='/images/logo.png' width={350} height={197} alt='logo' />
                 </a>
             </Link>
         </Fragment>

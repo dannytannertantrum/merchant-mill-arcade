@@ -1,4 +1,5 @@
 import { css } from 'goober'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 import React, {
     Fragment,
@@ -115,6 +116,9 @@ const GamePage = ({ loadedGame }: GamePageProps): JSX.Element => {
 
     return (
         <Fragment>
+            <Head>
+                <title>{title} | Merchant Mill Arcade</title>
+            </Head>
             <div className={sharedStyles.gameHeader}>
                 <div>
                     <h3>{title}</h3>

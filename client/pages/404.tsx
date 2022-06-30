@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import Image from 'next/image'
 
 import * as sharedStyles from '../sharedStyles'
@@ -11,6 +12,9 @@ const NotFoundPage = ({ message }: NotFoundPageProps) => {
 
     return (
         <div className={sharedStyles.landingPageWrapper}>
+            <Head>
+                <title>404 Page Not Found | Merchant Mill Arcade</title>
+            </Head>
             <h1>Frour-04</h1>
             <Image
                 alt='Steve Brule confused'

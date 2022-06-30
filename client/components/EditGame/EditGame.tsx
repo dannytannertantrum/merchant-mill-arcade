@@ -65,24 +65,22 @@ const EditGame = ({
 
 
     useEffect(() => {
+        async function fetchGames() {
+
+            const response = await getGames()
+
+            if (response.isSuccess) {
+                setAllGames(response.data)
+            }
+
+        }
+
         if (isEditingExistingGame && title) {
             setFormControl(state => ({ ...state, title, imageSelection: imageUrl ?? '' }))
         }
 
-        async function fetchGames() {
-            try {
-                const response = await getGames()
+        if (allGames.length === 0) fetchGames()
 
-                if (response.isSuccess) {
-                    setAllGames(response.data)
-                }
-            } catch (reason) {
-                // TODO fix this with all error pages later
-                console.error('uh oh!')
-            }
-        }
-
-        fetchGames()
     }, [])
 
 
