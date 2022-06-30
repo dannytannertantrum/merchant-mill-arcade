@@ -146,10 +146,7 @@ const GamePage = ({ loadedGame }: GamePageProps): JSX.Element => {
                         />
                     </Fragment>
                 ) : (
-                    // <Suspense fallback={<Loading />}>
-                    //     <Scores game={state.replyGame.data} />
-                    // </Suspense>
-                    null
+                    <Scores game={game} />
                 )
             }
         </Fragment>

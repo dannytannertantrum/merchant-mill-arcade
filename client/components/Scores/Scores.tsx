@@ -13,7 +13,7 @@ import { CREATE_SCORE, DELETE_SCORE, FETCH_ERROR, FETCH_IN_PROGRESS, GET_SCORES,
 import EditScore from '../EditScore/EditScore'
 import FetchError from '../FetchError/FetchError'
 import { GameData } from '../../../common/games.types'
-import { INITIAL_SCORE_STATE, scoreReducer } from '../../src/reducers/score.reducer'
+import { INITIAL_SCORE_STATE, scoreReducer } from '../../reducers/score.reducer'
 import Loading from '../Loading/Loading'
 import Modal from '../Modal/Modal'
 import { ScoreData } from '../../../common/scores.types'
