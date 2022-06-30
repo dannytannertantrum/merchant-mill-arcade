@@ -18,6 +18,7 @@ import { gameReducer, INITIAL_GAME_STATE } from '../../reducers/game.reducer'
 import Loading from '../../components/Loading/Loading'
 import Scores from '../../components/Scores/Scores'
 import * as sharedStyles from '../../sharedStyles'
+import DeleteGameSuccessPage from '../../components/DeleteGameSuccessPage/DeleteGameSuccessPage'
 
 
 interface GamePageProps {
@@ -29,18 +30,22 @@ const GamePage = ({ loadedGame }: GamePageProps): JSX.Element => {
     const [game, setGame] = useState(loadedGame)
     const [state, dispatch] = useReducer(gameReducer, INITIAL_GAME_STATE)
     const [showEditGame, setShowEditGame] = useState(false)
+    const [showDeleteSuccessPage, setShowDeleteSuccesspage] = useState(false)
 
     const didMountRef = useRef(true)
     const router = useRouter()
 
 
     useEffect(() => {
+        // Ignore call to componentDidMount
         if (!didMountRef.current) {
 
-            const { title } = state.replyGame.data
+            const { isDeleted, slug } = state.replyGame.data
 
-            if (game.title !== title) {
-                router.replace(`/games/${title}`)
+            if (isDeleted) setShowDeleteSuccesspage(true)
+
+            if (game.slug !== slug) {
+                router.replace(`/games/${slug}`)
             }
 
             setGame(state.replyGame.data)
@@ -100,6 +105,10 @@ const GamePage = ({ loadedGame }: GamePageProps): JSX.Element => {
 
     if (state.isLoading || !game) {
         return <Loading />
+    }
+
+    if (showDeleteSuccessPage) {
+        return <DeleteGameSuccessPage title={game.title} />
     }
 
     const { id, imageUrl, title } = game

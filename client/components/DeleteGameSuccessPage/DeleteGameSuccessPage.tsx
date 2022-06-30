@@ -1,19 +1,21 @@
-import Link from '../Link/Link'
-import * as sharedStyles from '../sharedStyles'
-import davola from '../../assets/davola.jpg'
+import Image from 'next/image'
+import Link from 'next/link'
+
+import * as sharedStyles from '../../sharedStyles'
 
 
-const DeleteGameSuccessPage = () => {
-    const title = window.location.search.replace(/\?|%20/g, ' ').trim()
-
+function DeleteGameSuccessPage({ title }: { title: string }) {
     return (
         <div className={sharedStyles.landingPageWrapper}>
             <h1>Delete Success!</h1>
-            <img
+            <Image
                 alt='Joe Davola from Seinfeld'
                 className={sharedStyles.landingPageImage}
-                src={davola}
+                src='/arcade/images/davola.jpg'
+                width={273}
+                height={204}
             />
+            <br />
             <p>You just put the kibosh on <span className={sharedStyles.highlight}>{title}</span>.
                 Now head <Link href='/'>back to the arcade</Link>!</p>
         </div>
