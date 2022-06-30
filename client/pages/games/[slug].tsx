@@ -164,6 +164,7 @@ export async function getStaticProps(context) {
         const game = response.data.find(game => game.slug === gameSlug)
 
         if (!game) {
+            // Next.js will know to show the 404 page with notFound: true
             return { notFound: true }
         }
 
