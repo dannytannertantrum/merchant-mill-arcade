@@ -204,13 +204,13 @@ const EditGame = ({
                                     </li>
                                 ))}
                             </ul>
-                            : <p className={sharedStyles.highlight}>No images were returned - looks like we're going with the default above!</p>}
+                            : <p className={sharedStyles.highlight}>{"No images were returned - looks like we're going with the default above!"}</p>}
                     </Fragment>
                 )}
 
                 {state.error && state.error.reason === CUSTOM_SEARCH_ERROR &&
                     <div className={sharedStyles.gameHeader}>
-                        <p>Hmmm there seems to be a problem connecting to Google. Looks like we'll need to go with our default marquee:</p>
+                        <p>{"Hmmm there seems to be a problem connecting to Google. Looks like we'll need to go with our default marquee:"}</p>
                         <img src={selectedImage} alt={`${formControl.title} arcade marquee`} />
                     </div>
                 }

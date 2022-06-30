@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 
 import * as sharedStyles from '../../sharedStyles'
@@ -46,8 +47,8 @@ const FetchError = ({ reason }: FetchErrorProps) => {
             />
             <br />
             <p>
-                But seriously, something went wrong. Please try <a href='/' onClick={handleLinkReload}>
-                    reloading the page</a> or come back later.
+                But seriously, something went wrong. Please try <Link href='/'><a onClick={handleLinkReload}>
+                    reloading the page</a></Link> or come back later.
             </p>
         </div>
     )

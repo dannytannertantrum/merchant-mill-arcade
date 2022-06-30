@@ -1,6 +1,7 @@
 import type { AppProps } from 'next/app'
 import { css } from 'goober'
 import Head from 'next/head'
+import Script from 'next/script'
 
 import ErrorBoundary from '../components/ErrorBoundary/ErrorBoundary'
 import Header from '../components/Header/Header'
@@ -16,6 +17,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                 <meta name='theme-color' content='#000000' />
                 <title>Merchant Mill Arcade</title>
             </Head>
+            <Script src='/canvas.js'></Script>
             <ErrorBoundary>
                 <Header />
                 <Component {...pageProps} />

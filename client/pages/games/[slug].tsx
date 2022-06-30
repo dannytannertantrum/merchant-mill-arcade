@@ -54,7 +54,7 @@ const GamePage = ({ loadedGame }: GamePageProps): JSX.Element => {
         }
 
         didMountRef.current = false
-    }, [state.replyGame])
+    }, [state.replyGame, game.slug, router])
 
 
     const makeApiRequestDeleteGame = async (_event: SyntheticEvent, id: string) => {

@@ -11,7 +11,15 @@ const nextConfig = {
     },
     images: {
         disableStaticImages: true,
-        domains: ['c.tenor.com', 'media1.giphy.com'],
+        domains: [
+            'c.tenor.com',
+            'media1.giphy.com',
+            'classicplayfields.com',
+            'arcademarquee.com',
+            'thisoldgamearchive.com',
+            'www.thisoldgamearchive.com',
+            'i0.wp.com'
+        ],
     },
     typescript: {
         ignoreBuildErrors: false

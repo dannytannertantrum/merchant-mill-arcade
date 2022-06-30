@@ -58,7 +58,7 @@ function AddGamePage() {
         return (
             <div className={styles.submitMessage}>
                 <p>Congratulations! You just added <span>{title}</span> to the Merchant Mill Arcade! Go <Link href={`/games/${slug}`}>
-                    add some scores</Link> or <a href='/add-game' onClick={handleSuccessMessageReload}>create another game</a>
+                    add some scores</Link> or <Link href='/add-game'><a onClick={handleSuccessMessageReload}>create another game</a></Link>
                 </p>
             </div>
         )

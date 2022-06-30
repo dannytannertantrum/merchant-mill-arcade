@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Link from 'next/link'
 import Image from 'next/image'
 
 import * as sharedStyles from '../sharedStyles'
@@ -25,8 +26,8 @@ const NotFoundPage = ({ message }: NotFoundPageProps) => {
             />
             <br />
             <p>
-                {message ? message : 'Page not found.'} Check the URL or head <a href='/'>
-                    back to the arcade</a>, ya dingus!
+                {message ? message : 'Page not found.'} Check the URL or head <Link href='/'>
+                    back to the arcade</Link>, ya dingus!
             </p>
         </div>
     )

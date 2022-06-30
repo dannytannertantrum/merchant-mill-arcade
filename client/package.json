@@ -28,6 +28,8 @@
     "@swc/helpers": "^0.4.3",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.4",
+    "eslint": "8.18.0",
+    "eslint-config-next": "12.2.0",
     "goober": "^2.1.9",
     "parcel": "^2.5.0",
     "sharp": "^0.29.3"

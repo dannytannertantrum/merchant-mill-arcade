@@ -195,7 +195,7 @@ const Scores = ({ game }: ScoresProps) => {
     }
 
     const addScoreMessage = (
-        <p>Well HOT DOG! Even if your score sucks, you'll be a weiner! ...Because there's like, no scores here, man. Get to playin'!</p>
+        <p>{"Well HOT DOG! Even if your score sucks, you'll be a weiner! ...Because there's like, no scores here, man. Get to playin'!"}</p>
     )
 
     const scoreList = (
