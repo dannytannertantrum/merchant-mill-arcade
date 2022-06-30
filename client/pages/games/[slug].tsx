@@ -1,8 +1,11 @@
 import { css } from 'goober'
+import { useRouter } from 'next/router'
 import React, {
     Fragment,
     SyntheticEvent,
+    useEffect,
     useReducer,
+    useRef,
     useState
 } from 'react'
 
@@ -18,13 +21,34 @@ import * as sharedStyles from '../../sharedStyles'
 
 
 interface GamePageProps {
-    game: GameData
+    loadedGame: GameData
 }
 
 
-const GamePage = ({ game }: GamePageProps): JSX.Element => {
+const GamePage = ({ loadedGame }: GamePageProps): JSX.Element => {
+    const [game, setGame] = useState(loadedGame)
     const [state, dispatch] = useReducer(gameReducer, INITIAL_GAME_STATE)
     const [showEditGame, setShowEditGame] = useState(false)
+
+    const didMountRef = useRef(true)
+    const router = useRouter()
+
+
+    useEffect(() => {
+        if (!didMountRef.current) {
+
+            const { title } = state.replyGame.data
+
+            if (game.title !== title) {
+                router.replace(`/games/${title}`)
+            }
+
+            setGame(state.replyGame.data)
+
+        }
+
+        didMountRef.current = false
+    }, [state.replyGame])
 
 
     const makeApiRequestDeleteGame = async (_event: SyntheticEvent, id: string) => {
@@ -138,7 +162,7 @@ export async function getStaticProps(context) {
         }
 
         return {
-            props: { game }
+            props: { loadedGame: game }
         }
     }
 
