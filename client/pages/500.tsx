@@ -5,11 +5,7 @@ import Link from 'next/link'
 import * as sharedStyles from '../sharedStyles'
 
 
-interface NotFoundPageProps {
-    message?: string
-}
-
-const InteralServerErrorPage = ({ message }: NotFoundPageProps) => {
+function InteralServerErrorPage() {
 
     return (
         <div className={sharedStyles.landingPageWrapper}>
