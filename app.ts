@@ -16,6 +16,7 @@ import deleteGame from './routes/games/delete-game'
 import deleteScore from './routes/scores/delete-score'
 import updateGame from './routes/games/update-game'
 import updateScore from './routes/scores/update-score'
+import healthcheck from './routes/healthcheck'
 
 
 interface FastifySlonik {
@@ -72,6 +73,7 @@ server.register(getGame)
 server.register(getGames)
 server.register(getScore)
 server.register(getScoresByGameId)
+server.register(healthcheck)
 server.register(updateGame)
 server.register(updateScore)
 
